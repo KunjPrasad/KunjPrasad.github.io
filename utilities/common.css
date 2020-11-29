@@ -1,0 +1,17 @@
+:root {
+	--white: #fff;
+    --gray: #6c757d;
+    --gray-dark: #343a40;
+}
+
+div[class^="disclaimer"] {
+	display: block;
+	box-sizing: border-box;
+	padding: 16px;
+	border: 2px solid var(--gray);
+	border-radius: 4px;
+}
+
+main {
+	margin: 32px 0px;
+}
