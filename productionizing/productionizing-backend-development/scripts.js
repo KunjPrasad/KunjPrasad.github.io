@@ -1,3 +1,10 @@
 $(document ).ready(function() {
-	$("#disclaimer-container").load("/utilities/disclaimer-generic.html"); 
+	// To all immediate-child anchor-links inside nav, add a handler that clicking on element loads the corresponding content inside <main>
+	$("nav > a").each(function() {
+		$(this).on("click", function(event) {
+			event.preventDefault();
+			$("main").load($(this).attr('href'));
+		});
+	});
+	$("#1606665479").click(); // load introduction
 });
