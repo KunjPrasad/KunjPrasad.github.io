@@ -1,14 +1,64 @@
-$(document ).ready(function() {
-	attachNoteHandlers();
-	// adding post-load operation:
-	// -- if custom-note link is clicked, then after the page load, also update upload status
-	prepareNavAnchorToLoadInMain({"1606703843": updateNoteUploadStatus});
-	$(location.hash || "#1606665479").click(); // load section, or introduction
-});
+import { isNotesModified } from '/utilities/backend-notes.js';
+import { downloadPersonalNotes, uploadPersonalNotes } from '/utilities/service-notes.js';
+import { attachNoteHandlers, prepareNavAnchorToLoadInMain } from '/utilities/service-onload.js';
 
 // constants used relating to upload of note file and upload status
 const noteUploadStatusId = "prod-back-dev-note-upload-status";
 let uploadedNoteFileData = {status: null, fileName: null, uploadDateTime: null};
+
+/**
+ *  Utility method to update the element displaying upload status for successful upload
+ */
+const updateUploadStatusSuccess = () => {
+	const noteUploadStatusNodeQuery = $(`#${noteUploadStatusId}`);
+	noteUploadStatusNodeQuery.text(`Succussfully uploaded file ${uploadedNoteFileData.fileName} at ${uploadedNoteFileData.uploadDateTime}.`);
+	noteUploadStatusNodeQuery.removeClass("alert-secondary alert-danger");
+	noteUploadStatusNodeQuery.addClass("alert-success");
+};
+
+/**
+ *  Utility method to update the element displaying upload status for errored upload
+ */
+const updateUploadStatusError = () => {
+	const noteUploadStatusNodeQuery = $(`#${noteUploadStatusId}`);
+	noteUploadStatusNodeQuery.text(`Failed an attempt to upload file ${uploadedNoteFileData.fileName} at ${uploadedNoteFileData.uploadDateTime}!`);
+	noteUploadStatusNodeQuery.removeClass("alert-secondary alert-success");
+	noteUploadStatusNodeQuery.addClass("alert-danger");
+};
+
+/**
+ *  Utility method to reset the element displaying upload status.
+ */
+const updateUploadStatusReset = () => {
+	const noteUploadStatusNodeQuery = $(`#${noteUploadStatusId}`);
+	noteUploadStatusNodeQuery.text('No note file has been uploaded');
+	noteUploadStatusNodeQuery.removeClass("alert-secondary alert-success alert-danger");
+	noteUploadStatusNodeQuery.addClass("alert-secondary");
+};
+
+/**
+ * Utility method defining the handler for processing note-file uploaded by user
+ */
+export const onUploadNoteFileChange = (uploadFile) => {
+	uploadPersonalNotes(
+		uploadFile, 
+		(uploadFile) => {
+			uploadedNoteFileData = {status: 'SUCCESS', fileName: uploadFile.name, uploadDateTime: new Date()};
+			updateUploadStatusSuccess();
+		}, 
+		(uploadFile) => {
+			uploadedNoteFileData = {status: 'ERROR', fileName: uploadFile.name, uploadDateTime: new Date()};
+			updateUploadStatusError();
+		}, 
+	);
+}
+
+const downFileNamePrefix = 'prodBackendDev';
+
+/**
+ * Utility method defining the handler for processing note-file download request
+ */
+export const onDownloadNoteFile = () => downloadPersonalNotes(downFileNamePrefix);
 
 /**
  * Utility method to update text in paragrah which shows the note-file upload status
@@ -16,33 +66,52 @@ let uploadedNoteFileData = {status: null, fileName: null, uploadDateTime: null};
 const updateNoteUploadStatus = () => {
 	const noteUploadStatusNodeQuery = $(`#${noteUploadStatusId}`);
 	if (!noteUploadStatusNodeQuery.length) {
-		return; // fail-safe if there is no noteUploadStatus-id on page. Ideally, this will never be caled
+		return; // fail-safe if there is no noteUploadStatus-id on page. Ideally, this will never be called
 	}
 	if (!uploadedNoteFileData.status) {
-		$(`#${noteUploadStatusId}`).text('No note file has been uploaded');
+		updateUploadStatusReset();
 	} else {
 		if (uploadedNoteFileData.status === 'SUCCESS') {
-			$(`#${noteUploadStatusId}`).text(`Succussfully uploaded file ${uploadedNoteFileData.fileName} at ${uploadedNoteFileData.uploadDateTime}.`);
+			updateUploadStatusSuccess();
 		} else {
-			$(`#${noteUploadStatusId}`).text(`Failed an attempt to upload file ${uploadedNoteFileData.fileName} at ${uploadedNoteFileData.uploadDateTime}!`);
+			updateUploadStatusError();
 		}
 	}
 };
 
-/**
- *  Utility method for use as callback after successful upload of note file
- * @param [string] uploadFile - uploaded file
- */
-const onNoteUploadSuccess = (uploadFile) => {
-	uploadedNoteFileData = {status: 'SUCCESS', fileName: uploadFile.name, uploadDateTime: new Date()};
-	$(`#${noteUploadStatusId}`).text(`Succussfully uploaded file ${uploadedNoteFileData.fileName} at ${uploadedNoteFileData.uploadDateTime}.`);
-};
+const noteModifiedStatusId = "prod-back-dev-note-modified-status";
 
 /**
- *  Utility method for use as callback after failed upload of note file
- * @param [string] uploadFile - uploaded file
+ * Utility method to update text in paragrah which shows the note-modified status
  */
-const onNoteUploadError = (file) => {
-	uploadedNoteFileData = {status: 'ERROR', fileName: uploadFile.name, uploadDateTime: new Date()};
-	$(`#${noteUploadStatusId}`).text(`Failed an attempt to upload file ${uploadedNoteFileData.fileName} at ${uploadedNoteFileData.uploadDateTime}!! See console for error.`);
+const updateNoteModifiedStatus = () => {
+	const noteModifiedStatusNodeQuery = $(`#${noteModifiedStatusId}`);
+	if (!noteModifiedStatusNodeQuery.length) {
+		return; // fail-safe if there is no noteModifiedStatus-id on page. Ideally, this will never be called
+	}
+	if (isNotesModified()) {
+		noteModifiedStatusNodeQuery.text(`There are modified notes! Please save a copy of notes before exitting.`);
+		noteModifiedStatusNodeQuery.removeClass("alert-secondary");
+		noteModifiedStatusNodeQuery.addClass("alert-warning");
+	} else {
+		noteModifiedStatusNodeQuery.text(`There are no modified notes.`);
+		noteModifiedStatusNodeQuery.removeClass("alert-warning");
+		noteModifiedStatusNodeQuery.addClass("alert-secondary");
+	}
+};
+
+const introductionNavAnchorId = "1606665479";
+const personalNotesNavAnchorId = "1606703843";
+
+/**
+ * Utility method with logic to be executed when page is loaded
+ */
+export const onDocumentLoad = () => {
+	attachNoteHandlers();
+	// adding post-load operation:
+	// -- if custom-note link is clicked, then after the page load, also update upload status
+	prepareNavAnchorToLoadInMain({
+		[personalNotesNavAnchorId]: () => { updateNoteUploadStatus(); updateNoteModifiedStatus(); }
+	});
+	$(location.hash || `#${introductionNavAnchorId}`).click(); // load section, or introduction
 };
