@@ -1,0 +1,11 @@
+Say that this is a work in progress.. but likely will remain so for long.
+
+
+Still, the reason for making it is because you likley identified a connection that you feel is important and not discussed anywhere.
+
+TODO: Does ref forwarding in React relate to difference between inner
+class vs static class?!
+-- likely, yes!! This is a good way to see when to actually use inner
+class (which is mostly none - for server side coding).. or maybe, it's
+useful in language that use prototype-based-inheritance??!! -- so, not
+in object based inheritance
