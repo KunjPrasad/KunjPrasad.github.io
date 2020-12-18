@@ -36,11 +36,11 @@
 			<a id="1607048361" href="one-line-summary.html">One line summary</a>
 			<a id="1606703843" href="personal-notes.html">Personal notes</a>
 			<a id="1606665918" href="/utilities/disclaimer-generic.html">Disclaimer</a>
+			<a id="1608303679" href="glossary.html">Glossary</a>
 			
 			<!-- TODO
-			add in introduction that the book gives more value to flexibility, extendibility of code. If there is a business use case to get efficiency by making a code execution stack smaller, then the book does not prohibit doing so. But it does caution by identifying the other features which would be getting traded-off. Mention in introduction that the suggestions made in this book are kept as much language agnostic.
 			
-			Add a chapter with introductory terms. Here, define slug, logging, OOP, SOLID, Aspect programming, request, response, query param, path param, matrix param. Everything you need later should be done here. Define encapsulation vs abstraction vs inheritance
+			Expand more on one line summary.
 			
 			SERVICE:
 			-- First, identify/analyze the request response behavior. Don't start with db design. Link to "maintain DAG structure" in Advance use case.
@@ -213,7 +213,13 @@
 			Security:
 			-- Each request, even from async tasks.. should be as a request from a user. background tasks come as request from system user with a certain correct role. Gives uniformity in handling the task, logging, etc.
 			-- Look at OWASP guidelines
+			-- Look for notes in spring security, like changing session after login, clearing session on logout, adding x-content-type-options: nosniff. 
+			-- See https://blog.avast.com/why-is-ebay-port-scanning-my-computer-avast and https://nullsweep.com/why-is-this-website-port-scanning-me/ -- don't port scan. If you want to do so for security, then offer as a service and start/stop it when user asks. Don't do so in a hidden cryptic way
+			-- Don't have/rely on workflow where the website domain changes. This way, if you are changing domain, you can let the user know of it. A common reason do change domain could be to access OAuth token on different server. One reason to prefer this rather than collect user details by yourself and make an internal api call is that latter duplicates the login form code. Best, just let that single service evolve its own code/UI and you just get access to it. Also, since its scope is very limited (just for authentication) - clients should not have issue opening port to it
+			-- Don't have/rely on security where adding a rate limit is part of security logic
 			-- Security - chpt 26 of 2 scoops - go through it
+			-- Don't have/rely on worflow 
+			
 			--|---- Basic thing for security:: see "Server Hardening", section 26.2 in pg.346 of 2 scoops:: Server hardening measures include but are not limited to things like setting up firewalls (help.ubuntu.com/community/UFW), changing your SSH port, and disabling/removing unnecessary services.
 			--|---- **VERY VERY VERY IMPORTANT**: Good practice -- You should disable the HTML field autocomplete browser feature on fields that are gateways to payment. This includes credit card numbers, CVVs, PINs, credit card dates, etc. The reason is that a lot of people use public computers or their personal computers in public venues. In fact, consider changing the form field itself to PasswordInput. Also on that line - never store credit card data.
 			--|---- Section 26.13 on Pg.357 about file handling. 
@@ -278,6 +284,8 @@
 			--|----|---- In such cases, define a temporary user oject, not in DB. Disable its save method, don't give it an id so that it cannot be saved. In filling the object fields from original one, only relevant fields are populated, and then it is assigned to lower group. Make a profile for it, and again don't give any id to it.. nor allow saving it. This ensures that the user object can be persisted. Also, it doesn't match any entries in DB and is totally ephemeral.. Still, be careful in related code. Now, to this user object - assign the new role, if its current role allow it to do so. Note that this would need a new utility method that should define role hierarchy, even though - as we defined above, it is a a flat list. Same utility can likely also be used by permission classes to identify the hierarchically up role that should also be granted access. If the role being requested canot be given, then retur 403
 			--|----|---- Addition to above, in DB, separate out the table, so that the sub-portion that can be accessed by wider role user is a single table and the other restricted role access table is separate, joined to the former via a oneToOne relation.. and defining method preventing object access by other roles. How to define such a method is framework/language specific
 			
+			--cookies
+			
 			-- Ask sensitive data only at most once
 			-- Store data as encrypted
 			-- Use JWT or bearer token -- allows to go cloud ready
@@ -338,7 +346,11 @@
 			
 			
 			Testing -- do feature test; make mock for background task; make mock for 3rd party api. Do multi-feature test along lines of business workflow 
-
+			
+			Cover these 3 points, and link to prod-prod
+			Rule of 3 to identify refactor
+			-- Foolish consistency is hogoblin
+			-- if needed, go for speed, and cover tech debt later. Business first
 			
 			
 			DB:

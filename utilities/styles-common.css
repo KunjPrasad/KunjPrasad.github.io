@@ -6,6 +6,7 @@
 	--black: #000;
 	--blue-dark: #0c5460;
 	--blue-light: #d1ecf1;
+	--blue-link: #0d6efd;
 	--cyan: rgb(23, 162, 184); /* #17a2b8 */
     --gray: #6c757d;
     --gray-dark: #343a40;
@@ -15,6 +16,7 @@
 	--purple: #6f42c1;
 	--red-dark: #721c24;
 	--red-light: #f8d7da;
+	--red-link: #dc3545;
 	--orange-dark: #856404;
 	--orange-light: #fff3cd;
 	--white: #fff;
@@ -86,17 +88,21 @@ nav {
 nav > a {
 	display: block;
 	text-decoration: none;
-	padding: 0.25rem;
-	border: 2px solid transparent;
-	border-radius: .25rem;
-}
-
-nav > a:focus {
-	border-color: var(--cyan);
+	white-space: nowrap;
+	font-weight: normal;
+	color: var(--blue-link);
+	padding: 0.5rem 0.25rem;
 }
 
 nav > a:hover {
-	border-color: var(--cyan);
+	font-weight: normal;
+	color: var(--red-link);
+}
+
+nav > a:focus {
+	/* Keeping focus below hover, else a focused element being hovered on changes style */
+	font-weight: bold;
+	color: var(--red-link);
 }
 
 /* Special class css */
@@ -154,4 +160,29 @@ nav > a:hover {
     border: 2px solid var(--cyan);
     border-radius: .25rem;
 	margin-bottom: 1rem;
+}
+
+.table {
+	text-align:left;
+	caption-side: top;
+    background-color: transparent;
+	table-layout: fixed;
+	width: 100%;
+    max-width: 100%;
+	border: 2px solid var(--gray-light);
+	border-radius: .25rem;
+	border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.table tr {
+	border: 2px solid var(--gray-light);
+}
+
+.table td, .table th {
+	padding: 0.5rem;
+}
+
+td .note-add {
+	margin-bottom: 0;
 }
