@@ -44,7 +44,7 @@ export const attachNoteHandlers = () => {
  * @param [Object] postLoadOperationMap - An object with key as id of anchor tag within nav, and value being a function that is executed after page is loaded
  */
 export const prepareNavAnchorToLoadInMain = (postLoadOperationMap = {}) => {
-	$("nav > a").each(function() {
+	$("nav a").each(function() {
 		$(this).on("click", function(event) {
 			event.preventDefault();
 			const anchorTagId = $(this).attr('id');
