@@ -51,7 +51,11 @@
 			
 			<!-- TODO
 			
-			Expand more on one line summary.
+			https://stackoverflow.com/questions/38677889/difference-between-service-layer-and-controller-in-practice/38678061#38678061 -- Looking in Java view of controller, service, repository... controller holds interaction with request; service has business logic and no request based logic; repsitory has database logic and only interacts with service. Best to do everything in one transaction -- even the conversion from slugs into corresponding entity.
+			--|---- For this reason, process serializers in Django should not do anything with child slug.. if you are using SlugRelated field, then keep it as read-only, or create-new.. don't modify. One flip side, if you are worried about the entity changing in span of request.. then best you are pessimistic locking and not rely on just using single transaction.
+			
+			-- Repository layer -- use it to add abstraction on data retrieval.. like, either using cache or DB, or saving file via different scheme (uri or http), or saving on local drives or saving in cloud
+			--|---- If adding cache, ensure that you are updating cache and backend both.. do proper integration and functional testing
 			
 			SERVICE:
 			-- First, identify/analyze the request response behavior. Don't start with db design. Link to "maintain DAG structure" in Advance use case.
