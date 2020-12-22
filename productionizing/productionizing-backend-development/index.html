@@ -51,6 +51,16 @@
 			
 			<!-- TODO
 			
+			Add to glossary: ORM, Fao, function as first class, lazy evaluation. Loose coupled architecture
+			
+			Testing
+			-- https://softwareengineering.stackexchange.com/questions/274937/is-it-bad-practice-to-make-methods-public-solely-for-the-sake-of-unit-testing
+			-- create apt boundary where things are made public, and test those. This should go in unit testing. This is a trade-off between leaking implementation to break abstraction vs having loosely coupled architecture.
+			-- add tests in proper folder. FOr controller related test, do so by making dummy server, and add in controller package. However, for multi functional test, add in separate package.
+			-- Add validation as part of controller to not repeat it. Since controller tests are themselves made by sending dummy request, so do validation as part of it and not separate
+			-- negative tests
+			-- testing as means of documentation. test smallest section. Give proper name. Arrange, act, assert
+			
 			https://stackoverflow.com/questions/38677889/difference-between-service-layer-and-controller-in-practice/38678061#38678061 -- Looking in Java view of controller, service, repository... controller holds interaction with request; service has business logic and no request based logic; repsitory has database logic and only interacts with service. Best to do everything in one transaction -- even the conversion from slugs into corresponding entity.
 			--|---- For this reason, process serializers in Django should not do anything with child slug.. if you are using SlugRelated field, then keep it as read-only, or create-new.. don't modify. One flip side, if you are worried about the entity changing in span of request.. then best you are pessimistic locking and not rely on just using single transaction.
 			
