@@ -20,18 +20,6 @@
 	--orange-dark: #856404;
 	--orange-light: #fff3cd;
 	--white: #fff;
-	--code-font: {
-		font-family: Consolas,'Lucida Console','Liberation Mono','DejaVu Sans Mono','Bitstream Vera Sans Mono','Courier New',monospace,sans-serif;
-	};
-}
-
-.code-span {
-	@apply --code-font;
-}
-
-.code-block {
-	@apply --code-font;
-	display: block;
 }
 
 /* If you make a different css, then instead use media-query when linking css, like: <link rel="stylesheet" media="screen and (min-width: 900px)" href="widescreen.css">*/
@@ -155,6 +143,10 @@ nav section > h2 {
 	padding: .25rem .5rem;
     border: 2px solid var(--cyan);
     border-radius: .25rem;
+}
+
+.code-span {
+	font-family: Consolas,'Lucida Console','Liberation Mono','DejaVu Sans Mono','Bitstream Vera Sans Mono','Courier New',monospace,sans-serif;
 }
 
 .note {

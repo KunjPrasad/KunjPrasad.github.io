@@ -62,6 +62,21 @@
 			-- testing as means of documentation. test smallest section. Give proper name. Arrange, act, assert
 			
 			--always raise error instead of returning a non-200 response. Added benefit, can add auto logging in error handling!
+			-- keep cycling JWT secret
+			-- database connection password change
+			
+			-- dto security: add file size limit, list size limit, string text size limit, only certain string text characters allowed
+			-- keep rate limit logic outside controller.. at filter level - because it is a permission. Als, return proper error code (429). Similarly, return proper error code of authentication failure (401) vs authorization fail (403) - unless auth fail happened and user is anonymous.. in which case, raise 401
+			
+			-- Run-As function: https://www.baeldung.com/spring-security-run-as-auth   https://blog.marcosbarbero.com/user-impersonation-with-spring-security/
+			-- Don't use auth token for authorization - just use to get header and then check authorization.. since authorization might have changed in mean time.
+			-- Don't use presence of an auth header for authorization
+			
+			--jwt: works in microservice, i..e for service to service communication; also can use if you want to move from one system to other -- but it may be a hassle for users to type long jwt. Can instead use it to form simple one time bearer token
+			
+			-- make audit entries in same transaction as DB changes. One more reason to prefer a single transaction
+			-- move old file and old data to different database/filesystem.
+			-- Constraining users to have a strong password is something that must be done since beginning of application.
 			
 			-- The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 RFC2119 RFC8174 when, and only when, they appear in all capitals, as shown here.
 			
@@ -291,6 +306,13 @@
 			--|---- abuse#1: use file-system pathway, like starting with ~, or ../../ - to go to other directories
 			--|---- abuse#2: use filename like http://server.com/some-path - force application to do http call and download some bug, etc.
 			--|---- In any cases, if downloading file, first do virus scan
+			
+			-- Sensitive data exposure is a vulnerability. Add extra auditing / controls around sensitive data. Another option is to disallow reads of sensitive data except for admin role:: https://blog.detectify.com/2016/07/01/owasp-top-10-sensitive-data-exposure-6/
+			-- Insecure deserialization vulnerability: https://blog.detectify.com/2018/03/21/owasp-top-10-insecure-deserialization/ -- and so, make DTO as POJO
+			
+			-- Logging and Sentry creates data at rest -- so ensure that it is secured
+			-- strong password via multilingual
+			-- use of CORS and proper HTTP verbs for CSRF prevention.
 			
 			--|---- Is CSRF protection needed with GET call? -- Generally NO. 
 			--|---- In most case, CSRF is restricted to attack where an attacking website tricks user to make a request that causes a mutation (in favor of attacker). However, when server returns a response --in these cases-- it will not have CORS' allow all origin header. So, even though a mutation is made, the response of it never goes back to attacker.
