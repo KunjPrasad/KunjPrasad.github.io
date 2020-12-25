@@ -313,6 +313,7 @@
 			-- Logging and Sentry creates data at rest -- so ensure that it is secured
 			-- strong password via multilingual
 			-- use of CORS and proper HTTP verbs for CSRF prevention.
+			-- at least aspire to level 2 REST
 			
 			--|---- Is CSRF protection needed with GET call? -- Generally NO. 
 			--|---- In most case, CSRF is restricted to attack where an attacking website tricks user to make a request that causes a mutation (in favor of attacker). However, when server returns a response --in these cases-- it will not have CORS' allow all origin header. So, even though a mutation is made, the response of it never goes back to attacker.
