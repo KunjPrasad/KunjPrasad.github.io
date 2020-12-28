@@ -1,0 +1,33 @@
+<!--
+    HTML book: Personal Notes Upload and Download Page to Productionizing Databae Schema, by Kunj Prasad on Github.
+    Copyright (C) 2020  Kunj Prasad
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<article>
+	<h2>Personal notes</h2>
+	<p id="1609170287">Whenever reading any book, I've also felt the ability to add my own thoughts as missing. In this book, a framework has been added enabling readers to add their own views, comments, followup, etc. I would highly encourage readers to make their comment file available to other via their own Github repo. All paragraphs in the html book have been given a unique id. When the corresponding "Add note" button is clicked, an empty note is added. Modifying the text to a non empty value updates the text when focus is removed from the note box. If the note text is modified to empty, then the note is deleted.</p>
+	<p id="1609170288"><strong>NOTE:</strong> The notes are not saved on the webpage hosting the html book. The readers must remember to save the notes before navigating away from the page, else the notes will be lost. The saved notes can be uploaded back when reader visits the page at a later time. The saved note file name is formatted to help identify that the notes belong to this book, and also contains a timestamp. For those interested, I want to mention that the saved note-file stored data in json format.</p>
+	
+	<h3>Upload notes</h3>
+	<p>Use the box below to select a note file to upload.</p>
+	<p id="prod-db-note-upload-status" class="alert"><!-- The content here is filled dynamically by the script depending on if no file has be uploaded or if a file upload was successful or errored --></p>
+	<button class="button-utility" onclick="document.getElementById('note-file-upload-input').click();">Upload note file</button>
+	<input id="note-file-upload-input" name="note-file-input" type="file" aria-label="Upload note file" style="display: none;" />
+	
+	<h3>Download notes</h3>
+	<p>Click the button below to download notes as a json file. The downloaded note file name starts with prefix <i>"prodDb"</i> to identify that the notes belong to this book. Hopefully, this helps in identifying the correct file to be uploaded at a later time. The downloaded file name also contains a timestamp. The alert below shows whether the notes have been modified by adding/ updating/ deleting. Upload of a note file does not change status.</p>
+	<p id="prod-db-note-modified-status" class="alert"><!-- The content here is filled dynamically by the script --></p>
+	<button id="note-file-download-button" type="button" class="button-utility">Download note file</button>
+</article>

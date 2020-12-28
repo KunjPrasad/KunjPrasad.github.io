@@ -1,0 +1,122 @@
+<!--
+    HTML book: Productionizing Database Schema, by Kunj Prasad on Github.
+    Copyright (C) 2020  Kunj Prasad
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Productionizing Database Schema</title>
+		<meta name="description" content="Productionizing Database Schema HTML E-book">
+		<meta name="author" content="Kunj Prasad">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="/utilities/styles-common.css">
+		<link rel="stylesheet" href="styles.css">
+		<style type="text/css"></style>
+	</head>
+	
+	<body>
+		<header>
+			<h1>Productionizing Database Schema</h1>
+		</header>
+		<nav>
+			<a id="1609170285" href="introduction.html">Introduction</a>
+			<a id="1609170284" href="personal-notes.html">Personal notes</a>
+			<a id="1609170283" href="/utilities/disclaimer-generic.html">Disclaimer</a>
+			<section>
+				<h2>Glossary</h2>
+				<a id="1609170282" href="glossary/todo.html">TODO</a>
+			</section>
+			
+			
+			
+			<!-- TODO
+			
+			DB:
+			-- one jira ticket should result in 1 migration. on the migration file, add ticket name and briefly what it does - for easy tracking/identifying. No need to go full detail as git blame can be used to do so
+			-- say that DB design should not be the first thing to start with.. start with service and then come to database design!!
+			-- explain why normalize data. When denormalize data and that it can be done even in SQL. However, if doing so, then check consistency of referential keys
+			-- as best practice add both table and column level comments
+			
+			-- You can change character-set in MySQL columns.. but best to have charset as utf8mb4 — **IMPORTANT**: Not utf8.. in MySQL, utf8 is utf8mb3 (3 bytes of data). Even worse, it can drop string data — MySQL historically set around 767 bytes for indexing. Since most string columns are 255 string size, so MySQL decided that they’ll assign 3 bytes per string. So, if there is a larger data sent.. it gets dropped
+			
+			--  Alter table: 2 things to note. Both relate to fact that “Alter table”, when executed, makes copy of original, then changes references to refer to the new table. So:
+1) If trying to do multiple “ALTER TABLE” commands, best to collect all of them in a single statement t prevent performance degradation by multiple operations
+2) Historically, Alter table would lock the table while alteration is being done. Recent versions have improved it by trying to queue the changes and in the mean time allowing external reads to happen.. but this is still slow!
+			
+			-- LIMIT command has another form that takes 2 values, 1 is offset and other is the number of entries returned - but under covers this is not performance.. as it first selects everything and then throws offset data out. Better way to paginate is to first filter using WHERE clause, and then use limit.. and then change the input to WHERE for next iteration accordingly.
+			
+			-- Non updatable columns
+			-- Always keep separate numeric id. Don't go for string or natural key since logic may change in future.
+			-- SELF-JOIN: table joining on itself. Good for join to get a hierarchy or time-window relation. In this case, for disambiguation, use “AS” clause
+			-- See StackOverflow https://stackoverflow.com/questions/3856164/sql-joins-vs-sql-subqueries-performance — in that joins can be faster than sub select
+			-- Single service should be owner of data and this should give rise to data domain design. Once again, follow DAG -> link to "maintain DAG" in Prod Prod.. which itself is to ensure a good communication on "happens before" relation. Data domain driven design. Data ownership driven design.
+			-- Single application as being the owner of db and it accesses it
+			-- Maintain read only replica for speed
+			-- When doing updates, ensure the existing table structure works. Also check that adding data from new works
+			-- Using Enum rather than standard table creates problems in that old migration files would need changing
+			
+			1) If you have, say, "N entries" out of which you want only 1 to be active at a time.. then one way is to have say an "active" field that can be true for just one entry. For all others, it should be null. The "null" isn't used in unique and so it behaves as if there's just one active at a time.
+			--|---- HOWEVER, it feels like cheating and is not a portable behavior (https://stackoverflow.com/questions/20154033/allow-null-in-unique-column). A downside is that if within the group, you want to set an active value to null and some other null value to active, then you'll have to defer consistency till after transaction - which MySQL doesn't allow. So, some restrictions may come - but still, there's workaround.. use 2 transactions - if doing so, set the intermediate value to false, and change it back to null. From application perspective it should still work. Also, for the set of unique values that can be put, try to keep it limited, best if this is done on a boolean field so it can take on true/false value. 
+			--|---- Another approach can be to enforce the check using optimistic or pessimistic locking. If using optimistic lock, it may help to have a top level record that defines the version.
+			
+			-- DB unique constraint in design :: Start by adding as strong of a constraint as possible.. relax later if need comes. Don't start with a weak unique constraint (i.e. one based on multiple fields rather than just a single field)
+			--|---- Design it with view to enforce uniqueness of created data, hence it solves problem of race condition in creating new data - where DB raises error. 
+			--|---- Does this (https://dba.stackexchange.com/questions/210949/why-does-this-query-result-in-deadlock) mean that in absence of unique constraint adding / updating 2 entries can cause deadlock!! - another reason to always keep separate numeric id
+			
+			-- Standard data table (vs Enum)
+			
+			-- Discuss "select for update" vs "optimistic locking"
+			--|--- As part of better understanding: understand isolation levels: https://stackoverflow.com/questions/4034976/difference-between-read-commited-and-repeatable-read#:~:text=Repeatable%20read%20is%20a%20higher,unchanged%2C%20and%20available%20to%20read.
+			--|---- Above link : https://dba.stackexchange.com/questions/210949/why-does-this-query-result-in-deadlock - Particularly, interesting is observation that even if one is doing create/update in single transaction - that can cause deadlock! Sure, it should have used better uniqueness constraints.. but over here, "select-for-update" works but the optimistic locking won't help!!
+			--|---- Update calls can be done pessimistically or optimistically: See https://medium.com/@hakibenita/how-to-manage-concurrency-in-django-models-b240fed4ee2  REALIZE that: 
+			--|----|---- (i) pessimistic calls using "select_for_update", even if it works - does not guarantee that data won't be overwritten. For example: User-1 reads data-version-0, and updates to new-value-v11. User-2 concurrently reads data-version-0, but updates to value-v12. If not done properly, select_for_update will just guarantee that the 2 updates happen one after another, which means it can go in any manner. One can set "nowait=True" so an exception is returned.. still, it does not guarantee the order of updates -- meaning, maybe User-2 updated to value-v12 just because he saw v0 to begin with. If he saw v11 (from user-1), maybe user-2 would have put something else. 
+			--|----|---- (ii) For above reason, and because it is easier.. using Optimistic locking is better. However, realize that doing so means you'll have to do 2 reads. The "medium.com" example above shows as if its doing just 1 call.. but in order to pass "self.version" in get() call, it'll first have to query db to get recent version. Another option -- get "version" to use as a hidden param (in form), or as a header, or as query param. BECAUSE -- thinking again of UX.. when user makes an update.. they are doing so based on some data - so it must be communicated back to server about what data they were using. [[Instead of version, one may also seek to use timestamp]]
+			--|---- ABOUT "SELECT FOR UPDATE":
+			--|----|---- As mentioned above, this still cannot solve unintended overwrites!! - For that, need optimistic locking / versioning
+			--|----|---- Django doc: https://docs.djangoproject.com/en/dev/ref/models/querysets/#select-for-update
+			--|----|----|----- **VERY VERY IMPORTANT**: NOTE: it says that if queryset has select_related(), then those rows are also locked! This in itself could be a good feature for certain use cases.. See https://stackoverflow.com/questions/10935850/when-to-use-select-for-update
+			--|----|---- See https://www.brightbox.com/blog/2013/10/31/on-mysql-locks/ for different locks that can happen. THUS, when using "select_for_update", best restrict yourself ONLY to lookup by "id" only - so that you just do row level locks
+			--|---- A UX problem with optimistic locking is that if it fails, end user will get a message to fill form again that can be frustrating. Sure, UI can be improved.. but better still, wraps optimistic failures in retry logic. Also, related question - just to prevent user annoyance, do you want them to mistakenly overwrite someone else's data. Plus, UI frameworks can save form-data if the call is unsuccessful.. you can return HTTP 409. so why not?!
+			--|----  If using optimistic lock, and operation can touch multiple rows in some sub-table, then it may help to have a top level record that defines the version.
+			--|---- To mention/clarify again: select_for_update is best done when you want to lock a table during update. For example, say you only want certain column to have sequential numbers. The way to getting it would be to get the current table size and use it to get next number. Thus, synchronization is inherently needed and using optimistic locking only may not be helpful - because in creating new row, it'll have a version of 0. And you're not modifying old entry's version.. so optimistic lock will end up creating overwritten entries.. but not so if done using select_for_update
+			--|----|---- ALSO.. If your object has a lot of concurrent updates you are probably better off with the pessimistic approach. If you have updates happening outside the ORM (for example, directly in the database) the pessimistic approach is safer. If your method has side effects such as remote API calls or OS calls make sure they are safe (Taken from https://hakibenita.com/how-to-manage-concurrency-in-django-models)
+			--|---- **IMPORTANT**: Optimistic Locking is particularly good/useful for cases where partial update of row cannot be done. Thus the row completely updates in each operation. In such cases, row-versioning in optimistic locks prevent update on an old version of data. Note that optimistic locks are good to use when there is a low write/concurrent-update rate. Also, having this paradigm requires both an understanding from client and server side. Client must understand that they're trying to update a "version" data and that the operation can fail in which case they'll need to retry. However, depending on use-case server side may add some retry logic. On the other hand, select for update pauses the execution rather than causing failures like optimistic locks - so it is good for high write rate. Implementing optimistic locking is not available out of box so it needs extra coding work. RELATED: (i) Realize that model.save() can have additional referential checks before data is saved. Those checks get bypassed if using queryset.update() used for optimistic locking; (ii) since queryset.update() is getting invoked, then model's save() signal will not get invoked; (iii) save() method has an argument "update_fields" that can additionally be used for performance gains and to enable concurrent update of different portions of model. This feature can be used instead of update() for optimistic locking. **ALSO** don't worry about optimistic/pessimistic lock unless you're starting to see db contention.
+
+			
+			-- Be careful defining cascade behavior for deletion. safest is always to disable cascade - so that if such a behavior is needed, then application specifically does so
+			-- Use of null valued columns for group uniqueness. BUT, they will cause error if you want to change a different value in group to be true within single transaction.
+			-- When having db model where lower table has columns that override value of column in a higher table -- then: (1) use column-name in lower table as `{high-column-name}_override` add @property named `{high-column-name}` in lower table that defines the value as using the overriden value if available else using the higher table value.
+			
+			-- before finalizing the table design, do a data domain analysis (give link to matin fowler's page). Idea is to (1) ensure that you have identified and properly separated all tables into individual data domains. The data domains should be less than equal to count of individual profiles/roles. (2) used the domain to identify the ownership of each table under TAKE/SANITIZE by each profile. (3) The "id/slug" within tables for a data domain that don't overlap with another domain should not form part of tables in overlap region (example.. worker having contract - don't leak worker slug/id)
+			
+			-- UTF-8 based security issue + using utfmb4 type in MySQL:
+* https://mathiasbynens.be/notes/mysql-utf8mb4
+* https://speakerdeck.com/mathiasbynens/hacking-with-unicode
+			
+			
+			-->
+		</nav>
+		<main tabindex="0"></main>
+		<footer></footer>
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+		<script type="module">
+			import { onUploadNoteFileChange, onDownloadNoteFile, onDocumentLoad } from './scripts.js';
+			$(document ).ready(onDocumentLoad);
+			$("main").on("change", "#note-file-upload-input", (event) => onUploadNoteFileChange(event.target.files[0]));
+			$("main").on("click", "#note-file-download-button", onDownloadNoteFile);
+		</script>
+	</body>
+<html>

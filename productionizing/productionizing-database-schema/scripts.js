@@ -1,9 +1,9 @@
 import { isNotesModified } from '/utilities/backend-notes.js';
 import { downloadPersonalNotes, uploadPersonalNotes } from '/utilities/service-notes.js';
-import { attachNoteHandlers, prepareNavAnchorToLoadInMain, bindMainHashLinkToNavClick } from '/utilities/service-onload.js';
+import { attachNoteHandlers, prepareNavAnchorToLoadInMain } from '/utilities/service-onload.js';
 
 // constants used relating to upload of note file and upload status
-const noteUploadStatusId = "prod-back-dev-note-upload-status";
+const noteUploadStatusId = "prod-db-note-upload-status";
 let uploadedNoteFileData = {status: null, fileName: null, uploadDateTime: null};
 
 /**
@@ -53,7 +53,7 @@ export const onUploadNoteFileChange = (uploadFile) => {
 	);
 }
 
-const downFileNamePrefix = 'prodBackendDev';
+const downFileNamePrefix = 'prodDb';
 
 /**
  * Utility method defining the handler for processing note-file download request
@@ -79,7 +79,7 @@ const updateNoteUploadStatus = () => {
 	}
 };
 
-const noteModifiedStatusId = "prod-back-dev-note-modified-status";
+const noteModifiedStatusId = "prod-db-note-modified-status";
 
 /**
  * Utility method to update text in paragrah which shows the note-modified status
@@ -100,8 +100,8 @@ const updateNoteModifiedStatus = () => {
 	}
 };
 
-const introductionNavAnchorId = "1606665479";
-const personalNotesNavAnchorId = "1606703843";
+const introductionNavAnchorId = "1609170285";
+const personalNotesNavAnchorId = "1609170284";
 
 /**
  * Utility method with logic to be executed when page is loaded
