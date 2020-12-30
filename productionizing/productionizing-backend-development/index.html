@@ -51,7 +51,14 @@
 			
 			<!-- TODO
 			
+			https://en.wikibooks.org/wiki/Introduction_to_Software_Engineering
 			Add to glossary: ORM, Fao, function as first class, lazy evaluation. Loose coupled architecture
+			
+			Include 12 factor suggestions in "1 way interaction" suggestions: https://12factor.net/
+			From cis-20: maintenance, monitoring and analysis of audit log.. run as background service. Additional background service can be running transactional outbox conformance.
+			cover tdd in "1 way interaction" an why it fails. (1) do TDD only at functional and integration level, not at unit level because you don't know how the actual implementation would be. Plus, code can get refactored at unit level, but functional level should still holds. (2) In agile environment and working on a new project, it is likely that some edge case wasn't thought of when making requirements. It can be frustrating to first have TDD test cases, then write code, halt it to clarify requirement, change tests, etc. (3) A correct TDD is best done where 2 different coders are involved: one just making test, and other just writing implementation; and each talking with product manager only for clarifications. (4) There's no actual way to identify that extra behavior than what's added has been added in code, in other case, you test for presence of a behavior as new code gets implemented, you don't test for absence of unasked behavior since there can be too many. (5) If goal is to verify that test covers code and vice versa, a good alternative can just be to have robust code review practice where the added tests are also verified.
+			
+			-- separate and specific url for a RPC action -- conforms to "I of solid. -- interface segregation ..better understanding for a client of what they are doing with minimal processing magic which manifests itself as less if-else branch on view side.
 			
 			Testing
 			-- https://softwareengineering.stackexchange.com/questions/274937/is-it-bad-practice-to-make-methods-public-solely-for-the-sake-of-unit-testing
@@ -79,6 +86,8 @@
 			-- Constraining users to have a strong password is something that must be done since beginning of application.
 			
 			-- The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 RFC2119 RFC8174 when, and only when, they appear in all capitals, as shown here.
+			
+			-- service code must be as much declarative in nature. controller should be even less code, just validating data and passing to service.
 			
 			-- profile based design to also help with data privacy -- gdpr
 			-- stick to http spec of keeping GET as a safe method, and of having PUT, GET, DELETE as idempotent. See here: https://developer.mozilla.org/en-US/docs/Glossary/idempotent -- For this reason, never make "delete last entry" as a delete call because it is not idempotent. If it can change, then instead use POST and model it as a RPC call -- done via POSTING of a message that is then picked up and processed
