@@ -1,6 +1,6 @@
 import { isNotesModified } from '/utilities/backend-notes.js';
 import { downloadPersonalNotes, uploadPersonalNotes } from '/utilities/service-notes.js';
-import { attachNoteHandlers, prepareNavAnchorToLoadInMain, bindMainHashLinkToNavClick } from '/utilities/service-onload.js';
+import { attachNoteHandlers, getNavAndMainElemIdFromLocationHash, prepareNavAnchorToLoadInMain, bindMainHashLinkToNavClick } from '/utilities/service-onload.js';
 
 // constants used relating to upload of note file and upload status
 const noteUploadStatusId = "prod-back-dev-note-upload-status";
@@ -108,12 +108,14 @@ const personalNotesNavAnchorId = "1606703843";
  */
 export const onDocumentLoad = () => {
 	attachNoteHandlers();
+	//on clicking hash tag inside the <main> that instead wants to trigger a click on corresponding nav-item, do so
+	bindMainHashLinkToNavClick();
 	// adding post-load operation:
 	// -- if custom-note link is clicked, then after the page load, also update upload status
 	prepareNavAnchorToLoadInMain({
 		[personalNotesNavAnchorId]: () => { updateNoteUploadStatus(); updateNoteModifiedStatus(); }
 	});
-	$(location.hash || `#${introductionNavAnchorId}`).click(); // load section, or introduction
-	//on clicking hash tag inside the <main> that instead wants to trigger a click on corresponding nav-item, do so
-	bindMainHashLinkToNavClick();
+	// load section, or introduction
+	let {navElementId} = getNavAndMainElemIdFromLocationHash();
+	$(`#${navElementId || introductionNavAnchorId}`).click(); 
 };

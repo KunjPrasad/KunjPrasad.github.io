@@ -40,20 +40,46 @@ export const attachNoteHandlers = () => {
 };
 
 /**
- * Utility method to  add a handler for all immediate-child anchor-links inside nav, such that clicking on element loads the corresponding content inside <main>. It updates the hash in location. After the page loads, it is scroled to the top. All elements with "id" attribute are modified by adding any existing notes after it, followed by a button to add more note. Corresponding note related handlers are also wired. Finally, if the method is provided an argument identifying a function that must be run after the page is loaded, then that function is executed.
+ * The location hash can be one of 2 forms: "#1234", or "#1234/5678". Former occurs when a <nav> element is clicked whose id is "1234" and the intention is to scroll to top of <main> after rendering the content. Latter occurs when a <nav> element is clicked whose id is "1234" and the intention is to scroll to an element rendered inside <main> whose id is "5678". This method takes the location hash and returns the nav element-id (i.e., "1234" in both cases), and main element-id if it exists (i.e., undefined in first case, and "5678" in second case). If the location.hash does not exist or is falsy, then `undefined` is returned for both.
+ * @returns [{navElementId: string|undefined, mainElementId: string|undefined}]
+ */
+export const getNavAndMainElemIdFromLocationHash = () => {
+	if (!location.hash || !location.hash.trim()) {
+		return {navElementId: undefined, mainElementId: undefined};
+	}
+	const locationHashSplitArr = location.hash.substring(1).split("/");
+	if (locationHashSplitArr.length === 1) {
+		return {navElementId: locationHashSplitArr[0], mainElementId: undefined};
+	} else {
+		return {navElementId: locationHashSplitArr[0], mainElementId: locationHashSplitArr[1]};
+	}
+};
+
+/**
+ * Utility method to  add a handler for all immediate-child anchor-links inside <nav>, such that clicking on element loads the corresponding content inside <main>. It updates the location-hash if the existing one corresponds to a different nav anchor element. After the page loads, it is scrolled to the top or to a particular id. All elements in <main> with "id" attribute are modified by adding any existing notes after it, followed by a button to add more note. Corresponding note related handlers are also wired. Finally, if the method is provided an argument identifying a function that must be run after the page is loaded, then that function is executed.
  * @param [Object] postLoadOperationMap - An object with key as id of anchor tag within nav, and value being a function that is executed after page is loaded
  */
 export const prepareNavAnchorToLoadInMain = (postLoadOperationMap = {}) => {
 	$("nav a").each(function() {
-		$(this).on("click", function(event) {
+		$(this).on("click", function(event) { // `this` refers to each "nav a" element, so don't early bind when defining the function
 			event.preventDefault();
 			const anchorTagId = $(this).attr('id');
-			location.hash = anchorTagId;
+			let {navElementId, mainElementId} = getNavAndMainElemIdFromLocationHash();
+			if (anchorTagId !== navElementId) {
+				navElementId = anchorTagId;
+				mainElementId = undefined;
+				location.hash = navElementId;
+			}
+			
 			const onLoadComplete = function(responseText, textStatus, jqXHR) {
 				// not checking textStatus before proceeding, as shown in jquery docs, since failure case will not happen because no server call is involved
-				$("main").scrollTop(0);
+				if (mainElementId) {
+					$("main").scrollTop(Math.floor($(`#${mainElementId}`).offset().top - $("main").offset().top + $("main").scrollTop()));
+				} else {
+					$("main").scrollTop(0);
+				}
 				$("main [id]").after(function() {
-					const contentId = $(this).attr('id');
+					const contentId = $(this).attr('id'); // `this` refers to each "main [id]" element, so don't early bind when defining the function
 					if(isNaN(contentId)) {
 						return; // See https://stackoverflow.com/questions/175739/built-in-way-in-javascript-to-check-if-a-string-is-a-valid-number -- combined with fact that the entries after which the "Add note" button must appear have numeric ids - by design.
 					}
@@ -71,13 +97,20 @@ export const prepareNavAnchorToLoadInMain = (postLoadOperationMap = {}) => {
 };
 
 /**
- * Utility method to bind handlers such that when links like `<a href='#{someNavItemId}' data-nav-click="true">...</a>` inside the <main> is clicked, then it simulates clicking of the corresponding nav item, rather than default behavior of simply focuing on that element.
+ * Utility method to bind handlers such that when links like `<a href='#{someItemId}' data-nav-id="navId">...</a>` inside the <main> is clicked, then it simulates clicking of the corresponding nav item, rather than default behavior of simply focusing on that element. If `someItemId` and `navId` are same, then it implies that the `navId` is clicked and corresponding page is loaded in <main> and scrolled to top. When they are different, it means that `navId` is clicked and corresponding page is loaded in <main> but it is scrolled to `someItemId`. The `location.hash` is changed accordingly to achieve this behavior.
  */
 export const bindMainHashLinkToNavClick = () => {
 	$("main").on("click", "a", (event) => {
-		if(event.target.dataset.navClick === "true") {
+		if (event.target.dataset.navId) {
 			event.preventDefault();
-			$(event.target.href.substring(event.target.href.indexOf("#"))).click();
+			const newNavElementId = event.target.dataset.navId;
+			const newMainElementId = event.target.href.substring(event.target.href.indexOf("#")+1);
+			if (newNavElementId === newMainElementId) {
+				location.hash = newNavElementId;
+			} else {
+				location.hash = `${newNavElementId}/${newMainElementId}`;
+			}
+			$(`#${newNavElementId}`).click(); // trigger `click` on <nav> element so it does the page load and scroll based on location hash
 		}
 	});
 };
