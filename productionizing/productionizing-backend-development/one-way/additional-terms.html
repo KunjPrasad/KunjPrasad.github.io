@@ -16,60 +16,24 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <article>
-	<h2>Request handler related terms</h2>
-	<p>This page lists the various terms that are used in the book and which relate to request handling.</p>
+	<h2>Additional terms</h2>
+	<p>This page lists the various terms that relate to request handling but will not be used in future sections. Like the glossary items, it is good to know about them and what they do. However, it is very unlikely that they will be modified when developing custom backend code, and so, they don't cause any design concerns via a "n-way interaction" that must be kept in mind when coding.</p>
 	
-	<h3>Syncronous request handling</h3>
-	<p id=""></p>
-	
-	<h3>Asynchronous request handling</h3>
-	<p id="">This is not async made in JS, or async inside the code.. but async when initiating request processing by server.  
-	ASGI decomposes protocols into a series of events that an application must receive and react to, and events the application might send in response. For HTTP, this is as simple as receiving two events in order - http.request and http.disconnect, and sending the corresponding event messages back. For something like a WebSocket, it could be more like receiving websocket.connect, sending a websocket.send, receiving a websocket.receive, and finally receiving a websocket.disconnect. Because these messages could be sent over a network, they need to be serializable</p>
+	<h3>Syncronous vs asynchronous request handling</h3>
+	<p id="">
+	This is not async made in JS, or async inside the code.. but async when initiating request processing by server.  
+	ASGI decomposes protocols into a series of events that an application must receive and react to, and events the application might send in response. For HTTP, this is as simple as receiving two events in order - http.request and http.disconnect, and sending the corresponding event messages back. For something like a WebSocket, it could be more like receiving websocket.connect, sending a websocket.send, receiving a websocket.receive, and finally receiving a websocket.disconnect. Because these messages could be sent over a network, they need to be serializable.
+	</p>
 	
 	<h3>Request resolver</h3>
-	<p id=""></p>
+	<p id="">https://docs.oracle.com/javaee/6/api/javax/servlet/RequestDispatcher.html</p>
 	
 	<h3>Request session</h3>
-	<p id=""></p>
-	
-	<h3>Custom request attributes</h3>
-	<p id="">threadlocal</p>
-	
-	<h3>Filter or Middleware</h3>
-	<p id=""></p>
-	
-	<h3>Controller</h3>
-	<p id="">Acknowledge that the terminology is Java focused - it means portions of code that interact with request</p>
-	
-	<h3>Service</h3>
-	<p id=""></p>
-	
-	<h3>Repository layer</h3>
-	<p id=""></p>
-	
-	<h3>Transaction</h3>
-	<p id=""></p>
-	
-	<h3>DTO or Serializer</h3>
-	<p id="">Not converting from body text to map.. but from map to object</p>
-	
-	<h3>Validator</h3>
-	<p id=""></p>
-	
-	<h3>Entity</h3>
-	<p id=""></p>
-	
-	<h3>Renderer</h3>
-	<p id=""></p>
-	
-	<h3>Exception handler</h3>
-	<p id=""></p>
+	<p id="">Cloud readiness. interaction with JWT. Needs session stickiness configured and/or a distributed cache</p>
 	
 	<h3>Internationalization</h3>
 	<p id=""></p>
 	
-	mvc - or add in architecture?!
-	Feature-flags
+	<h3>Buffered vs Steam response</h3>
 	buffered vs stream vs frame response: how it makes from client to server and from server to client ..and how it links to connection timeouts
-	https://docs.oracle.com/javaee/6/api/javax/servlet/RequestDispatcher.html
 </article>

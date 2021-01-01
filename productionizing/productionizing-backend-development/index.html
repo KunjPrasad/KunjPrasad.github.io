@@ -49,15 +49,32 @@
 			<section>
 				<h2>1-way interaction</h2>
 				<a id="1609385770" href="one-way/introduction.html">Introduction</a>
+				<a id="1609472910" href="one-way/dto.html">Data transfer object (DTO)</a>
+				<a id="1609472915" href="one-way/controller.html">Controller</a>
+				<a id="1609472920" href="one-way/service.html">Service</a>
+				<a id="1609472925" href="one-way/entity.html">Entity</a>
+				<a id="1609472930" href="one-way/repository.html">Repository</a>
+				<a id="1609472935" href="one-way/filter.html">Filter</a>
+				<a id="1609472940" href="one-way/renderer.html">Renderer</a>
+				<a id="1609472945" href="one-way/exception-handler.html">Exception handler</a>
+				<a id="1609472950" href="one-way/user-role.html">User role</a>
+				<a id="1609472955" href="one-way/feature-flag.html">Feature flag</a>
+				<a id="1609472960" href="one-way/req-attributes.html">Custom request attributes</a>
 				<a id="1609385771" href="one-way/additional-terms.html">Additional terms</a>
+			</section>
+			<section>
+				<a id="1609474984" href="two-way/transaction.html">Service</a>
 			</section>
 			
 			
 			
 			<!-- TODO
 			
-			https://en.wikibooks.org/wiki/Introduction_to_Software_Engineering
-			Add to glossary: ORM, Fao, function as first class, lazy evaluation. Loose coupled architecture
+			repository - syncing between multiple repos. Transactional outbox.. log + periodic task
+			
+			mvc - a 3-way interaction.. but idealy should be more.. but mvc squashes dto and entity. And controller squashes service and repo.
+			
+			Transaction - or maybe this is for 2-way interaction between service and repo.. and for 2-way between controller and service - to not add transaction
 			
 			Include 12 factor suggestions in "1 way interaction" suggestions: https://12factor.net/
 			From cis-20: maintenance, monitoring and analysis of audit log.. run as background service. Additional background service can be running transactional outbox conformance.
