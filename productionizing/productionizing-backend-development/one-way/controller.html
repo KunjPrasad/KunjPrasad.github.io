@@ -17,13 +17,18 @@
 -->
 <article>
 	<h2>Controller</h2>
-	<p id="">Includes URL also
+	<p id=""></p>
+	
+	<!--
+	
+	Includes URL also
 	
 	Acknowledge that the terminology is Java focused - it means portions of code that interact with request and no more. Controller, in MVC does more and we'll come to it later. Converting request body text to object comes here. 
 	
-	Or maybe this should be a 2-way interaction concern You need a validated DTO before sending to service. The problem is coming in whether validation should be as part of DTO construction or otherwise. Since validation being done are as part of field definition, it can be done as part of constructor.. but not sure if that'll raise error in proper way. The framework may require a specific way.. so that makes it a 2-way interaction. --> Concern: only do request level appropriate validation, like, if you were expecting list, did you get it or get string. Did you get generic string or only containing a-z,A-Z,0-9, etc. NOTE: Only do validations related to field definitions and no relation with underlying business process or entity involved. Like, you can say that an integer value holding hours of day must be between 0-23 only. But don't assert that it is between 9am-5pm, etc. Can still do multi field validation only if the current form is transformable to new form in which constraints apply. For example, let's say you are collecting start and end time. Other way to represent it could be start time and duration. since duration less than 0 does not make sense, so one can think of having start time less than end time as constraint. But, no business specific ones.. like the difference between two must be certain period, etc.
+	Or maybe this should be a 2-way interaction concern You need a validated DTO before sending to service. The problem is coming in whether validation should be as part of DTO construction or otherwise. Since validation being done are as part of field definition, it can be done as part of constructor.. but not sure if that'll raise error in proper way. The framework may require a specific way.. so that makes it a 2-way interaction. ~~> Concern: only do request level appropriate validation, like, if you were expecting list, did you get it or get string. Did you get generic string or only containing a-z,A-Z,0-9, etc. NOTE: Only do validations related to field definitions and no relation with underlying business process or entity involved. Like, you can say that an integer value holding hours of day must be between 0-23 only. But don't assert that it is between 9am-5pm, etc. Can still do multi field validation only if the current form is transformable to new form in which constraints apply. For example, let's say you are collecting start and end time. Other way to represent it could be start time and duration. since duration less than 0 does not make sense, so one can think of having start time less than end time as constraint. But, no business specific ones.. like the difference between two must be certain period, etc.
 	
 	L2 interaction: feature flag based service validation
 	L3 interaction: feaure flag + role based validation
-	</p>
+	
+	-->
 </article>
