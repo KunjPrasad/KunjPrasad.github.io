@@ -22,8 +22,11 @@
 		<meta name="description" content="Productionizing Backend Development HTML E-book">
 		<meta name="author" content="Kunj Prasad">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="/utilities/styles-common.css">
-		<link rel="stylesheet" href="styles.css">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv='Pragma' content='no-cache'>
+		<meta http-equiv='Cache-Control' content='no-cache'>
+		<link rel="stylesheet" href="/utilities/styles-common.css" type="text/css">
+		<link rel="stylesheet" href="styles.css" type="text/css">
 		<style type="text/css"></style>
 	</head>
 	
@@ -76,9 +79,7 @@
 			
 			Transaction - or maybe this is for 2-way interaction between service and repo.. and for 2-way between controller and service - to not add transaction
 			
-			Include 12 factor suggestions in "1 way interaction" suggestions: https://12factor.net/
 			From cis-20: maintenance, monitoring and analysis of audit log.. run as background service. Additional background service can be running transactional outbox conformance.
-			cover tdd in "1 way interaction" an why it fails. (1) do TDD only at functional and integration level, not at unit level because you don't know how the actual implementation would be. Plus, code can get refactored at unit level, but functional level should still holds. (2) In agile environment and working on a new project, it is likely that some edge case wasn't thought of when making requirements. It can be frustrating to first have TDD test cases, then write code, halt it to clarify requirement, change tests, etc. (3) A correct TDD is best done where 2 different coders are involved: one just making test, and other just writing implementation; and each talking with product manager only for clarifications. (4) There's no actual way to identify that extra behavior than what's added has been added in code, in other case, you test for presence of a behavior as new code gets implemented, you don't test for absence of unasked behavior since there can be too many. (5) If goal is to verify that test covers code and vice versa, a good alternative can just be to have robust code review practice where the added tests are also verified.
 			
 			-- separate and specific url for a RPC action -- conforms to "I of solid. -- interface segregation ..better understanding for a client of what they are doing with minimal processing magic which manifests itself as less if-else branch on view side.
 			
