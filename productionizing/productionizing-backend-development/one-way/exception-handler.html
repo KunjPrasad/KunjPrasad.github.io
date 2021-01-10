@@ -17,6 +17,25 @@
 -->
 <article>
 	<h2>Exception handler</h2>
-	<p id="">..and they come after filter but before view. Check your implementation.. else catch error in filter
-	</p>
+	<p id=""></p>
+	<!--
+	..and they come after filter but before view. Check your implementation.. else catch error in filter
+	always raise error instead of returning a non-200 response. 
+	Send data to sentry -- take care of what you send! ALTERNATELY.. have a procedure in place to immediately identify source of error and then hide the PII in Sentry log -- but that is not a preferred approach
+	--|---- exception handling and log; also allows testing of log -- take care of what you log!
+	
+	
+	**In general about REST: check out 4xx level status code and see if there are others that are more apt, rather than just sticking to 400 or 404. Few things to note:
+			--|---- restrict 400 to if you're taking user data in request (hence POST, PUT calls), AND, if there's an error directly related to fields in request-data. When you raise validationError, don't send any other field in error response - it is confusing to the user on why an error is being reported on a field which they did not provide. If there is an error due to inter-relation between multiple fields, then raise an error corresponding to all those fields. This tells user to rectify multiple fields. Use a "non_field_error" for scenarios like if at top level request body fields, you were expecting at least one to be there, but none were. Or, if the user should have provided values for 2 fields, but instead provided just one. In this case, by reason above, don't raise error message for missing field. So, include that error under non_field_error (..to signify request object error, related to expected input fields in request body, but it being missing)
+			--|---- If you have any other error during validation.. that is likely a 409 - because you were expecting a pre-condition before request processing but could not. Side note: Optimistic locking failures is a straight 409 response use case
+			--|---- For ad-hoc actions, don't always make it a POST. If idempotent, make it PUT. Can also use PATCH
+			--|---- Use 404 if the slugs in path param fail reference relation. Use 200 with empty list if url path params are ok, but due to query params there is no result. And remember, before you even start doing all this - do FULLY verify the user and whether they are authorized to see the result. If based on user role, additional constraints apply that are not captured in path param or query params, then add that extra. 
+			--|---- If you application allows hard-delete with a marker identifying a past delete as done; or, even if you have soft delete but which cannot be reversed, then 410 Gone may be a better status. DO NOTE: 410 forces search engines to more quickly drop a page.
+			
+			
+	
+	2-way:
+	exception handling, log and custom params -- take care of what you log!
+	
+	-->
 </article>

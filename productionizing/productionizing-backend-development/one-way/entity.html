@@ -20,4 +20,46 @@
 	<p id="1610064998">In current times, an application capable of supporting a business must be able to interact with individual customer and provide services needed by them individually. Serving same set pf data to everyone and everytime (..like this ebook) can't grow as a business because it ignores individual needs of someone willing to pay for the service. Thus, it is necessary to have a "data-repository" where user data and relations between difference data pieces can be saved. For a small dataset, this can be done in memory, but that data will get lost on a power outage. Persisting it on disk is necessary to be able to store data long term and to only keep a small subset of working data in memory. A <a href="#1608527531" data-nav-id="1608344368">database</a> can be used to store data and corresponding data relations on disk. In current software landscape, it is very likely that an <a href="#1609290898" data-nav-id="1608344385">object-oriented paradigm</a> will be used for backend development. In this paradigm, the data for a certain feature maps to object of corresponding class. This object, linked to a business process, is Entity (also see <a href="https://stackoverflow.com/questions/2550197/whats-the-difference-between-entity-and-class" target="_blank">this question on StackOverflow</a>).</p>
 	<p id="1610065766">For completeness, it should be realized that one is free to construct database tables in a manner that they don't map to classes used in the program. However, doing so adds a friction in being able to push-data-to/pull-data-from the database and use it in the application. An <a href="https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping" target="_blank">Object-relational mapping (or ORM)</a> is a programming technique for converting data between incompatible systems so that there is a frictionless flow of data back and forth between the application and database. When working on a backend application, it is always preferable to have a database and framework with ORM support. <strong>For purpose of this ebook, it is assumed that the backend application is developed using a programming language and a framework that provides ORM support.</strong></p>
 	<p id="1610065800">A better understanding of "entity" also requires keeping database related considerations in mind. This is done in a separate ebook: <a href="/productionizing/productionizing-database-schema" target="_blank">Productionizing Database Schema</a>. Readers are suggested to refer it after finishing this e-book. This book covers design considerations that go in design of entity and does not need an understanding of realizing those designs in database.</p>
+	
+	<!--
+	-- model field level validation; model class level validation -- but warn that these mean permanent definition. Field/Class level validation includes things that you'd have wanted in SQL and in table definition itself.. but couldn't due o limitation of SQL. Think of Model as a deserialized form of database table row -- because that's what ORM does. If some validation logic seems getting repeated, then can define it in a separate class to promte reusability
+	-- as best practice add both table and column level comments
+	-- Non updatable columns
+	-- Always keep separate numeric id. Don't go for string or natural key since logic may change in future.
+	
+	--|---- create class for common field names. Implementation differ in Java vs Python, it Java, include these as composition - don't do inheritance. In Django, add as a mixin.
+	--|---- Referential checks should be for each table for which the current table contains a column as a foreign key.. no need to go any further. Handle null values accordingly
+	
+	-- relations
+	--|---- explain why normalize data. When denormalize data and that it can be done even in SQL. However, if doing so, then check consistency of referential keys
+	
+	Data domain driven design. 
+	--|---- before finalizing the table design, do a data domain analysis (give link to matin fowler's page). Idea is to (1) ensure that you have identified and properly separated all tables into individual data domains. The data domains should be less than equal to count of individual profiles/roles. (2) used the domain to identify the ownership of each table under TAKE/SANITIZE by each profile. (3) The "id/slug" within tables for a data domain that don't overlap with another domain should not form part of tables in overlap region (example.. worker having contract - don't leak worker slug/id)
+	--|---- profile based design to also help with data privacy -- gdpr
+	
+	--  Using Enum rather than standard table creates problems in that old migration files would need changing. Polymorphic is like having different small db table that got joined using a column as a discriminator. The differene between this vs business processing is that i former, the discriminator column does not change. If dealing with former, then you'll need to keep your db table design most generic and then add specific valiation for each case.
+	
+	
+	
+	
+	
+	
+	2 way (Model-Model):
+	-- make audit entries in same transaction as DB changes. One more reason to prefer a single transaction
+	--|---- From cis-20: maintenance, monitoring and analysis of audit log.. run as background service. Additional background service can be running transactional outbox conformance.
+	-- Model model validation: Finite state machine (FSM), PDA. Mention how this is different from traditional REST design and so it causes friction in implementation
+	
+	2-way (Model-Auth): 
+	-- althought it is mentione separately, it should happen almost immediately as part of data model design
+	-- Data ownership driven design.
+	-- analyze requests with data ownership in mind. Start with data-ownership first design (good example on back forth communication storage, like in chat -- how to make it PII based - helps with take sanitize. Identify which party accesses which data). Ownership should flow down links. So, manyToMany is like a sink for PII and a good boundary between different roles. You must be very clear on ownership and backed by legal if you are going up up from manyToMany back. The conclusion you come to here must also match for corresponding audit log table
+	-- If getting multiple data by 3rd party api, store them in separate table and then link to it. This allows easier control if data policies change in future
+	
+	
+	
+	3way (Model-Model controller)
+	-- PUT call, being idempotent, should allow you to break constraint of Finite state machine. POST, PATCH gets affected by FSM and so they should be the verbs used in corresponding endpoint. Even delete.. if some state does not allow sudden delete, then it should not be via DELETE operation.
+	
+	-->
+	
 </article>

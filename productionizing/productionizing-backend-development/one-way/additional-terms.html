@@ -38,5 +38,9 @@
 	<p id="">buffered vs stream vs frame response: how it makes from client to server and from server to client ..and how it links to connection timeouts</p>
 	
 	<h3>Testing web services</h3>
-	<p id="">Unit vs Functional vs Integration. Unit goes over public methods of controller, service, repository. Functional goes over controller endpoint - request and response. Integration is combination of functional. Why even have unit -- to test side effects that may otherwise be hard to test, like async tasks spawned; Or to ensure that a certain side effect is done by a particular layer only - this enforces design.</p>
+	<p id="">Unit vs Functional vs Integration. Unit goes over public methods of controller, service, repository. Functional goes over controller endpoint - request and response. Integration is combination of functional. Why even have unit -- to test side effects that may otherwise be hard to test, like async tasks spawned; Or to ensure that a certain side effect is done by a particular layer only - this enforces design.
+	Add unit test in proper folder name. For functinal test, there's no reason to have it in same folder name as a DTO or Controller etc. BUT, best to give it same package name as controller since functional test runs starting with controller invocation. For integration test, give it business process specific folder name</p>
+	
+	<h4>Validation error</h4>
+	<p id="">-- The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 RFC2119 RFC8174 when, and only when, they appear in all capitals, as shown here.</p>
 </article>

@@ -27,8 +27,67 @@
 	
 	Or maybe this should be a 2-way interaction concern You need a validated DTO before sending to service. The problem is coming in whether validation should be as part of DTO construction or otherwise. Since validation being done are as part of field definition, it can be done as part of constructor.. but not sure if that'll raise error in proper way. The framework may require a specific way.. so that makes it a 2-way interaction. ~~> Concern: only do request level appropriate validation, like, if you were expecting list, did you get it or get string. Did you get generic string or only containing a-z,A-Z,0-9, etc. NOTE: Only do validations related to field definitions and no relation with underlying business process or entity involved. Like, you can say that an integer value holding hours of day must be between 0-23 only. But don't assert that it is between 9am-5pm, etc. Can still do multi field validation only if the current form is transformable to new form in which constraints apply. For example, let's say you are collecting start and end time. Other way to represent it could be start time and duration. since duration less than 0 does not make sense, so one can think of having start time less than end time as constraint. But, no business specific ones.. like the difference between two must be certain period, etc.
 	
-	L2 interaction: feature flag based service validation
-	L3 interaction: feaure flag + role based validation
+	controller should be even less code, just validating data and passing to service.
+	
+	-- separate and specific url for a RPC action -- conforms to "I of solid. -- interface segregation ..better understanding for a client of what they are doing with minimal processing magic which manifests itself as less if-else branch on view side.
+	
+	-- stick to http spec of keeping GET as a safe method, and of having PUT, GET, DELETE as idempotent. See here: https://developer.mozilla.org/en-US/docs/Glossary/idempotent -- For this reason, never make "delete last entry" as a delete call because it is not idempotent. If it can change, then instead use POST and model it as a RPC call -- done via POSTING of a message that is then picked up and processed
+	
+	--Just like "Location" is valid response header.. so can use Response header for pagnations response. But don't send page number request via header - that must be via queryParam: https://softwareengineering.stackexchange.com/questions/289044/rest-api-paging-via-headers    https://stackoverflow.com/questions/12168624/pagination-response-payload-from-a-restful-api    
+	
+	-- at least aspire to level 2 REST
+	--|---- use proper response code
+	
+	-- Understand and use the http-cache directive, particularly for subset of url serving static data (like those from standard table)
+	
+	
+	--|---- Make sperate url for different model=state-related or business-related specific actions.. rather than grouping them under 1 generic path that then adds a bunch of if-else!! Former is clearer to understand, better logging, better understanding of user intent by just looking at url. Related: See https://restful-api-design.readthedocs.io/en/latest/methods.html -- REST is generally about resources and CRUD operations on it. But sometimes, we may want to do some function on a resource. This article suggests that such operations should always be POST because they can be thought of as POSTing request to a message queue asking for an operation to get done.  Since every such messages are different, so it becomes a POST request. HOWEVER, I feel it can also be made as a PUT or PATCH if the operation is idempotent in nature.. or only causes partial changes.
+			--|---- For single item url, do not add query param. It is weird to have a single item slug and then also a filter. If you feel the need to do so, then ask if the item that needs to be sent is buisness logic dependent or not. If yes, you want to send it in request body. If not, then send it in header. **This is a good way to see when to add field to request body, or query param or header
+			
+	--|---- At any point, if you're returning a list that is unbounded, either as sub-field when doing a GET one object call, or if making a list call - that is not a good design. A good design always filters in some way or other to prevent sending unbounded list. Speaking generally, returning unbounded list at any point just tells that the design isn't hashed out on what to do once the list is obtained. Sending an unbounded list is giving a view of entire DB and that is not a good thing to do. Maybe at start.. but not for long term. Consider adding search and pagination. Also whenever returning, consider adding a default sort
+			
+	--|---- Using header, path param vs query param - think of it like directory. An advantage of using path param is that the parent/child relation is explicit -- having entries in query param don't make the parent child relation explicit; Query param good to present a search like behavior in flat list of items. On other hand, there may be contextual reasons to not add parent param in url path because that is unique (for user of certain role) and can be removed. Or, what if you want child resource but want to filter on multiple parent-id (matrix param is alternative, but that can get involved - can be at non terminal locations, see https://www.baeldung.com/spring-mvc-matrix-variables)  Related: see https://stackoverflow.com/questions/9169081/rest-apis-custom-http-headers-vs-url-parameters
+			--|---- Realize that url with patha nd quer param gets bookmarked, but header is not saved. So, anything not related to respource but more on resource negotiation or authentication should be in header
+			--|---- See https://stackoverflow.com/questions/389169/best-practices-for-api-versioning -- for URL versioning
+			
+	
+	
+	2way: controlle+entity
+	--|---- Let's say you are dealing with a child resource under a parent resource. There are 2 ways to proceed in terms of URL:
+			Option-1: "/root/parent/{parentSlug}" and "/root/parent/{parentSlug}/child/{childSlug}", or,
+			Option-2: "root/parent/{parentSlug}" and "/root/child/{childSlug}".
+			When to use one vs another vs maybe-both:
+			--|----|---- First, remember to be flexible.. the decision you come to is very dependent on your application needs. Both cases hold their own merit.
+			--|----|---- One difference is that when creating new child, first option will call "POST /root/parent/{parentSlug}/child" and second will call "POST /root/child". First must read parentSlug from url and not from request body, and second must read {parentSlug} from request body since none is available in url. If using 2nd, don't pass a filter-param to pass parentSlug.
+			--|----|---- first option is suited if you will only query for a child after having gotten the parent and so you want to keep a referential integrity. Second is lax on that.. an attacker only needs to know the childSlug to get the resource. Note that this concern only holds during GET call. For POST, PUT, PATCH, and even DELETE, you can require a request-body with parentSlug in it.
+			--|----|---- If using 2nd option, you can query for child resource from multiple parent resource at once, like, "GET /root/child?parent=slug1,slug2,slug3" (but can also use matrix params)
+			--|---- If getting a child resource must always come with some implicit understanding of parentSlug, then Option-2 is better. Like, get child-resources for most-recent/active parent resource. Then "GET /root/child" would work but not first option until the parent slug is obtained via separate query. THAT BEING SAID.. even for second option, use something like "GET /root/child?parent=active" -- This leaves "GET /root/child" as idempotent in that it gives all child resources. The "parent=active" filter now says to get only most active parent. This way, different filters can be made for different use case. Maybe.. define your HATEOAS response to show different url based on different role!!!
+	
+			
+	
+	2way: controller + exception handler
+	--|---- Ref checks and failures. Consider: GET /root/grandResource/{grandId}/parentResource/{parentId}/childResource/{childId}
+			--|----|---- Without the final {childId} and if it's a GET call, then return 404 because the url should not exist. What about instead returning 200 with empty list.. I think it's not very REST like, because if reference checks failed, say, between {grandId} and {parentId}, then how did the list type url for child even get formed? It like saying "GET /root/grandResource/{grandId}/parentResource/{parentId}" is 404, but "GET /root/grandResource/{grandId}/parentResource/{parentId}/childResource" is 200 with empty list?!
+			--|----|---- Without the {childId} and if it's a POST call, then, return a 404 if reference check fail in url. Note how this matches with above: Now, it won't even be the case that "GET /root/grandResource/{grandId}/parentResource/{parentId}/childResource" gives 200 with empty list but "POST /root/grandResource/{grandId}/parentResource/{parentId}/childResource" gives 404!!
+			--|----|----|---- If reference check fails in the request object, then corresponding field should raise error and there be a 400 status.
+			--|----|---- With the {childId} and if it's a GET, PUT, PATCH, DELETE call, then return empty list on reference check fail and 404 status
+			
+			
+	2way: controller + user-auth:
+	--|---- For users with a higher level of authorization use a more nested url. For another subset of user with a hierarchical less set of permission, maybe some values become implicit in context and so can be skipped - give them smaller url. One may say to just make url suited to lower hierarchy user and then add filter for higher hierarchy user.. but then, what guarantees that in future an even lower hierarchy won't come. Or, when just making higher-user, maybe you didn't think that a lower order user will come, so the full path REST structure would have looked good. There's also the idea of YAGNI. Why have filter params just with consideration of future low hierarchy user even when though they don't exist now. **EVEN MORE**: I would say that one should think of filter params as only when it is possible to have an array of values that can get passed to queryParam. If you have a queryParam that can always only take 1 value.. then it may be good to instead have it in path. ALSO NOTE: In terms of architecture, queryParams means you are doing filtering - so there is no parent-child relation.. which could be if there is a strong "sibling" relation. That means one cannot nicely form parent-child classifications and so should pull all data in and then filter...and then to enable hierarchical structure - instead have your views/controller logic route from one to other and setting values based on user-role for sub-user, or from query-param for super-user.. as you go from one view to another
+	
+	
+	2way: 
+	-- feature flag based service validation
+	
+	2way dto+controller
+	-- for POST return slug after creation
+	-- read slug for PUT, PATCH, DELETE from url only and not from request body. Require slug value to match expected behavior (like, a-z,A-Z,0-9,_) is so is needed in business
+	
+	3way: 
+	-- feaure flag + role based validation
+	
+	3way: exeption-handling + service + dto: If request body is of list type, then, when sending error, send it against the corresponding list index. This allows matching error with corresponding list entry that triggered it. This can either happen at dto level itself when request body is being converted.. or at service validation, or model level validation. Regardless of where/how it happens, if it a 400 level response - a validation error, then format it properly
 	
 	-->
 </article>

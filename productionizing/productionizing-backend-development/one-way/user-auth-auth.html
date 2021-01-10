@@ -1,0 +1,44 @@
+<!--
+    HTML book section: User authentication/authorization in 1-way interaction to Productionizing Backend Development, by Kunj Prasad on Github.
+    Copyright (C) 2020  Kunj Prasad
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<article>
+	<h2>User auth/auth</h2>
+	<p id=""></p>
+	
+	<!--
+	
+	Link to RBAC. 
+	Separate authentication vs authorization. Presence of authentication should not mean authorization
+	Stick to RBAC. 
+	check authroization on every call, even when reading authentication from JWT. 
+	Don't read autheoization / role from JWT since that may be stale
+	-- Run-As function: https://www.baeldung.com/spring-security-run-as-auth   https://blog.marcosbarbero.com/user-impersonation-with-spring-security/
+	-- Don't use presence of an auth header for authorization
+	-- keep cycling JWT secret. make sure to have retry to handle transition rather than bubble failure up
+	-- keep rate limit logic outside controller.. at filter level - because it is a permission. Als, return proper error code (429). Similarly, return proper error code of authentication failure (401) vs authorization fail (403) - unless auth fail happened and user is anonymous.. in which case, raise 401
+	--jwt: works in microservice, i..e for service to service communication; also can use if you want to move from one system to other -- but it may be a hassle for users to type long jwt. Can instead use it to form simple one time bearer token
+	
+	2way: 
+	-- auth+entity(user)
+	--|---- Constraining users to have a strong password is something that must be done since beginning of application. strong password via multilingual
+	--|---- Salting pwd. Don't ask for sensitive data for login
+	--|---- ask sensitive data at most once
+	
+	-- auth + controller
+	--|---- if your CORS setting allows having request from different domain (because you are a provider), then need CSRF prevention even on a GET call. If you have a UI then allowing calls only from it can prevent need for CSRF on GET. Still need to tackle it for othr calls.
+	-->
+</article>

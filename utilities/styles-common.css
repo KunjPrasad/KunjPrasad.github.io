@@ -154,10 +154,6 @@ nav section > h2 {
     border-radius: .25rem;
 }
 
-.code-span {
-	font-family: Consolas,'Lucida Console','Liberation Mono','DejaVu Sans Mono','Bitstream Vera Sans Mono','Courier New',monospace,sans-serif;
-}
-
 .note {
 	width: 100%;
 	margin: 0.1rem;
