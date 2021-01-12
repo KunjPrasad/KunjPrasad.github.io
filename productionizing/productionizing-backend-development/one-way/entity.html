@@ -23,6 +23,11 @@
 	
 	<!--
 	-- model field level validation; model class level validation -- but warn that these mean permanent definition. Field/Class level validation includes things that you'd have wanted in SQL and in table definition itself.. but couldn't due o limitation of SQL. Think of Model as a deserialized form of database table row -- because that's what ORM does. If some validation logic seems getting repeated, then can define it in a separate class to promte reusability
+	--|---- define fields as something that is restrictive in type of values it can contain. don't just take any char-field. Take only a-z,A-Z,0-9. This is good security practice.
+	--|---- In making a html safe.. define an "accept list" of tags that won't be escaped. DOn't instead define "reject list", i.e. list of tags that won't be accepted.. because you never know what might get missed. Having an accept list is better.
+	
+	-- give importance to Serializer and model field name. Use "id", "text", "code", "name", "datetime", "date" suffix as needed ..and specially use "indicator" suffix for booleans -- if you call a field as "is_done", then it becomes confusing to identify the corresponding method : `is_is_done()` or `get_is_done()`?
+	
 	-- as best practice add both table and column level comments
 	-- Non updatable columns
 	-- Always keep separate numeric id. Don't go for string or natural key since logic may change in future.
@@ -39,7 +44,42 @@
 	
 	--  Using Enum rather than standard table creates problems in that old migration files would need changing. Polymorphic is like having different small db table that got joined using a column as a discriminator. The differene between this vs business processing is that i former, the discriminator column does not change. If dealing with former, then you'll need to keep your db table design most generic and then add specific valiation for each case.
 	
+	--|---- If storing file, don't use file-name in internal filepath. Use some uuid for internal filepath. One, this prevents anyone with acces sto filepath from understanding what file contains. Two, if you allow versions, then same filename can have multiple file path. Three, if you allow moving files, then you want to just change file name parent to signal that it has been moved.. not also worry about actually moving file, worrying about conflict, etc. ALSO.. either case, store file as encrypted on disk to prevent unwanted access.
 	
+	--|---- If storing file, don't use file-name in internal filepath. Use some uuid for internal filepath. One, this prevents anyone with acces sto filepath from understanding what file contains. Two, if you allow versions, then same filename can have multiple file path. Three, if you allow moving files, then you want to just change file name parent to signal that it has been moved.. not also worry about actually moving file, worrying about conflict, etc. ALSO.. either case, store file as encrypted on disk to prevent unwanted access.
+	
+	--|---- NOTE: failure of unique constraint cannot be checked anywhere in the code without running in race conditions and is done first by DB only
+	
+	-- Why hiding db id is good
+* https://stackoverflow.com/questions/396164/exposing-database-ids-security-risk -- best answer, it is a business intelligence security risk!
+* https://stackoverflow.com/questions/9904396/is-it-a-bad-practice-to-expose-db-internal-ids-in-urls
+			-- Above says to only use Slugs in url. OK - consider when you have a foreign key relation. Now, Since slugs are unique.. do you make a "Foreign key" relation using "id" or using "slug"?
+			--|---- I'd say this is where having some understanding of what a "slug" is - would be helpful. See https://stackoverflow.com/questions/427102/what-is-a-slug-in-django -- which shows how slug can be a nifty url line. Now, one could think that, say, if you're writing comments on a post of a given "slug", you'll talk about it as comment on post "about that slug". So, from users perspective, the relation should use slug. This also matches the "idea" that "id" field is just an internal representation and "slug" is what user sees - so slug is what keeps "relations" between data! However, from DB/service perspective, you now have a choice - either you say that (a) you do a foreign key on slug, and return slug. The advantage: when returning slug foreign key, you won't have to do another query.. that value is already in the table. HOWEVER.. if you're looking from the perspective where slugs can become long text so that they look nice in url, then "indexing" over long string can get problematic, and it can be much faster to make foreign key relations using "id", have foreign key index made using "integer" valued id - and then join on it. In such cases, doing a foreign key on "id" is much more beneficial. There is an intermediary case, say, when you have tables with many foreign keys - in this case, even though an integer index lookup is fast, there may be many such lookups needed and that'll slow things down. 
+			--|---- A RELATED HUGE ADVANTAGE: Now you can use slug for foreign key. This way, when a query is made on child table, you can return parent's slug back without doing a join query, because child table already has it. Furthermore, if you delve back into actual rationale behind having a slug (https://stackoverflow.com/questions/427102/what-is-a-slug-in-django) - you'll notice that "slug" is supposed to provide context to a resource, so it is natural that every other related resource references the parent-resource using "slug" field (rather than "id" field) - to maintain the contextual coverage. Note that doing so does NOT prevent you from going back and using "id" instead for foreign key - since slugs are unique.. and not changed once it is set (See next point)
+			--|----|---- DO NOT DO ABOVE IF YOU'VE USED NATURAL KEY FOR SLUG - for same reason as you never use natural key for making "id" - because natural keys almost always change in span of product, and then you're left scrambling to change all tables ..or even worse, they go from being unique to non-unique.
+			-- Disadvantages: 
+			--|---- (1) Anyone knowing the "slug" of 1st table can now immediately know about the slugs used elsewhere :: BUT then.. having unknowable slugs shouldn't be your only security aspect
+			--|---- (2) What if the structure started as parent > child relation, but later more tables' foreign key were added. NOTE: (a) If, when adding other foreign key, you change the slug to be like `{foreignKey#1|foreignKey#2|...}`, that's bad - don't change the slug once it is set. That being done.. sure the original intent of the table was to have a parent > child relation, but now it grew beyond it.. that's fine.. the "slug" field still remains unique - which it should by definition - nothing wrong with it.
+			
+	
+	--|---- What are considerations when designing a table for polymorphic entity? It can be modeled via a single table design with one column containing discriminator for different types. NOTE that what differentiates this from a db table for entity that can go through various stages, is that for the former, the enum valued column does not change its value after created. For the polymorphic table.. 
+			--|----|---- add a separate validation constrain for each case. 
+			--|----|---- Even more important question is how to design the table. Should it contain just one column which contains just the id and no explict foreign key link and the table to which that id corresponds to can change depending on polymorphic type.. or should there be an explicit foreign key dependency added? It depends on the use case. If what you are trying to do is (i) an aspect behavior and not a business behavior, (ii) deletion of original data does not cascade down to deletion of data in this table, (iii) you have no validation requirements on this table based on columns.. then you can store generic id without creating link, else always create link. An example of this is if you want to audit-track changes in model.
+			--|----|---- -- When adding a new enum (or even a standard table entry), be careful of adding it to code. Because DB runs before application, the application won't be able to read new value. this can happen both if using standard data table or enum. Best do migration and code changes in separate deployment. If doing so does not fail in lower env, then it's ready to go for prod
+			
+	--|---- If a model has fields that override value of a preceeding model, then define custom getter such that it reads the overriden value if available, else read the original value.
+	
+	--|---- Use blank still, not null -- check with business requriements though. This does not extend to all fields that are string valued, for example, don't use empty datetime field instead of null.. because empty datetime field is an ill-formatted entry
+	
+	-- DateTime field, always in UTC. Save timezone as needed - in separate field in data model. Also identify if timezone captured in one domain applies to other tables.
+	
+	-- Add wrappers around basic methods that allow DB level interaction. Add referential checks. Multi-referential cehck for denormalized data. Add constrainst that you couldn't do due to lack of SQL structure
+	
+	
+	-- Adding constraints in design :: Both for DB and for validators, Start by adding as strong of a constraint as possible.. relax later if need comes. Don't start with a weak unique constraint
+---- Note that same also applies when writing validators. If a validator holds for a field, then keep it as a field level validator and don't put on class yet. Maybe, in future you'll need different class level validator or will need separate field validator.
+			-- Unique DB check - can only be at DB level. If you try to add add logic in service - that won't work for race condition. ..because between validation and addition of data.. some other request may have added data that would fail validation. Wrap these with  suitable api-exception in your codebase. Don't try to check/catch for uniqueness anywhere before because they will not be thread safe. DB is the only place that can do so Do look into isolation level for your DB connection.
+			
 	
 	
 	
@@ -47,18 +87,55 @@
 	2 way (Model-Model):
 	-- make audit entries in same transaction as DB changes. One more reason to prefer a single transaction
 	--|---- From cis-20: maintenance, monitoring and analysis of audit log.. run as background service. Additional background service can be running transactional outbox conformance.
+	
 	-- Model model validation: Finite state machine (FSM), PDA. Mention how this is different from traditional REST design and so it causes friction in implementation
+	--|---- Keep model level validation and save() separate --- realize, save() related to repository, but validation related to model
+	--|---- Understand why the need for separation -- This istaken from own Django notes but can help here (-- Model.clean() contains validations that apply at model level. Likely, this is the place to add referential checks, or any checks that should hold at DB level but likely isn't getting applied due to limitation of SQL language. On the other hand, Form.clean() is to clean the data that is read in the form from user-request. For example, if your form take a time-in, time-out.. then Form.clean() would contain validation like the date-time is not in future.. but Model.clean() will contain validation like time-in < time-out . Note how Form.clean() is user-data and business-process related, whereas Model.clean() is model-definition related. This also explain why `ModelForm` in Django calls `Model.clean()` in its `self._post_clean()` method, which is run separately after the form's `self.clean_form()` method ..and these are different from form's `full_clean()` which by its name, must do all sort of cleaning.)
+	
 	
 	2-way (Model-Auth): 
 	-- althought it is mentione separately, it should happen almost immediately as part of data model design
 	-- Data ownership driven design.
 	-- analyze requests with data ownership in mind. Start with data-ownership first design (good example on back forth communication storage, like in chat -- how to make it PII based - helps with take sanitize. Identify which party accesses which data). Ownership should flow down links. So, manyToMany is like a sink for PII and a good boundary between different roles. You must be very clear on ownership and backed by legal if you are going up up from manyToMany back. The conclusion you come to here must also match for corresponding audit log table
+	-- PII Take and Sanitize (if you have separate data domain, this is easier)
 	-- If getting multiple data by 3rd party api, store them in separate table and then link to it. This allows easier control if data policies change in future
+	-- be careful defining authorization for contract based relation: 
+			--|---- Say you have a client and worker. When the two are in contract, then the client can see worker relation. But, if the contract is terminated for any reason, then the client shouldn't be able to do so. This means: (1) have a separate endpoint for clinet where worker's data is available. DOn't bundle it with some other endpoint allowing worker access to the data even after contract is over; (2) have a different authorization to acess the data via endpoint - don't just look for client-role on user making the request, but also if the client is allowed data acess for worker slug in path param. ALSO - best do this check as a permission and not within view because (a) this definition, as a permission is more apt, and, (b) view methods must be declarative in nature
+			--|---- ALSO, a second design consideration for "time-bound-contract" type behavior is -- never give slug of one party out to another. Think of it like this.. if you enter into a contract with a 3rd party app to get your name, age from Facebook in exchange for taking some quiz.. but instead Facebook also gives it your "id/slug" and now this site becomes the go-to place where other 3rd party give a Facebook-id and get historical data. Then did Facebook do anything wrong? Yes -- **it shouldn't have given out your unique identifier that remains for perpetuity out to a service with which you have a temporary contract**. The better model design is to make a contract table that has foreign key from 3rd party app and from your profile. Now, what goes to 3rd party app is not you id/slug but the slug of contract. If they want your details.. they are given other fields like name, etc.. which can be general and not constrained to be unique. Here, you can control the degree of personalization on data outflow - maybe just give out first name not full name, maybe just the zip code and not exact coordinates. This way, the 3rd party cannot make something tailored to the user of given slug in their code -- which means, things can still get personalized but not individualized (separate topic: unless facebook offers that feature.. but then, its under their control which is still better than letting it out in wild). With the new model, you become "user associated with a contract", rather than "user with that slug.." which gives your application better control rather than have the providers take control.
 	
 	
 	
-	3way (Model-Model controller)
-	-- PUT call, being idempotent, should allow you to break constraint of Finite state machine. POST, PATCH gets affected by FSM and so they should be the verbs used in corresponding endpoint. Even delete.. if some state does not allow sudden delete, then it should not be via DELETE operation.
+	2way (model+code arrangement)
+	--|---- Modular design means that one can have separate modules / repos where a portion of model is defined and then it is imported under the main project. When doing so, create an implementation-extension of the entity class in different modules and add it to main code, and then use those class as basis to have a unified DB migration file. Don't separate out migrations because in a scrum environment, it may not be clear on how relation between tables can evolve.. new parent tables can get made (particular standard data table), etc. - so, always create a copy of all DB tables involved in main app, and use that to make migrations, and define model level save() and validate() method. This also prevents validation logic to get distributed at multiple places - and keep it unified. 
+	
+	--|---- Producer vs consumer mindset in defining models. This is the first place where the difference shows up because all stages before it (defining response, request, url) are explicitly consumer focused. This is the first time where you go into an internal implementation where you may pick another library or module that then exists at par with other DB models you made. One common example is for authentication purpose, or say, audit tracking. (Not quite.. authentication - login / logout can also be from a common module) -- say more discussed later.. see advanced case of producer vs consumer
+	
+	
+	
+	2way (model+dto)
+	since timezone is gathered separately, return it's value separately.
+	
+	
+	
+	2way (entity + test):
+	-- Choose your test fixture utility such that the test dtaa it creates also verify the referential relations
+	
+	
+	
+	3way (model+controller+dto)
+	the controller may require returning datetime in a timezone different from what is captured in different data domain. Ex.: the teacher and school are in different timezone but are physically close. Here, school start time is in school timezone, but you want to send alert to teacher in their timezone.
+	
+	
+	
+	
+	3way (Model-Model-controller)
+	-- PUT call, being idempotent, should allow you to break constraint of Finite state machine. POST, PATCH gets affected by FSM and so they should be the verbs used in corresponding endpoint. Even delete.. if some state does not allow sudden delete, then it should not be via DELETE operation. 
+	-- What about PATCH call? PATCH is in itself non-idempotent. But recall that a past rule says to always return same data - so same data should also go out in PATCH call. Being a model serializer, PATCH will also use same structure in request (as in response) to get data, but now unlike PUT calls, it can only take partial fields. So, how does controller know what action to take ..and what's difference between PATCH vs FSMinducing @action endpoints. Hence: PATCH should allow partial updates where you are modifying one or other portion of data, but it should not cause a business processing. Like, iif you accept time-in, time-out.. PATCh can be used to update just one field. Contrast that with calls to "business process" this data, like, approve / deny, etc. That shouldn't be done by PATCH but via @action. So use PATCH if that does not modify the "business status" associated with the entity.
+	
+	
+	
+	
+	
 	
 	-->
 	

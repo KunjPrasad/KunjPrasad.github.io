@@ -112,6 +112,40 @@
 			-- Security based on hidden variable name alone isn't security
 			-- Add other security issues. mention content security policy. Add ModHeader and add response header
 			
+			--|---- Is CSRF protection needed with GET call? -- Generally NO. 
+			--|---- (may be done in user-auth-auth 1way; or 2way auth+controller) In most case, CSRF is restricted to attack where an attacking website tricks user to make a request that causes a mutation (in favor of attacker). However, when server returns a response --in these cases-- it will not have CORS' allow all origin header. So, even though a mutation is made, the response of it never goes back to attacker.
+			--|---- (may be done in user-auth-auth 1way; or 2way auth+controller) HOWEVER consider the case where the server is of a business that is an utility-provider, say, like USPTO. Now, server can and should expect that different domains will be calling it - and so, it now needs to set CORS header to allow all origin. But this opens up a different problem in that even for non-mutating calls (GET call), the attacker can now see sensitive user data - and the webpage won't restrict it because CORS is effectively disabled. In such cases, it is necessary to have CSRF protection even on GET calls. 
+			--|---- **VERY VERY IMPORTANT** The advantage of JWT comes here in that JWT created by one can be used by other.. token can be passed on front-end.. back-end.. etc. As long as token passes, the authentication continues and there's no need to worry of CSRF token. 
+			--|----|---- RELATED: https://engineering.mixmax.com/blog/modern-csrf/
+			--|----|---- RELATED: IF HOWEVER you're using cookie.. use "SAMESITE" setting on cookie
+			--|---- Login CSRF
+			--|---- (may be done in user-auth-auth 1way; or 2way auth+controller) If you also give an UI.. To prevent phishing, allow users to set an initial profile token that is showed when they log in. And allow this only on request coming from your UI domain (also adding for UI)
+			--|---- Don't rely on cookie only for security. Use CSRFToken, or JWT. Using both is overkill. JWT does make you cloud ready
+			
+			-- Look for notes in spring security, like changing session after login, clearing session on logout, adding x-content-type-options: nosniff. 
+			-- See https://blog.avast.com/why-is-ebay-port-scanning-my-computer-avast and https://nullsweep.com/why-is-this-website-port-scanning-me/ -- don't port scan. If you want to do so for security, then offer as a service and start/stop it when user asks. Don't do so in a hidden cryptic way
+			
+			-- Security - chpt 26 of 2 scoops - go through it
+			--|---- Basic thing for security:: see "Server Hardening", section 26.2 in pg.346 of 2 scoops:: Server hardening measures include but are not limited to things like setting up firewalls (help.ubuntu.com/community/UFW), changing your SSH port, and disabling/removing unnecessary services.
+			--|---- **VERY VERY VERY IMPORTANT**: Good practice -- You should disable the HTML field autocomplete browser feature on fields that are gateways to payment. This includes credit card numbers, CVVs, PINs, credit card dates, etc. The reason is that a lot of people use public computers or their personal computers in public venues. In fact, consider changing the form field itself to PasswordInput. Also on that line - never store credit card data.
+			--|---- Section 26.13 on Pg.357 about file handling. 
+			--|----|---- Use CDN for file (I think this is more of a performance thing and to prevent getting your server drowned in false request).
+			--|----|---- Since user uploaded file can have xss content, so don't have it open in browser by only allowing it to be downloaded - done by setting "content-disposition:attachment"
+			--|----|---- When storing user-uploaded file, make sure they never get the "Executable" permission, even by self. Be very very careful if your workflow requires you to process files. Have it done somewhere else. Maybe also put upload size restriction; rate-limit based on ip / user-role-type; do virus scan. Wonder if a good thing would be to always encrypt file on disk - both for data security, plus the file gets jumbled so cannot execute. When storing user-file, never make the file-extension visible, instead have it only be in DB. Maybe also randomly chunk the file so it never makes sense on own (do so after encrypting entire file) -- do note that if you're accepting chunked files, then do a virus scan on combined files before continuing
+			--|----|---- Use "magic" to inspect file-headers. For example: python has https://github.com/ahupp/python-magic
+			--|---- **VERY VERY VERY IMPORTANT**: If working with custom user data which can be xml.. then realize that there can be a ddos attack done. See https://en.wikipedia.org/wiki/Billion_laughs_attack -- the article mentions that this attack can be done on any language with references (like, on YAML)
+			--|---- **VERY VERY VERY IMPORTANT**: Displaying sequential primary keys is to be avoided because:
+			--|----|---- They inform potential rivals or hackers of your volume
+			--|----|---- By displaying these values we make it trivial to exploit InsecureDirectObjectReferences <-- important
+			--|----|---- We also provide targets for XSS attacks
+			
+			
+			-- sql injection
+			-- Avoid inernal XSS. This comment is written earlier also::  If your DTO fields, path param, etc. has constrainst, like can be a-z,A-Z,0-9,_, then also realize these constraints in the field definition. DOn't just take any arbitrary string. Take only the ones expected. This can be useful in preventing internal xss, i.e., say as part of your logic, you are logging these field values, etc. - and then are running some daily background task, possibly to collect some metric. Since these are external user data - you shouldn't be trusting it.. and some user may try to pass in a script that inadvertantly gets run. This is internal XSS. The point is - don't trust any data comingf rom out till you've verified it. Similar also holds for fields containing html text from user.. Best would be to just get markup (and define an enum type column which highlights that the entry being read is of markup type, not html).. but if you do need to store html, then escape it as you form the request body itself. Also note that this promotes reusability, setting standards in project.
+			
+			JWT ~~> cloud readiness: -- Cloud-readiness: That involves not relying on session. So, authentication via cookie goes out and JWT comes in. Recall that JWT gives client side cloud-readines.. and this applies even if website is interacting with single domain
+			
+			
 			
 			database:
 			ACID, CAP
@@ -127,7 +161,7 @@
 			
 			
 			
-			Discuss code arrangement based on above -- in infrastructue code repo
+			Discuss code arrangement based on above -- in infrastructue code repo (**maybe make 1way entry for it.. and add an interaction to arrange code keeping all contextually relevant pieces in 1 folder.. keep context priority of code-type, like all service, or all controller at one place)
 			-- differentiate between view utilities vs just utilities; any method requiring handle to request should be related to view and nothing else. Even though serializer deals with request body, the view should create a context for it and pass related arguments. Don't have the serializer directly call request or read from it
 			-- differentiate between global utils vs package level utils
 			-- positioning of constants
@@ -137,6 +171,22 @@
 			-- long file vs short file
 			
 			-- include documentation and scripts folder
+			
+			-- If you are having different project that can talk with each other.. then make sure that can also be done in local. It can be needed later on to be able to have this feature.
+			
+			Utility class/methods : mention they are defined if they are used at multiple places (maybe keep it in code arrangement). Also that there can be different utility for different controller / service / repo
+			
+			-- put common functionality in abstract classes.. Mixins..
+			
+			-- Advanced case: Producer vs consumer
+			--|---- In designing/coding - and particularly regarding models, REALIZE that the difference between producer and consumer mindset is and important difference to identify. When you are coding as producer, you want your codebase to be as compliant to SOLID, it'll be open for expansion, but different functionalities will be in different files and you'll have more "distributed" codebase. the drawback, maybe you may one change, but forget to make related change elsewhere because by design concept -- everything is open - so a change at one place doesn't/shouldn't affect other places. When coding as consumer, you purposefully accept that code won't go to someone else and you have full control over its consumption and API structure. You can add efficiency with this mindset. But this affects code resiliency. Most common, you'll run into import loops and/or will want to move some code to utils.. which brings up question of why not do that since beginning. STILL.. even in consumer mindset, remember to not break DAG!! -- things are easily factored as long as both app, module, sub-module level dag is not broken.. particularly removing order of __init__.py
+			--|---- This is probably biggest design contention when you are producing and using the codebase in your application. The tensions come up because a group is both producer and consumer - so both viewpoints are correct. However, traditional viewpoints of quickness, efficiency, related features at one place because you're the only one so why proliferate code -- come up and may blindside the efforts. Do realize it comes with a future cost in that there can be future issues.. so do keep that in mind - particularly if in scrum workflow. Again, nothing that can't be changed - but it'll need extra time/money. Personally, having a producer mindset is better because it keeps development open towards future changes, but it causes a distributed code.
+			--|---- **Thinking about producer vs consumer mindset is a good way to reason about having abstract classes in each project and then have them implemented in your project's home app. This way, the definitions in each sub-app gives a basic skeleton.. that you modify as necessary when adding it in home-app
+			--|---- one aspect is whether they should contain method to define nonDB-related ASPECT-LOGIC (like fields that should be logged), field based object-access, or whether that logic should be in some other class. Having things are one place bloats model, makes model definition dependant on context (which is something that may be good if you are end consumer -- as it keeps all related code at one place and low chance of missing things, but not a provider), also you may get forced to scenarios that don't respect DAG!
+			--|---- Thinking along lines of differences between producer and consumer mindset is also a good way to think whether the model should be kept as much POJO and related methods to moved to separate utility class, or if related methods be added inside the model itself. Former is a producer mindset and latter is a consumer mindset. The disadvantage of latter is that now, classes that lie higher up in DAG precedence can be made to have functions that apply on classes that come lower in DAG precedence. Then, it moves to having those special methods in separate utility.. then it becomes why not just put everything there.. or maybe DAG relation was previously not very defined, but it gets so at later time, and now the chain is broken.
+			--|---- Where should validation lie when dealing with discrete valued "status" type fields in model-vs-serializer -- see above comment!!
+			--|---- From above, it seems that producer should only give basic pojo classes. Actually, differentiation between the two depends on the amount of functionality you want to add. If you give max freedom of extension, then you won't be able to add function, or will give something too fragmented. A good trade-off is to give an interface and some sort of basic implementation.
+			
 			
 			
 			
@@ -166,238 +216,15 @@
 			mvc - a 3-way interaction.. but idealy should be more.. but mvc squashes dto and entity. And controller squashes service and repo.
 			
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			SERVICE:
-			
-			-- Model serializer vs process serializer. Even process serializer can be model state change (can be via patch) or a big process combining multiple models with child->parent DTO rather than parent->child structure. Also cover general validation requirements
-			-- does childDTO come first or parentDTO. Answer changes based on model or process serializer - and this is confusing - because link is clear on entitys ide. Parent comes earlier. 
-			-- if you want the DTO to show different data based on roles, that is set here. Have an explicit utility/method to convert DTO to/from entity.
-			-- translation from slug/id to entity is best done before any validations start. Do analyze the concurrency expectations/failures.
-			--  If you are making a POST/PUT call that takes a list entry (like doing bulk create/update, etc), then a good idea is to ensure that the list takes only a max number of entries. It is a sanity check to prevent someone from sending an absurdly high number of entries and stopping the processing.
-			--|---- Also, in this case, since there is a list of entries, so you'll need to collect object slug for each entry. While validating, do referential checks on slug (..or maybe this needs to be do at model.clean(), and not under serializer!! - to keep proper separation of concerns -- or maybe at both places - to get a fail fast behavior!!??)
-			--|---- As a good practice in REST design.. don't get a field from user that can be inferred.
-			-- The current design of validation means that there is no scope for fuzziness! Conside the following: Say you're asking someone for a historical info (say their last name), and that this differs from their current last name (due to life event) - then what should you do? One way could be to add a flag of "force_commit" -- the idea being that generally this flag would be false and this would cause validation error. But if force_commit is true, then don't raise error. To communicate to UI, maybe send these errors by listing fields under force_commit, and then adding list of errors that can be bypassed therein. This serves to form a "WARNING" kind of UI behavior.
-			--|---- If storing file, don't use file-name in internal filepath. Use some uuid for internal filepath. One, this prevents anyone with acces sto filepath from understanding what file contains. Two, if you allow versions, then same filename can have multiple file path. Three, if you allow moving files, then you want to just change file name parent to signal that it has been moved.. not also worry about actually moving file, worrying about conflict, etc. ALSO.. either case, store file as encrypted on disk to prevent unwanted access.
-			--|---- Let's say you have a model that can have nullable fields (implying that a certain event did not occur). When this model is serialized, when the field has values, it gets returned. When field does not have values, a null is returned, but the response json can be defined in such a way that "null" values are auto-dropped. This is a known convention that a json having a field with null value is same as json not having that field. But this is response json. Consider the flip side of request-json. Say, you want to update an existing model where you want to nullify the fields. You make a PATCH call. Should this have json request body with field name and a null value for it? Would this interfere with understanding that null valued field is as good as field being absent? You can say that you want asymmetry between how fields with null values are interpreted between request and response json. Now, consider if the request json is obtained by making call to some other service and by using its response json.. and we said that null values can be removed in response json. So, best, in such cases.. define a new field, like "nullify_{field}" in your DTO, such that if it is set, then you know that you must nullify the corresponding model fields.
-			-- Is PATCH call a process serializer or model serializer???! Why? Maybe the answer to it also related to comment on not using "null" valued keys when wanting to nullify some fields of existing model.
-			--|---- Let's say your request body takes a list type field which is required. What happens if user does not give data. The error response will show an object like error corresponding to this field. But if list is given and entries are wrong.. then it shows a list type error. Is this wrong? Should it be consistent -- It is correct. A question is would this make UI development difficult to consider both cases when showing error. The answer - NO, because your UI should always send a list type object and so, should cut out possibility of getting lobject type response
-			--|---- Validation for a status type field vs it being polymorphic discriminating column -- or maybe put it in advance use case, since this needs to be understood from perspective of model also
-			--|---- Ideally you should have same serializer class for POST, PUT, PATCH call (DELETE may not use serializer because instance data is deleted.. and since data is deleted, there's no use of returning a json, because there isn't any data to populate it!) -- this hooks on eing able to return same json for all calls.. improving ability to bypass using "If-Modified-Since"
-			--|---- Ideally, if you are deserializing request body, then you got a POST, PUT, PATCH, DELETE call. In either case, you should not be having query Params. You can have path params and that defines some contextual object which may be needed by serializer. if so, pass those values in serializer context. If that is not feasible, then see if you can identify the calling view from serializer - in which case, you should define methods in calling view that reads the request and provides necessary objects. The goal of exercise is to prevent serializer from directly having access to request. This separates scope of view vs serializer. The serializer always deals with request/response body and that's it. The view now is the one that directly deals with the request, and if needed, reads values from there and passes to serializer. A related question to ask is whether it is necessary to send that extra data in serializer. If it is for validation, should the have been done in model.
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			--|---- NOTE: failure of unique constraint cannot be checked anywhere in the code without running in race conditions and is done first by DB only
-			--|---- Standard data table (or should it be covered under DB Productionizing)
-			--|---- Modular design means that one can have separate modules / repos where a portion of model is defined and then it is imported under the main project. When doing so, create an implementation-extension of the entity class in different modules and add it to main code, and then use those class as basis to have a unified DB migration file. Don't separate out migrations because in a scrum environment, it may not be clear on how relation between tables can evolve.. new parent tables can get made (particular standard data table), etc. - so, always create a copy of all DB tables involved in main app, and use that to make migrations, and define model level save() and validate() method. This also prevents validation logic to get distributed at multiple places - and keep it unified. 
-			--|---- Producer vs consumer mindset in defining models. This is the first place where the difference shows up because all stages before it (defining response, request, url) are explicitly consumer focused. This is the first time where you go into an internal implementation where you may pick another library or module that then exists at par with other DB models you made. One common example is for authentication purpose, or say, audit tracking. (Not quite.. authentication - login / logout can also be from a common module) -- say more discussed later.. see advanced case of producer vs consumer
-			--|---- consider using a framework, or adding a tempate yourself to help support aspect oriented design along database calls. This can be useful for audit tracking, object level security.
-			--|---- What are considerations when designing a table for polymorphic entity? It can be modeled via a single table design with one column containing discriminator for different types. NOTE that what differentiates this from a db table for entity that can go through various stages, is that for the former, the enum valued column does not change its value after created. For the polymorphic table.. 
-			--|----|---- add a separate validation constrain for each case. 
-			--|----|---- Even more important question is how to design the table. Should it contain just one column which contains just the id and no explict foreign key link and the table to which that id corresponds to can change depending on polymorphic type.. or should there be an explicit foreign key dependency added? It depends on the use case. If what you are trying to do is (i) an aspect behavior and not a business behavior, (ii) deletion of original data does not cascade down to deletion of data in this table, (iii) you have no validation requirements on this table based on columns.. then you can store generic id without creating link, else always create link. An example of this is if you want to audit-track changes in model.
-			--|----|---- -- When adding a new enum (or even a standard table entry), be careful of adding it to code. Because DB runs before application, the application won't be able to read new value. this can happen both if using standard data table or enum. Best do migration and code changes in separate deployment. If doing so does not fail in lower env, then it's ready to go for prod
-			--|---- If a model has fields that override value of a preceeding model, then define custom getter such that it reads the overriden value if available, else read the original value.
-			--|---- Use blank still, not null -- check with business requriements though. This does not extend to all fields that are string valued, for example, don't use empty datetime field instead of null.. because empty datetime field is an ill-formatted entry
-
- 			-- Now denormalize data if needed. 
-			-- Add wrappers around basic methods that allow DB level interaction. Add referential checks. Multi-referential cehck for denormalized data. Add constrainst that you couldn't do due to lack of SQL structure
-			--|---- At some pont, also look at DB isolation levels. make sure you understand what's happening, specially if you have a highly concurrent system. For same reason, best to do any file processing, etc. earlier before starting transaction and limit transaction to not contain big processing steps. And for this reason, best to not setup all views to automatically be wrapped in a transaction - because you may need to limit when/where a transaction happens, and to have more than 1 transaction per request
-			
-			-- Identify service methods - which should be declaratve
-			--|---- In earlier notes.. it is said to keep any logic inside a View / ViewSet as much declarative as possible. Any imperative logic should be properly moved in serializer, model or last.. in util. There is one more place where imperative logic can be moved -- in Mixins that are used with View. Also, recall that certain logic can be put in context_processor, or in middleware
-			--|---- if some method is needed in multiple places.. it should be in viewset mixin.. in a utility class
-			--|---- https://stackoverflow.com/questions/9271497/do-transactions-add-overhead-to-the-db : As much possible, prefer to do all changes in transaction. Also, don't do any long time taking task in a transaction. For example, if you want to save a file given by user, or process the file (say, convert from docx to pdf) - do all those before / after transaction but not within it.
-			--|----|---- Above is an example of interaction with multiple data store. In such cases, always have a background sync / clenup process. Also design your code to be able to do so. Use Transactional outbox pattern.. or if your code is in initial or non-complex stages, then just a logging with a periodic check might also suffice.
-			--|---- Best practice is to have one application interact with one DB. Don't have many applications interact with one DB. instead require  from other applications that they make an API call to one of them to get the response. Similarly, while it is possible for one application to interact with multiple DB.. it is best to instead break those to smaller-applications and maintain one-DB--one-application relation. This allows for better data modeling and separation. How should the other applications deal with service outage is something that is best discussed and identified.
-			
-			-- Identify request validators that should run first, before service call - link to a secuirty section that also says to check multi level resource relation
-			-- Have some logic that is always needed - it goes in filter
-			
-			-- Exception handler (should they be the only one to log)
-			--|---- Maybe have a threadlocal to every request. This can provide handle to request. Can also define variables that can store logging context.. like, different variables encounted during processing that should be collected so it can be logged. Other option could be to set attribute directly on request If using threadlocal via a filter/middleware - remember to clear it on exit -- regardless of whether there is an error or not. On that note.. when executing custom action endpoint that triggers some change in a particular model status, you can store both the past and new status and log it
-			--|---- Create a logging section which collects all the tips / tricks related to logs made throughout the book. Put that at very end.
-			
-			-- DateTime field, always in UTC. Save timezone as needed - in separate field in data model. Also analyze whether the timezone store in one table applies to multiple other related tables.
-			--|---- If you want date and time, then get datetime instead and also have timezone support and not silently remove it.
-			
-			-- Advance case: Follow the DAG. Link to Same in "Prod-Prod" as meaning don't give circular logic (i am true because i said so, and i said so because i am true), or disjointed logic (i am true but true does not mean true and does not mean false)
-			-- Advanced case: Producer vs consumer
-			--|---- In designing/coding - and particularly regarding models, REALIZE that the difference between producer and consumer mindset is and important difference to identify. When you are coding as producer, you want your codebase to be as compliant to SOLID, it'll be open for expansion, but different functionalities will be in different files and you'll have more "distributed" codebase. the drawback, maybe you may one change, but forget to make related change elsewhere because by design concept -- everything is open - so a change at one place doesn't/shouldn't affect other places. When coding as consumer, you purposefully accept that code won't go to someone else and you have full control over its consumption and API structure. You can add efficiency with this mindset. But this affects code resiliency. Most common, you'll run into import loops and/or will want to move some code to utils.. which brings up question of why not do that since beginning. STILL.. even in consumer mindset, remember to not break DAG!! -- things are easily factored as long as both app, module, sub-module level dag is not broken.. particularly removing order of __init__.py
-			--|---- This is probably biggest design contention when you are producing and using the codebase in your application. The tensions come up because a group is both producer and consumer - so both viewpoints are correct. However, traditional viewpoints of quickness, efficiency, related features at one place because you're the only one so why proliferate code -- come up and may blindside the efforts. Do realize it comes with a future cost in that there can be future issues.. so do keep that in mind - particularly if in scrum workflow. Again, nothing that can't be changed - but it'll need extra time/money. Personally, having a producer mindset is better because it keeps development open towards future changes, but it causes a distributed code.
-			--|---- **Thinking about producer vs consumer mindset is a good way to reason about having abstract classes in each project and then have them implemented in your project's home app. This way, the definitions in each sub-app gives a basic skeleton.. that you modify as necessary when adding it in home-app
-			--|---- one aspect is whether they should contain method to define nonDB-related ASPECT-LOGIC (like fields that should be logged), field based object-access, or whether that logic should be in some other class. Having things are one place bloats model, makes model definition dependant on context (which is something that may be good if you are end consumer -- as it keeps all related code at one place and low chance of missing things, but not a provider), also you may get forced to scenarios that don't respect DAG!
-			--|---- Thinking along lines of differences between producer and consumer mindset is also a good way to think whether the model should be kept as much POJO and related methods to moved to separate utility class, or if related methods be added inside the model itself. Former is a producer mindset and latter is a consumer mindset. The disadvantage of latter is that now, classes that lie higher up in DAG precedence can be made to have functions that apply on classes that come lower in DAG precedence. Then, it moves to having those special methods in separate utility.. then it becomes why not just put everything there.. or maybe DAG relation was previously not very defined, but it gets so at later time, and now the chain is broken.
-			--|---- Where should validation lie when dealing with discrete valued "status" type fields in model-vs-serializer -- see above comment!!
-			--|---- From above, it seems that producer should only give basic pojo classes. Actually, differentiation between the two depends on the amount of functionality you want to add. If you give max freedom of extension, then you won't be able to add function, or will give something too fragmented. A good trade-off is to give an interface and some sort of basic implementation.
-			
 			-- Advanced case: DAG structure for ManyToMany field: DTO, Entity, url, create/update/delete: what happens first and what follows
 			-- Advanced case: multi-representation of same data: Resume as text and pdf; DTP, model, url, create/update/delete
 			-- Using "If-Modified-Since". Should it bubble, i.e. when a child is changed, then also its parent entity is also updated (This also relates to keeping auditlog entry)? - I'd say no. This means that when showing a DTO, one should NOT show childDTO because that then breaks the meaning of parentDTO being non-modified. A workaround could be to simply return url where one can get childDTO
 			--|---- This is a good argument on why a REST GET url should only returns resource and no parent/child DTO. returning any extra information mixes the update time for two and so, is like a caching strategy. Best, and always, add cache depending on your use case and not preliminarily. This also sets up a guideline in that your GET call should end up asking for a resource and only that resource (not parent/child) should be returned
 			
-			-- Advanced use case: Validation break down for serializer + form + model serializer + process serializer + Fail-fast: do validation as fast and as soon possible + keeping the view logic declarative. 
-			--|---- Keep model level validation and save() separate.. and also provide a new methods that joins the two. 
-			--|---- Understand why the need for separation -- This istaken from own Django notes but can help here (-- Model.clean() contains validations that apply at model level. Likely, this is the place to add referential checks, or any checks that should hold at DB level but likely isn't getting applied due to limitation of SQL language. On the other hand, Form.clean() is to clean the data that is read in the form from user-request. For example, if your form take a time-in, time-out.. then Form.clean() would contain validation like the date-time is not in future.. but Model.clean() will contain validation like time-in < time-out . Note how Form.clean() is user-data and business-process related, whereas Model.clean() is model-definition related. This also explain why `ModelForm` in Django calls `Model.clean()` in its `self._post_clean()` method, which is run separately after the form's `self.clean_form()` method ..and these are different from form's `full_clean()` which by its name, must do all sort of cleaning.)
 			
-			-- Advanced case: HATEOAS Internationalization and more via Governor Service. Say that you don't know of an existing framework which does it.. but would be good
-			
-			-- Why hiding db id is good
-* https://stackoverflow.com/questions/396164/exposing-database-ids-security-risk -- best answer, it is a business intelligence security risk!
-* https://stackoverflow.com/questions/9904396/is-it-a-bad-practice-to-expose-db-internal-ids-in-urls
-			-- Above says to only use Slugs in url. OK - consider when you have a foreign key relation. Now, Since slugs are unique.. do you make a "Foreign key" relation using "id" or using "slug"?
-			--|---- I'd say this is where having some understanding of what a "slug" is - would be helpful. See https://stackoverflow.com/questions/427102/what-is-a-slug-in-django -- which shows how slug can be a nifty url line. Now, one could think that, say, if you're writing comments on a post of a given "slug", you'll talk about it as comment on post "about that slug". So, from users perspective, the relation should use slug. This also matches the "idea" that "id" field is just an internal representation and "slug" is what user sees - so slug is what keeps "relations" between data! However, from DB/service perspective, you now have a choice - either you say that (a) you do a foreign key on slug, and return slug. The advantage: when returning slug foreign key, you won't have to do another query.. that value is already in the table. HOWEVER.. if you're looking from the perspective where slugs can become long text so that they look nice in url, then "indexing" over long string can get problematic, and it can be much faster to make foreign key relations using "id", have foreign key index made using "integer" valued id - and then join on it. In such cases, doing a foreign key on "id" is much more beneficial. There is an intermediary case, say, when you have tables with many foreign keys - in this case, even though an integer index lookup is fast, there may be many such lookups needed and that'll slow things down. 
-			--|---- A RELATED HUGE ADVANTAGE: Now you can use slug for foreign key. This way, when a query is made on child table, you can return parent's slug back without doing a join query, because child table already has it. Furthermore, if you delve back into actual rationale behind having a slug (https://stackoverflow.com/questions/427102/what-is-a-slug-in-django) - you'll notice that "slug" is supposed to provide context to a resource, so it is natural that every other related resource references the parent-resource using "slug" field (rather than "id" field) - to maintain the contextual coverage. Note that doing so does NOT prevent you from going back and using "id" instead for foreign key - since slugs are unique.. and not changed once it is set (See next point)
-			--|----|---- DO NOT DO ABOVE IF YOU'VE USED NATURAL KEY FOR SLUG - for same reason as you never use natural key for making "id" - because natural keys almost always change in span of product, and then you're left scrambling to change all tables ..or even worse, they go from being unique to non-unique.
-			-- Disadvantages: 
-			--|---- (1) Anyone knowing the "slug" of 1st table can now immediately know about the slugs used elsewhere :: BUT then.. having unknowable slugs shouldn't be your only security aspect
-			--|---- (2) What if the structure started as parent > child relation, but later more tables' foreign key were added. NOTE: (a) If, when adding other foreign key, you change the slug to be like `{foreignKey#1|foreignKey#2|...}`, that's bad - don't change the slug once it is set. That being done.. sure the original intent of the table was to have a parent > child relation, but now it grew beyond it.. that's fine.. the "slug" field still remains unique - which it should by definition - nothing wrong with it.
-
-			-- While validating: use 409 status, or others; raise 400 only for entries in request data
-			
-			-- Choose your test fixture utility such that the test dtaa it creates also verify the referential relations
-			-- create mock for 3rd party api and background tasks and integration test it
-			-- Adding constraints in design :: Both for DB and for validators, Start by adding as strong of a constraint as possible.. relax later if need comes. Don't start with a weak unique constraint
----- Note that same also applies when writing validators. If a validator holds for a field, then keep it as a field level validator and don't put on class yet. Maybe, in future you'll need different class level validator or will need separate field validator.
-			-- Unique DB check - can only be at DB level. If you try to add add logic in service - that won't work for race condition. ..because between validation and addition of data.. some other request may have added data that would fail validation. Wrap these with  suitable api-exception in your codebase. Don't try to check/catch for uniqueness anywhere before because they will not be thread safe. DB is the only place that can do so Do look into isolation level for your DB connection.
-			
-			-- use switches to open/close features
-			--|---- Implement switches via aspects
-			--|---- Avoid using double negative in switch name
-			--|---- When failing due to switch, log it.
-			--|---- Have switch on service if the goal is to have switch be used experimentally and then always be on. Keep switch on model if feature needs to stay for long. If going for latter option, maybe also consider if you should instead just have different permission, and break table into different one-to-one subtables.
-			--|---- Consider defining a role that is supersedes a switch. This can be useful for testing. Be careful defining users under it - and have it be very controlled.
-			
-			-- give importance to Serializer and model field name. Use "id", "text", "code", "name", "datetime", "date" suffix as needed ..and specially use "indicator" suffix for booleans -- if you call a field as "is_done", then it becomes confusing to identify the corresponding method : `is_is_done()` or `get_is_done()`?
-			-- identify and use aspect oriented programming. Consier using framework that allows aspect at all level. aspect around model, view, serializer. (Aspect around view is likley filter, so nothing extra might be needed there)
-			-- CIS-20 : 20 point guidelines for various aspects of software security released by Center for Internet Security (CIS): https://www.cisecurity.org/controls/cis-controls-list/
-			-- 12 factor app development: https://12factor.net/
-			-- Cloud-readiness: That involves not relying on session. So, authentication via cookie goes out and JWT comes in. Recall that JWT gives client side cloud-readines.. and this applies even if website is interacting with single domain
-			-- If you are having different project that can talk with each other.. then make sure that can also be done in local. It can be needed later on to be able to have this feature.
-			
-			
-			
-			
-			Security:
-			-- Each request, even from async tasks.. should be as a request from a user. background tasks come as request from system user with a certain correct role. Gives uniformity in handling the task, logging, etc.
-			-- Look at OWASP guidelines
-			-- Look for notes in spring security, like changing session after login, clearing session on logout, adding x-content-type-options: nosniff. 
-			-- See https://blog.avast.com/why-is-ebay-port-scanning-my-computer-avast and https://nullsweep.com/why-is-this-website-port-scanning-me/ -- don't port scan. If you want to do so for security, then offer as a service and start/stop it when user asks. Don't do so in a hidden cryptic way
-			-- Don't have/rely on workflow where the website domain changes. This way, if you are changing domain, you can let the user know of it. A common reason do change domain could be to access OAuth token on different server. One reason to prefer this rather than collect user details by yourself and make an internal api call is that latter duplicates the login form code. Best, just let that single service evolve its own code/UI and you just get access to it. Also, since its scope is very limited (just for authentication) - clients should not have issue opening port to it
-			-- Don't have/rely on security where adding a rate limit is part of security logic
-			-- Security - chpt 26 of 2 scoops - go through it
-			-- Don't have/rely on worflow 
-			
-			--|---- Basic thing for security:: see "Server Hardening", section 26.2 in pg.346 of 2 scoops:: Server hardening measures include but are not limited to things like setting up firewalls (help.ubuntu.com/community/UFW), changing your SSH port, and disabling/removing unnecessary services.
-			--|---- **VERY VERY VERY IMPORTANT**: Good practice -- You should disable the HTML field autocomplete browser feature on fields that are gateways to payment. This includes credit card numbers, CVVs, PINs, credit card dates, etc. The reason is that a lot of people use public computers or their personal computers in public venues. In fact, consider changing the form field itself to PasswordInput. Also on that line - never store credit card data.
-			--|---- Section 26.13 on Pg.357 about file handling. 
-			--|----|---- Use CDN for file (I think this is more of a performance thing and to prevent getting your server drowned in false request).
-			--|----|---- Since user uploaded file can have xss content, so don't have it open in browser by only allowing it to be downloaded - done by setting "content-disposition:attachment"
-			--|----|---- When storing user-uploaded file, make sure they never get the "Executable" permission, even by self. Be very very careful if your workflow requires you to process files. Have it done somewhere else. Maybe also put upload size restriction; rate-limit based on ip / user-role-type; do virus scan. Wonder if a good thing would be to always encrypt file on disk - both for data security, plus the file gets jumbled so cannot execute. When storing user-file, never make the file-extension visible, instead have it only be in DB. Maybe also randomly chunk the file so it never makes sense on own (do so after encrypting entire file) -- do note that if you're accepting chunked files, then do a virus scan on combined files before continuing
-			--|----|---- Use "magic" to inspect file-headers. For example: python has https://github.com/ahupp/python-magic
-			--|---- **VERY VERY VERY IMPORTANT**: If working with custom user data which can be xml.. then realize that there can be a ddos attack done. See https://en.wikipedia.org/wiki/Billion_laughs_attack -- the article mentions that this attack can be done on any language with references (like, on YAML)
-			--|---- **VERY VERY VERY IMPORTANT**: Displaying sequential primary keys is to be avoided because:
-			--|----|---- They inform potential rivals or hackers of your volume
-			--|----|---- By displaying these values we make it trivial to exploit InsecureDirectObjectReferences <-- important
-			--|----|---- We also provide targets for XSS attacks
-			--|---- **VERY VERY VERY IMPORTANT**: Links
-			--|----|---- https://owasp.org/www-project-top-ten/
-			--|----|---- https://wiki.mozilla.org/WebAppSec/Secure_Coding_Guidelines
-			
-			-- Don't take any html content from user. If you want to accept rick content, preferable look at markdown.. or open html in an iframe so it does not affect actual page.
-			
-			-- sql injection
-			
-			-- Handle xss and csrf issue
-			--|---- Avoid inernal XSS. This comment is written earlier also::  If your DTO fields, path param, etc. has constrainst, like can be a-z,A-Z,0-9,_, then also realize these constraints in the field definition. DOn't just take any arbitrary string. Take only the ones expected. This can be useful in preventing internal xss, i.e., say as part of your logic, you are logging these field values, etc. - and then are running some daily background task, possibly to collect some metric. Since these are external user data - you shouldn't be trusting it.. and some user may try to pass in a script that inadvertantly gets run. This is internal XSS. The point is - don't trust any data comingf rom out till you've verified it. Similar also holds for fields containing html text from user.. Best would be to just get markup (and define an enum type column which highlights that the entry being read is of markup type, not html).. but if you do need to store html, then escape it as you form the request body itself. Also note that this promotes reusability, setting standards in project.
-			--|---- In making a html safe.. define an "accept list" of tags that won't be escaped. DOn't instead define "reject list", i.e. list of tags that won't be accepted.. because you never know what might get missed. Having an accept list is better.
-			--|---- use content security policy
-			
-			-- IDOR (insecure direct object reference) -- example can be checking parent child relation in REST call -- This is also a reason to use slug, and then define them in a random manner and not by joining fields because doing latter would make it guessable!
-			-- SSRF (Server side request forgery) -- force a server to make request to unintended destination. This is bad because it breaks the trust in server. If there is any place in request-body or request-param where it is taking a url, that's bad. Can try putting in code in docx, pdf if you know it's going to get parsed/transformed and that can cause a hit on attacker webpage
-
-			-- CSRF:
-			--|---- double submit cookie -- send cookie in header and request body
-			also ..but this can be bypassed by XSS
-			--|---- Use Samesite cookie flag
-			-- Don't rely just on referer or origin.. specially since referer can be changed
-			
-			-- RBAC -- if using, then make sure you always change access by role.. not anything else!!
-			
-			-- file vulnerabilities: If you take a file-path param from user. Appication goes there and picks up file
-			--|---- abuse#1: use file-system pathway, like starting with ~, or ../../ - to go to other directories
-			--|---- abuse#2: use filename like http://server.com/some-path - force application to do http call and download some bug, etc.
-			--|---- In any cases, if downloading file, first do virus scan
-			
-			-- Sensitive data exposure is a vulnerability. Add extra auditing / controls around sensitive data. Another option is to disallow reads of sensitive data except for admin role:: https://blog.detectify.com/2016/07/01/owasp-top-10-sensitive-data-exposure-6/
-			-- Insecure deserialization vulnerability: https://blog.detectify.com/2018/03/21/owasp-top-10-insecure-deserialization/ -- and so, make DTO as POJO
-			
-			
-			--|---- Is CSRF protection needed with GET call? -- Generally NO. 
-			--|---- In most case, CSRF is restricted to attack where an attacking website tricks user to make a request that causes a mutation (in favor of attacker). However, when server returns a response --in these cases-- it will not have CORS' allow all origin header. So, even though a mutation is made, the response of it never goes back to attacker.
-			--|---- HOWEVER consider the case where the server is of a business that is an utility-provider, say, like USPTO. Now, server can and should expect that different domains will be calling it - and so, it now needs to set CORS header to allow all origin. But this opens up a different problem in that even for non-mutating calls (GET call), the attacker can now see sensitive user data - and the webpage won't restrict it because CORS is effectively disabled. In such cases, it is necessary to have CSRF protection even on GET calls. 
-			--|---- **VERY VERY IMPORTANT** The advantage of JWT comes here in that JWT created by one can be used by other.. token can be passed on front-end.. back-end.. etc. As long as token passes, the authentication continues and there's no need to worry of CSRF token. 
-			--|----|---- RELATED: https://engineering.mixmax.com/blog/modern-csrf/
-			--|----|---- RELATED: IF HOWEVER you're using cookie.. use "SAMESITE" setting on cookie
-			--|---- Login CSRF
-			--|---- If you also give an UI.. To prevent phishing, allow users to set an initial profile token that is showed when they log in. And allow this only on request coming from your UI domain (also adding for UI)
-			--|---- Don't rely on cookie only for security. Use CSRFToken, or JWT. Using both is overkill. JWT does make you cloud ready
-			
-			
-			
-			-- Set RBAC access
-			--|---- It might be good to group roles using prefix to apply it to certain subdomain (by defining permissions accordingly)
-			--|---- Within one domain, aim to give only one role to a user. 
-			--|---- Corresponding to the role, define a user profile such that it can be foreign key'd to by models exposed via views permitted to the role. If you have some common details to know from all user (like a base-profile), then just add those in your definition of "user" table. Have the profile based data be very specific to role. BUT.. when a "Group" is defined, it only defines Role (of RBAC) and not the profile. So, need a table to define "RoledProfile" for a user based on user-group (aka, user-role). This creates few more complications.. what happens if user changes roles. There may be model entries elsewhere in DB that refer to user profile.. but the old profile no longer remains. In such cases, it is better to instead never delete a profile and just soft-delete it. This prevent model relations from getting broken, keeps audit trail. This also means that when user changes role, they must also create a new profile and permissions must now be defined such that it looks both into role and whether the new profile is present and is active. A third question can be what happens if user changes profile back and forth -- and this relates to defining the unique constraint in the roledProfile table.
-			--|----|---- One good thing about thinking in terms of "Profile" and RBAC rather than "user" is now you can think of how TAKE/SNITIZE request on all other DB tables look like for each "profile". Also, (profile + rbac) define permissions
-			--|---- Even if you have hierarchy in role, its best to treat each role independent and define permission such that the role behaves hierarchical. So, in English, "the role is not hierarchical, but the permission associated to the role is hierarchical"
-			--|---- Let's say we want to allow a "sub-optimal" authentication such that when confirmed by this route, then the user should only be allowed access to a small section of api(s) and not all of them. 
-			--|----|---- FIRST.. Do check if this requirement can be removed, like, why the need to have such requirement??! An authenticated user is an authenticated user, so why the need for defining a "partial auhenticated user"! That being said, a genuine application can be for "user-as" kind of function - where you're logged in as a high role, but want to see how the api would look for some other role. 
-			--|----|---- In such cases, define a temporary user oject, not in DB. Disable its save method, don't give it an id so that it cannot be saved. In filling the object fields from original one, only relevant fields are populated, and then it is assigned to lower group. Make a profile for it, and again don't give any id to it.. nor allow saving it. This ensures that the user object can be persisted. Also, it doesn't match any entries in DB and is totally ephemeral.. Still, be careful in related code. Now, to this user object - assign the new role, if its current role allow it to do so. Note that this would need a new utility method that should define role hierarchy, even though - as we defined above, it is a a flat list. Same utility can likely also be used by permission classes to identify the hierarchically up role that should also be granted access. If the role being requested canot be given, then retur 403
-			--|----|---- Addition to above, in DB, separate out the table, so that the sub-portion that can be accessed by wider role user is a single table and the other restricted role access table is separate, joined to the former via a oneToOne relation.. and defining method preventing object access by other roles. How to define such a method is framework/language specific
-			
-			
-			
-			-- PII Take and Sanitize (if you have separate data domain, this is easier)
-			-- be careful not to leak status by error: Say you got "GET /root/a/{aId}/b" for some other criteria given in header or query param, and there's no match. A good answer could be to return [] with 200 status, saying - we don't want to tell you whether you're breaking any relation or not.. but hey, ythere's nothing matching. Similarly, "GET /root/a/{aId}/b/{bId} now returns 404". What if you do "POST /root/a/{aId}/b" and some header value or query param, but those don't hold reference relation with {aId}.. do you give 404? - can't because if you turn POST to GET, then resource exists and is [].. we just did above. Maybe you do a 400 saying that some value is not available - and rule become that anything 404 type in POST request gets returned with 400 instead. What if both reference relation don't hold and you don't have permission because you belong to {a2Id} not {aId}.. if the service instead returns just verifies your role but not your relation with {aId} as missing and you give some different error, then you leak information of relation. The thing to realize: First authenticate and authorize user, then check validity of url (or raise 404), then check relation between all other user/header data and url and raise 404 again (not 401 or 403) because other data provide additional context around user and so must be verified to form full "definition" of "user". Finally now, go to other status like 400, etc.
-			--|---- Expanding further on above:consider url like: /root/a/{aId}
-			--|----|---- realize that in sense of usage, the user would have done the following sequence of operations: /root, /root/a, /root/a/{aId}, /root/a/{aId}/b, /root/a/{aId}/b/{bId}. 
-			--|----|---- /root wouldbe open to all users since it gives general info. 
-			--|----|---- /root/a?{queryParams} - can also be opened to all users because there is no user and url link (..because there is no path param yet). It should return 200 with empty list if there's no data, or no data after filter, or user is not permitted any data.
-			--|----|---- /root/a/{aId} (..and always without queryParams) - if it returns 404 for missing data, and 403 if user does not have relation with data, then it leaks info about existence of {aId} to the user. So, best is to return 403 or 401 on initial user validation, and then always return 404 either if {aId} does not exist, or {aId} exists but user does not have relation to it - to prevent leakig the existence of data. THIS IS TEH REASON why above it is suggested to just raise 401/403 for the first time, and then never raise it again, and just raise 404
-			--|----|---- What about slugs received in process-serializer as part of request body? With same logic, that should always raise 400 error saying that the corresponding slug is not found. Do't say anything about not having permissions, etc.
-			--|---- Consider the case of user adding a phone number. The user is verified (i.e. has email and logged via password), but the phone number is not verified. When user gives a phone number, either it is available (i.e. noone else has mentioned it) and user verifies it via 2fa code. BUT.. consider if there's an overlap where someone else has also mentioned same phoen number. Also, 2 more cases - other person has verified it, or other person has not verified it. when the user gives phone number - should they be told that there's a conflict? Correct answer is "No" - here, the user hasn't verified new number as belonging to them, so ideally it should never get any sort of communication back from the service. In essence, we are still expanding the verification domain.. and phone number is still not verified -- so it should not receive any commuication back! Should other people have given same phone number, should we tell them there's a conflict - Yes! - but only if the previous user has a verified phone number. If the previous user also has an unverified phone number, then don't send any message of "conflict". This gives an example of validating in an "exploding data domain" manner to ensure consistent response/sttus is sent so that any information is not leaked by failure.
-			
-			-- be careful defining authorization for contract based relation: 
-			--|---- Say you have a client and worker. When the two are in contract, then the client can see worker relation. But, if the contract is terminated for any reason, then the client shouldn't be able to do so. This means: (1) have a separate endpoint for clinet where worker's data is available. DOn't bundle it with some other endpoint allowing worker access to the data even after contract is over; (2) have a different authorization to acess the data via endpoint - don't just look for client-role on user making the request, but also if the client is allowed data acess for worker slug in path param. ALSO - best do this check as a permission and not within view because (a) this definition, as a permission is more apt, and, (b) view methods must be declarative in nature
-			--|---- ALSO, a second design consideration for "time-bound-contract" type behavior is -- never give slug of one party out to another. Think of it like this.. if you enter into a contract with a 3rd party app to get your name, age from Facebook in exchange for taking some quiz.. but instead Facebook also gives it your "id/slug" and now this site becomes the go-to place where other 3rd party give a Facebook-id and get historical data. Then did Facebook do anything wrong? Yes -- **it shouldn't have given out your unique identifier that remains for perpetuity out to a service with which you have a temporary contract**. The better model design is to make a contract table that has foreign key from 3rd party app and from your profile. Now, what goes to 3rd party app is not you id/slug but the slug of contract. If they want your details.. they are given other fields like name, etc.. which can be general and not constrained to be unique. Here, you can control the degree of personalization on data outflow - maybe just give out first name not full name, maybe just the zip code and not exact coordinates. This way, the 3rd party cannot make something tailored to the user of given slug in their code -- which means, things can still get personalized but not individualized (separate topic: unless facebook offers that feature.. but then, its under their control which is still better than letting it out in wild). With the new model, you become "user associated with a contract", rather than "user with that slug.." which gives your application better control rather than have the providers take control.
 			
 			
 
-			
-			
-			
 			
 			
 			
@@ -429,6 +256,8 @@
 			-- For Swagger: when reading model field description -- best if the plugin being used can do by reading DB comment. This keep DB field comment as only source of truth when defining field definition text.
 			
 			-- At a later stage... consider internationalizing your error response and your HATEOAS!! Maybe swagger also!
+			
+			-- The use of field in DTO to control validation application for error vs warning level validation can be explained in HATEOAS
 			
 			
 			

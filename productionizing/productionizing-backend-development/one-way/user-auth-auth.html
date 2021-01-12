@@ -25,12 +25,21 @@
 	Separate authentication vs authorization. Presence of authentication should not mean authorization
 	Stick to RBAC. 
 	check authroization on every call, even when reading authentication from JWT. 
-	Don't read autheoization / role from JWT since that may be stale
+	Don't read autheoization / role from JWT since that may be stale. always read it again
 	-- Run-As function: https://www.baeldung.com/spring-security-run-as-auth   https://blog.marcosbarbero.com/user-impersonation-with-spring-security/
 	-- Don't use presence of an auth header for authorization
 	-- keep cycling JWT secret. make sure to have retry to handle transition rather than bubble failure up
 	-- keep rate limit logic outside controller.. at filter level - because it is a permission. Als, return proper error code (429). Similarly, return proper error code of authentication failure (401) vs authorization fail (403) - unless auth fail happened and user is anonymous.. in which case, raise 401
 	--jwt: works in microservice, i..e for service to service communication; also can use if you want to move from one system to other -- but it may be a hassle for users to type long jwt. Can instead use it to form simple one time bearer token
+	
+	-- Each request, even from async tasks.. should be as a request from a user. background tasks come as request from system user with a certain correct role. Gives uniformity in handling the task, logging, etc.
+	
+	-- Don't have/rely on workflow where the website domain changes. This way, if you are changing domain, you can let the user know of it. A common reason do change domain could be to access OAuth token on different server. One reason to prefer this rather than collect user details by yourself and make an internal api call is that latter duplicates the login form code. Best, just let that single service evolve its own code/UI and you just get access to it. Also, since its scope is very limited (just for authentication) - clients should not have issue opening port to it -- given, name the url properly. Like, instead of "login.website.com", say, "openId.website.com"
+			-- Don't have/rely on security where adding a rate limit is part of security logic
+			-- Don't have/rely on worflow where presence/lack of authentication acts as authorization. If you want to differentiate between, say, 2factor authenticated user vs 1factor authenticated.. then give those 2 different role/permission - even for same principal.
+	
+	--|---- Even if you have hierarchy in role, its best to treat each role independent and define permission such that the role behaves hierarchical. So, in English, "the role is not hierarchical, but the permission associated to the role is hierarchical"
+			
 	
 	2way: 
 	-- auth+entity(user)
@@ -38,7 +47,19 @@
 	--|---- Salting pwd. Don't ask for sensitive data for login
 	--|---- ask sensitive data at most once
 	
+	(NOTE: below is also covered in repository interaction. In the discussion below, design of DB table is entity interaction.. but actual retrieval is repository interaction)
+	--|----|---- Addition to above, in DB, separate out the table, so that the sub-portion that can be accessed by wider role user is a single table and the other restricted role access table is separate, joined to the former via a oneToOne relation.. and defining method preventing object access by other roles. How to define such a method is framework/language specific. This is a valid use case of havig role based security be defined at repository level. This is needed because when the code is running, then the server is one making request to DB to access data.. but it's actually doing it as part of a request triggered by a user. So, we need a mechanism to ensure that the request user is allowed access to a certain DB table. This should also ideally occur for all @OneToOne and @manyToOne ..maybe also for @OneToMany
+	-- Sensitive data exposure is a vulnerability. Add extra auditing / controls around sensitive data. Another option is to disallow reads of sensitive data except for admin role:: https://blog.detectify.com/2016/07/01/owasp-top-10-sensitive-data-exposure-6/ -- Maybe move all sensitive data to separate table
+			
+	
 	-- auth + controller
 	--|---- if your CORS setting allows having request from different domain (because you are a provider), then need CSRF prevention even on a GET call. If you have a UI then allowing calls only from it can prevent need for CSRF on GET. Still need to tackle it for othr calls.
+	
+	
+	3way: auth + user+code-arrangement:
+	--|---- Corresponding to the role, define a user profile such that it can be foreign key'd to by models exposed via views permitted to the role. If you have some common details to know from all user (like a base-profile), then just add those in your definition of "user" table. Have the profile based data be very specific to role. BUT.. when a "Group" is defined, it only defines Role (of RBAC) and not the profile. So, need a table to define "RoledProfile" for a user based on user-group (aka, user-role). This creates few more complications.. what happens if user changes roles. There may be model entries elsewhere in DB that refer to user profile.. but the old profile no longer remains. In such cases, it is better to instead never delete a profile and just soft-delete it. This prevent model relations from getting broken, keeps audit trail. This also means that when user changes role, they must also create a new profile and permissions must now be defined such that it looks both into role and whether the new profile is present and is active. A third question can be what happens if user changes profile back and forth -- and this relates to defining the unique constraint in the roledProfile table.
+			--|----|---- One good thing about thinking in terms of "Profile" and RBAC rather than "user" is now you can think of how TAKE/SNITIZE request on all other DB tables look like for each "profile". Also, (profile + rbac) define permissions
+			
+			
 	-->
 </article>

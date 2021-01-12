@@ -32,10 +32,17 @@
 			--|---- Use 404 if the slugs in path param fail reference relation. Use 200 with empty list if url path params are ok, but due to query params there is no result. And remember, before you even start doing all this - do FULLY verify the user and whether they are authorized to see the result. If based on user role, additional constraints apply that are not captured in path param or query params, then add that extra. 
 			--|---- If you application allows hard-delete with a marker identifying a past delete as done; or, even if you have soft delete but which cannot be reversed, then 410 Gone may be a better status. DO NOTE: 410 forces search engines to more quickly drop a page.
 			
+	-- While validating: use 409 status, or others; raise 400 only for entries in request data  : For 400 - raise it only for field given in request data and not otherwise. If more than 1 field contributes to condition that caused error.. give error message against both fieldNames
 			
 	
+	2-way dto+validation:
+	--|---- Let's say your request body takes a list type field which is required. What happens if user does not give data. The error response will show an object like error corresponding to this field. But if list is given and entries are wrong.. then it shows a list type error. Is this wrong? Should it be consistent -- It is correct. A question is would this make UI development difficult to consider both cases when showing error. The answer - NO, because your UI should always send a list type object and so, should cut out possibility of getting lobject type response
+	
+	
 	2-way:
-	exception handling, log and custom params -- take care of what you log!
+	exception handling, log and custom params 
+	-- take care of what you log!
+	-- Maybe have a threadlocal to every request. This can provide handle to request. Can also define variables that can store logging context.. like, different variables encounted during processing that should be collected so it can be logged. Other option could be to set attribute directly on request If using threadlocal via a filter/middleware - remember to clear it on exit -- regardless of whether there is an error or not. On that note.. when executing custom action endpoint that triggers some change in a particular model status, you can store both the past and new status and log it
 	
 	-->
 </article>

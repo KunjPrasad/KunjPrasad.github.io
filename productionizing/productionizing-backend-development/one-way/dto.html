@@ -21,20 +21,49 @@
 	
 	
 	<!--
-	-- Keep diffrent from model because requirement on how display/transfer data may change even for same underlying table structure.. or vice versa. Also entity needs to be normalized, but DTO can be denormalized
+	-- Keep diffrent from model because requirement on how display/transfer data may change even for same underlying table structure.. or vice versa. Also entity needs to be normalized, but DTO can be denormalized. Have an explicit utility/method to convert DTO to/from entity.
+	
 	
 	Not converting from body text to map.. but from map to object ..and vice versa
 	Different from entity - because S of SOLID
-	-- dto security: add file size limit, list size limit, string text size limit, only certain string text characters allowed
+	-- dto security: add file size limit, list size limit, string text size limit (this also limits xss attack), only certain string text characters allowed
+	--|---- If you are making a POST/PUT call that takes a list entry (like doing bulk create/update, etc), then a good idea is to ensure that the list takes only a max number of entries. It is a sanity check to prevent someone from sending an absurdly high number of entries and stopping the processing.
 	-- Always virus check a downloaded file. If possible, also do a magic check
-	-- Always sanitize html. Even better get it as markup
+	-- Always sanitize html. Even better get it as markup. 
+	--|---- In making a html safe.. define an "accept list" of tags that won't be escaped. DOn't instead define "reject list", i.e. list of tags that won't be accepted.. because you never know what might get missed. Having an accept list is better.
+	
+	-- give importance to Serializer and model field name. Use "id", "text", "code", "name", "datetime", "date" suffix as needed ..and specially use "indicator" suffix for booleans -- if you call a field as "is_done", then it becomes confusing to identify the corresponding method : `is_is_done()` or `get_is_done()`?
 	
 	-- Neve contain id, only slug
+	-- As a good practice in REST design.. don't get a field from user that can be inferred.
+	-- The current design of validation means that there is no scope for fuzziness! Conside the following: Say you're asking someone for a historical info (say their last name), and that this differs from their current last name (due to life event) - then what should you do? One way could be to add a flag of "force_commit" -- the idea being that generally this flag would be false and this would cause validation error. But if force_commit is true, then don't raise error. To communicate to UI, maybe send these errors by listing fields under force_commit, and then adding list of errors that can be bypassed therein. This serves to form a "WARNING" kind of UI behavior.
+	-- Let's say you have a model that can have nullable fields (implying that a certain event did not occur). When this model is serialized, when the field has values, it gets returned. When field does not have values, a null is returned, but the response json can be defined in such a way that "null" values are auto-dropped. This is a known convention that a json having a field with null value is same as json not having that field. But this is response json.
+	
+	-- get datetime field (date + time + timezone). Don't separate the two
+	
+	-- Insecure deserialization vulnerability: https://blog.detectify.com/2018/03/21/owasp-top-10-insecure-deserialization/ -- and so, make DTO as POJO
+	
+
+
+	2way dto+controller:
+	-- Point being.. except the last path param (i.e. queryparam, all but last path param) - should go to dto's context. Don't use request-header to do so as headers should give metadata about request but not define processing steps expected of request
+	--|---- Ideally, if you are deserializing request body, then you got a POST, PUT, PATCH, DELETE call. In either case, you should not be having query Params. You can have path params and that defines some contextual object which may be needed by serializer. if so, pass those values in serializer context. If that is not feasible, then see if you can identify the calling view from serializer - in which case, you should define methods in calling view that reads the request and provides necessary objects. The goal of exercise is to prevent serializer from directly having access to request. This separates scope of view vs serializer. The serializer always deals with request/response body and that's it. The view now is the one that directly deals with the request, and if needed, reads values from there and passes to serializer. A related question to ask is whether it is necessary to send that extra data in serializer. If it is for validation, should the have been done in model.
 	
 	
-	2-way:
+	2-way dto+entity:
 	-- Mostly similar to Entity but can be slightly different. How to prevent unnecessar code duplication - one way could be to use a framework that simplifies DTO construction from model while also giving flexibility to change (example DRF's ModelSerializer), and also flexibility to make totally different DTO is needed. Don't just extend model to form dto as that creates tight coupling.
-	-- dto and user role: serialize / deserialize based on user role
+	-- Let's say you have a model that can have nullable fields (implying that a certain event did not occur). When this model is serialized, when the field has values, it gets returned. When field does not have values, a null is returned, but the response json can be defined in such a way that "null" values are auto-dropped. This is a known convention that a json having a field with null value is same as json not having that field. But this is response json (already discussed). Consider the flip side of request-json. Say, you want to update an existing model where you want to nullify the fields. You make a PATCH call. Should this have json request body with field name and a null value for it? Would this interfere with understanding that null valued field is as good as field being absent? You can say that you want asymmetry between how fields with null values are interpreted between request and response json. Now, consider if the request json is obtained by making call to some other service and by using its response json.. and we said that null values can be removed in response json. So, best, in such cases.. define a new field, like "nullify_{field}" in your DTO, such that if it is set, then you know that you must nullify the corresponding model fields.
+	
+	
+	
+	2way dto + user role: 
+	-- serialize / deserialize based on user role
+	
+	
+	
+	
+	3way transaction(2way) + dto
+	-- you can choose to change dto slug to corresponding entity. Since transaction is done at service level, but dto made at controller.. realize that if you do so, then you're doing slug ~~> entity transformation in dto at controller level, and hence at different transaction. In this case, you can't really do pessimistic locking and can only do optimistic locking. One can always have a service logic pull data again from DB and overwrite in DTO. One advantage of changing to entity in DTO is that on-null validations can then be applied. In general.. it might be better to convert to entity at DTO stage itself
 	
 	
 	

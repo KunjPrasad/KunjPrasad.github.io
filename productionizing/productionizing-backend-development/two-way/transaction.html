@@ -21,6 +21,11 @@
 	Add transaction should be at service level.. and same goes to repo -- so a 2way between service and repo layer
 	Don't have it at controller level
 	If controller has multiple service calls.. keep each call in a transaction. I have always noticed that generally 1 transaction is sufficeint.
-	Keep transaction short
+	Keep transaction short. Any long process or file upload/download should be done before / after the service call related to transaction
 	</p>
+	
+	<!--
+	--|---- At some pont, also look at DB isolation levels. make sure you understand what's happening, specially if you have a highly concurrent system. For same reason, best to do any file processing, etc. earlier before starting transaction and limit transaction to not contain big processing steps. And for this reason, best to not setup all views to automatically be wrapped in a transaction - because you may need to limit when/where a transaction happens, and to have more than 1 transaction per request
+	
+	-->
 </article>

@@ -22,5 +22,18 @@
 	<!--
 	helpful in initial stages of feature development when the development team is rolling out partial implementations of a new feature and so they don't want anyone accessing it.
 	close feature on security hole rather than turning entire website down
+	
+	
+			-- use switches to open/close features
+			--|---- Implement switches via aspects
+			--|---- Avoid using double negative in switch name
+			--|---- When failing due to switch, log it.
+			--|---- Have switch on service if the goal is to have switch be used experimentally and then always be on. Keep switch on model if feature needs to stay for long. If going for latter option, maybe also consider if you should instead just have different permission, and break table into different one-to-one subtables.
+			
+	
+	2-way: switch + user-role
+			--|---- Consider defining a role that is supersedes a switch. This can be useful for testing. Be careful defining users under it - and have it be very controlled.
+			
+	
 	-->
 </article>

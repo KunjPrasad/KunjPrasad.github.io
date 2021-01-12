@@ -19,14 +19,29 @@
 	<h2>Service</h2>
 	<p id="">Acknowledge that the terminology is Java focused - it means portions of code wth business logic. Couples to controller and repository only. may couple to other service methods.
 	
-	This is where business logic starts. Do business dependent validation. keep declerative
-	
 	<!--
-	-- service code must be as much declarative in nature. 
+	This is where business logic starts. Do business dependent validation.
+	service code must be as much declarative in nature. 
 	Retry logic: -- Making a unified client; Ambassador pattern
+	
+	
 	
 	2way:
 	dto and service: do validation first and fail fast. 
+	
+	
+	2way: service+security
+	-- doing any file processing in different server with stricter security
+	
+	
+	2way service+test
+	-- create mock for 3rd party api and background tasks and integration test it
+	
+	
+	3way: service + transaction (2way)
+	Handle one type of DB or file or MQ call per service. This allows having @transaction. For file / MQ processing, the corresponding service shouldn't have @transaction
+	--|----|---- Above is an example of interaction with multiple data store. In such cases, always have a background sync / clenup process. Also design your code to be able to do so. Use Transactional outbox pattern.. or if your code is in initial or non-complex stages, then just a logging with a periodic check might also suffice.
+	
 	
 	-->
 	</p>

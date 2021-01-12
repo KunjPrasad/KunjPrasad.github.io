@@ -27,10 +27,20 @@
 	--|---- repository - syncing between multiple repos using Transactional outbox; or use log + periodic task
 	-- database connection password change. Make sure to add retries so the transition is handled smoothly and not fails which is then pushed to service
 	-- move old file and old data to different database/filesystem.
+	
 	-- one application should own 1 DB and also "vice versa". Keep one-one ownership and interaction with other business sub-pieces via REST call, using org-wide JWT for authentication
+	--|---- Best practice is to have one application interact with one DB. Don't have many applications interact with one DB. instead require  from other applications that they make an API call to one of them to get the response. Similarly, while it is possible for one application to interact with multiple DB.. it is best to instead break those to smaller-applications and maintain one-DB--one-application relation. This allows for better data modeling and separation. How should the other applications deal with service outage is something that is best discussed and identified.
+	
+	
+	
 	
 	2way (Model-Repository)
 	-- store sensitive model data as encrypted. Keep changing this encryption key (different from DB connection pwd). When changing encrypion key, update all stored data. Have fallback logic to gracefully retry during transition.
+	--|---- consider using a framework, or adding a tempate yourself to help support aspect oriented design along database calls. This can be useful for audit tracking. 
+	--|---- (3way)..Although it can also be used for object level security - don't do so.. instead expose methods via controller and always interact with application by user, even for system calls
+	
+	
+	
 	
 	2way (Repository-Repository)
 	-- Discuss "select for update" vs "optimistic locking"
@@ -50,7 +60,29 @@
 			--|----|---- ALSO.. If your object has a lot of concurrent updates you are probably better off with the pessimistic approach. If you have updates happening outside the ORM (for example, directly in the database) the pessimistic approach is safer. If your method has side effects such as remote API calls or OS calls make sure they are safe (Taken from https://hakibenita.com/how-to-manage-concurrency-in-django-models)
 			--|---- **IMPORTANT**: Optimistic Locking is particularly good/useful for cases where partial update of row cannot be done. Thus the row completely updates in each operation. In such cases, row-versioning in optimistic locks prevent update on an old version of data. Note that optimistic locks are good to use when there is a low write/concurrent-update rate. Also, having this paradigm requires both an understanding from client and server side. Client must understand that they're trying to update a "version" data and that the operation can fail in which case they'll need to retry. However, depending on use-case server side may add some retry logic. On the other hand, select for update pauses the execution rather than causing failures like optimistic locks - so it is good for high write rate. Implementing optimistic locking is not available out of box so it needs extra coding work. RELATED: (i) Realize that model.save() can have additional referential checks before data is saved. Those checks get bypassed if using queryset.update() used for optimistic locking; (ii) since queryset.update() is getting invoked, then model's save() signal will not get invoked; (iii) save() method has an argument "update_fields" that can additionally be used for performance gains and to enable concurrent update of different portions of model. This feature can be used instead of update() for optimistic locking. **ALSO** don't worry about optimistic/pessimistic lock unless you're starting to see db contention.
 
+
+
 	
+	2way: repository (fao) + security:
+	-- file vulnerabilities: If you take a file-path param from user. Appication goes there and picks up file
+			--|---- abuse#1: use file-system pathway, like starting with ~, or ../../ - to go to other directories -- Best don't ask filepath from user. They should just be giving some filename and application should be able to identify path and use it
+			--|---- abuse#2: use filename like http://server.com/some-path - force application to do http call and download some bug, etc. - This means, that for all internal call between system to system.. always use JWT and a user. If using external  file pickup, then use oAuth. 
+			
+			
+			
+			
+	2way: repository+security
+	(NOTE: below is also covered in repository interaction. In the discussion below, design of DB table is entity interaction.. but actual retrieval is repository interaction)
+	--|----|---- Addition to above, in DB, separate out the table, so that the sub-portion that can be accessed by wider role user is a single table and the other restricted role access table is separate, joined to the former via a oneToOne relation.. and defining method preventing object access by other roles. How to define such a method is framework/language specific. This is a valid use case of havig role based security be defined at repository level. This is needed because when the code is running, then the server is one making request to DB to access data.. but it's actually doing it as part of a request triggered by a user. So, we need a mechanism to ensure that the request user is allowed access to a certain DB table. This should also ideally occur for all @OneToOne and @manyToOne ..maybe also for @OneToMany
+	-- Sensitive data exposure is a vulnerability. Add extra auditing / controls around sensitive data. Another option is to disallow reads of sensitive data except for admin role:: https://blog.detectify.com/2016/07/01/owasp-top-10-sensitive-data-exposure-6/ -- Maybe move all sensitive data to separate table
+	
+	-- SSRF (Server side request forgery) -- force a server to make request to unintended destination. This is bad because it breaks the trust in server. If there is any place in request-body or request-param where it is taking a url, that's bad. Can try putting in code in docx, pdf if you know it's going to get parsed/transformed and that can cause a hit on attacker webpage
+	
+	
+	
+	
+	2way: repository + controller
+	-- IDOR (insecure direct object reference) -- example can be checking parent child relation in REST call -- This is also a reason to use slug, and then define them in a random manner and not by joining fields because doing latter would make it guessable!
 	
 	-->
 	</p>
