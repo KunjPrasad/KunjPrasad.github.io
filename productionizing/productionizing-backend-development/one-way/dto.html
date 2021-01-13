@@ -26,7 +26,7 @@
 	
 	Not converting from body text to map.. but from map to object ..and vice versa
 	Different from entity - because S of SOLID
-	-- dto security: add file size limit, list size limit, string text size limit (this also limits xss attack), only certain string text characters allowed
+	-- dto security: add file size limit, list size limit, string text size limit (this also limits xss attack), only certain string text characters allowed (link to xss/ internal xss glossary)
 	--|---- If you are making a POST/PUT call that takes a list entry (like doing bulk create/update, etc), then a good idea is to ensure that the list takes only a max number of entries. It is a sanity check to prevent someone from sending an absurdly high number of entries and stopping the processing.
 	-- Always virus check a downloaded file. If possible, also do a magic check
 	-- Always sanitize html. Even better get it as markup. 
@@ -35,6 +35,11 @@
 	-- give importance to Serializer and model field name. Use "id", "text", "code", "name", "datetime", "date" suffix as needed ..and specially use "indicator" suffix for booleans -- if you call a field as "is_done", then it becomes confusing to identify the corresponding method : `is_is_done()` or `get_is_done()`?
 	
 	-- Neve contain id, only slug
+	**VERY VERY VERY IMPORTANT**: Displaying sequential primary keys is to be avoided because:
+			--|----|---- They inform potential rivals or hackers of your volume
+			--|----|---- By displaying these values we make it trivial to exploit InsecureDirectObjectReferences <-- important
+			--|----|---- We also provide targets for XSS attacks
+	
 	-- As a good practice in REST design.. don't get a field from user that can be inferred.
 	-- The current design of validation means that there is no scope for fuzziness! Conside the following: Say you're asking someone for a historical info (say their last name), and that this differs from their current last name (due to life event) - then what should you do? One way could be to add a flag of "force_commit" -- the idea being that generally this flag would be false and this would cause validation error. But if force_commit is true, then don't raise error. To communicate to UI, maybe send these errors by listing fields under force_commit, and then adding list of errors that can be bypassed therein. This serves to form a "WARNING" kind of UI behavior.
 	-- Let's say you have a model that can have nullable fields (implying that a certain event did not occur). When this model is serialized, when the field has values, it gets returned. When field does not have values, a null is returned, but the response json can be defined in such a way that "null" values are auto-dropped. This is a known convention that a json having a field with null value is same as json not having that field. But this is response json.
@@ -42,6 +47,7 @@
 	-- get datetime field (date + time + timezone). Don't separate the two
 	
 	-- Insecure deserialization vulnerability: https://blog.detectify.com/2018/03/21/owasp-top-10-insecure-deserialization/ -- and so, make DTO as POJO
+	--|--- related:  If working with custom user data which can be xml.. then realize that there can be a ddos attack done. See https://en.wikipedia.org/wiki/Billion_laughs_attack -- the article mentions that this attack can be done on any language with references (like, on YAML) -- point being -- only take expected data format from users.. don't take anything generic. However, this can' be avoided when working with files.. and that's why it should be done on different server (see repository + secuirty)
 	
 
 

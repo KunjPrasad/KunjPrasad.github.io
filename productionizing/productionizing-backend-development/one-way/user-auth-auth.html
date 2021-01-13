@@ -30,7 +30,8 @@
 	-- Don't use presence of an auth header for authorization
 	-- keep cycling JWT secret. make sure to have retry to handle transition rather than bubble failure up
 	-- keep rate limit logic outside controller.. at filter level - because it is a permission. Als, return proper error code (429). Similarly, return proper error code of authentication failure (401) vs authorization fail (403) - unless auth fail happened and user is anonymous.. in which case, raise 401
-	--jwt: works in microservice, i..e for service to service communication; also can use if you want to move from one system to other -- but it may be a hassle for users to type long jwt. Can instead use it to form simple one time bearer token
+	
+	--jwt: works in microservice, i..e for service to service communication; also can use if you want to move from one system to other -- but it may be a hassle for users to type long jwt. Can instead use it to form simple one time bearer token. JWT ~~> cloud readiness: -- Cloud-readiness: That involves not relying on session. So, authentication via cookie goes out and JWT comes in. Recall that JWT gives client side cloud-readines.. and this applies even if website is interacting with single domain
 	
 	-- Each request, even from async tasks.. should be as a request from a user. background tasks come as request from system user with a certain correct role. Gives uniformity in handling the task, logging, etc.
 	
@@ -52,8 +53,15 @@
 	-- Sensitive data exposure is a vulnerability. Add extra auditing / controls around sensitive data. Another option is to disallow reads of sensitive data except for admin role:: https://blog.detectify.com/2016/07/01/owasp-top-10-sensitive-data-exposure-6/ -- Maybe move all sensitive data to separate table
 			
 	
+	
+	
 	-- auth + controller
 	--|---- if your CORS setting allows having request from different domain (because you are a provider), then need CSRF prevention even on a GET call. If you have a UI then allowing calls only from it can prevent need for CSRF on GET. Still need to tackle it for othr calls.
+	--|---- In most case, CSRF is restricted to attack where an attacking website tricks user to make a request that causes a mutation (in favor of attacker). However, when server returns a response --in these cases-- it will not have CORS' allow all origin header. So, even though a mutation is made, the response of it never goes back to attacker.  HOWEVER consider the case where the server is of a business that is an utility-provider, say, like USPTO. Now, server can and should expect that different domains will be calling it - and so, it now needs to set CORS header to allow all origin. But this opens up a different problem in that even for non-mutating calls (GET call), the attacker can now see sensitive user data - and the webpage won't restrict it because CORS is effectively disabled. In such cases, it is necessary to have CSRF protection even on GET calls. 
+	--|---- **VERY VERY IMPORTANT** The advantage of JWT comes here in that JWT created by one can be used by other.. token can be passed on front-end.. back-end.. etc. As long as token passes, the authentication continues and there's no need to worry of CSRF token. 
+	--|----|---- RELATED: https://engineering.mixmax.com/blog/modern-csrf/
+	
+	--|---- (may be done in user-auth-auth 1way; or 2way auth+controller) If you also give an UI.. To prevent phishing, allow users to set an initial profile token that is showed when they log in. And allow this only on request coming from your UI domain (also adding for UI). This also tells user that they are the one logging in ..and they logged in for first time, then they see that they're loggin in for the first time. If doing so, remember to not ask for any PII when setting this value
 	
 	
 	3way: auth + user+code-arrangement:

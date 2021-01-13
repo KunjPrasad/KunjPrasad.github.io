@@ -112,14 +112,8 @@
 			-- Security based on hidden variable name alone isn't security
 			-- Add other security issues. mention content security policy. Add ModHeader and add response header
 			
-			--|---- Is CSRF protection needed with GET call? -- Generally NO. 
-			--|---- (may be done in user-auth-auth 1way; or 2way auth+controller) In most case, CSRF is restricted to attack where an attacking website tricks user to make a request that causes a mutation (in favor of attacker). However, when server returns a response --in these cases-- it will not have CORS' allow all origin header. So, even though a mutation is made, the response of it never goes back to attacker.
-			--|---- (may be done in user-auth-auth 1way; or 2way auth+controller) HOWEVER consider the case where the server is of a business that is an utility-provider, say, like USPTO. Now, server can and should expect that different domains will be calling it - and so, it now needs to set CORS header to allow all origin. But this opens up a different problem in that even for non-mutating calls (GET call), the attacker can now see sensitive user data - and the webpage won't restrict it because CORS is effectively disabled. In such cases, it is necessary to have CSRF protection even on GET calls. 
-			--|---- **VERY VERY IMPORTANT** The advantage of JWT comes here in that JWT created by one can be used by other.. token can be passed on front-end.. back-end.. etc. As long as token passes, the authentication continues and there's no need to worry of CSRF token. 
-			--|----|---- RELATED: https://engineering.mixmax.com/blog/modern-csrf/
-			--|----|---- RELATED: IF HOWEVER you're using cookie.. use "SAMESITE" setting on cookie
 			--|---- Login CSRF
-			--|---- (may be done in user-auth-auth 1way; or 2way auth+controller) If you also give an UI.. To prevent phishing, allow users to set an initial profile token that is showed when they log in. And allow this only on request coming from your UI domain (also adding for UI)
+			
 			--|---- Don't rely on cookie only for security. Use CSRFToken, or JWT. Using both is overkill. JWT does make you cloud ready
 			
 			-- Look for notes in spring security, like changing session after login, clearing session on logout, adding x-content-type-options: nosniff. 
@@ -131,19 +125,15 @@
 			--|---- Section 26.13 on Pg.357 about file handling. 
 			--|----|---- Use CDN for file (I think this is more of a performance thing and to prevent getting your server drowned in false request).
 			--|----|---- Since user uploaded file can have xss content, so don't have it open in browser by only allowing it to be downloaded - done by setting "content-disposition:attachment"
-			--|----|---- When storing user-uploaded file, make sure they never get the "Executable" permission, even by self. Be very very careful if your workflow requires you to process files. Have it done somewhere else. Maybe also put upload size restriction; rate-limit based on ip / user-role-type; do virus scan. Wonder if a good thing would be to always encrypt file on disk - both for data security, plus the file gets jumbled so cannot execute. When storing user-file, never make the file-extension visible, instead have it only be in DB. Maybe also randomly chunk the file so it never makes sense on own (do so after encrypting entire file) -- do note that if you're accepting chunked files, then do a virus scan on combined files before continuing
-			--|----|---- Use "magic" to inspect file-headers. For example: python has https://github.com/ahupp/python-magic
+			
 			--|---- **VERY VERY VERY IMPORTANT**: If working with custom user data which can be xml.. then realize that there can be a ddos attack done. See https://en.wikipedia.org/wiki/Billion_laughs_attack -- the article mentions that this attack can be done on any language with references (like, on YAML)
-			--|---- **VERY VERY VERY IMPORTANT**: Displaying sequential primary keys is to be avoided because:
-			--|----|---- They inform potential rivals or hackers of your volume
-			--|----|---- By displaying these values we make it trivial to exploit InsecureDirectObjectReferences <-- important
-			--|----|---- We also provide targets for XSS attacks
+			--|---- 
 			
 			
 			-- sql injection
 			-- Avoid inernal XSS. This comment is written earlier also::  If your DTO fields, path param, etc. has constrainst, like can be a-z,A-Z,0-9,_, then also realize these constraints in the field definition. DOn't just take any arbitrary string. Take only the ones expected. This can be useful in preventing internal xss, i.e., say as part of your logic, you are logging these field values, etc. - and then are running some daily background task, possibly to collect some metric. Since these are external user data - you shouldn't be trusting it.. and some user may try to pass in a script that inadvertantly gets run. This is internal XSS. The point is - don't trust any data comingf rom out till you've verified it. Similar also holds for fields containing html text from user.. Best would be to just get markup (and define an enum type column which highlights that the entry being read is of markup type, not html).. but if you do need to store html, then escape it as you form the request body itself. Also note that this promotes reusability, setting standards in project.
 			
-			JWT ~~> cloud readiness: -- Cloud-readiness: That involves not relying on session. So, authentication via cookie goes out and JWT comes in. Recall that JWT gives client side cloud-readines.. and this applies even if website is interacting with single domain
+			
 			
 			
 			

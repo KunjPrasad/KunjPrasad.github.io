@@ -63,7 +63,7 @@
 
 
 	
-	2way: repository (fao) + security:
+	2way: repository (fao) + security: 
 	-- file vulnerabilities: If you take a file-path param from user. Appication goes there and picks up file
 			--|---- abuse#1: use file-system pathway, like starting with ~, or ../../ - to go to other directories -- Best don't ask filepath from user. They should just be giving some filename and application should be able to identify path and use it
 			--|---- abuse#2: use filename like http://server.com/some-path - force application to do http call and download some bug, etc. - This means, that for all internal call between system to system.. always use JWT and a user. If using external  file pickup, then use oAuth. 
@@ -77,6 +77,10 @@
 	-- Sensitive data exposure is a vulnerability. Add extra auditing / controls around sensitive data. Another option is to disallow reads of sensitive data except for admin role:: https://blog.detectify.com/2016/07/01/owasp-top-10-sensitive-data-exposure-6/ -- Maybe move all sensitive data to separate table
 	
 	-- SSRF (Server side request forgery) -- force a server to make request to unintended destination. This is bad because it breaks the trust in server. If there is any place in request-body or request-param where it is taking a url, that's bad. Can try putting in code in docx, pdf if you know it's going to get parsed/transformed and that can cause a hit on attacker webpage
+	
+	--|----|---- When storing user-uploaded file, make sure they never get the "Executable" permission, even by self. Be very very careful if your workflow requires you to process files. Have it done somewhere else. Maybe also put upload size restriction; rate-limit based on ip / user-role-type; do virus scan. Wonder if a good thing would be to always encrypt file on disk - both for data security, plus the file gets jumbled so cannot execute. When storing user-file, never make the file-extension visible, instead have it only be in DB. Maybe also randomly chunk the file so it never makes sense on own (do so after encrypting entire file) -- do note that if you're accepting chunked files, then do a virus scan on combined files before continuing
+	--|----|---- Use "magic" to inspect file-headers. For example: python has https://github.com/ahupp/python-magic
+	--|----|---- Above also relates to why dto should always have fixed structure (see billion laugh attack) referred under dto
 	
 	
 	

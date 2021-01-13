@@ -23,7 +23,7 @@
 	
 	<!--
 	-- model field level validation; model class level validation -- but warn that these mean permanent definition. Field/Class level validation includes things that you'd have wanted in SQL and in table definition itself.. but couldn't due o limitation of SQL. Think of Model as a deserialized form of database table row -- because that's what ORM does. If some validation logic seems getting repeated, then can define it in a separate class to promte reusability
-	--|---- define fields as something that is restrictive in type of values it can contain. don't just take any char-field. Take only a-z,A-Z,0-9. This is good security practice.
+	--|---- define fields as something that is restrictive in type of values it can contain. don't just take any char-field. Take only a-z,A-Z,0-9 (link to xss/ internal xss glossary). This is good security practice.
 	--|---- In making a html safe.. define an "accept list" of tags that won't be escaped. DOn't instead define "reject list", i.e. list of tags that won't be accepted.. because you never know what might get missed. Having an accept list is better.
 	
 	-- give importance to Serializer and model field name. Use "id", "text", "code", "name", "datetime", "date" suffix as needed ..and specially use "indicator" suffix for booleans -- if you call a field as "is_done", then it becomes confusing to identify the corresponding method : `is_is_done()` or `get_is_done()`?
@@ -69,7 +69,8 @@
 			
 	--|---- If a model has fields that override value of a preceeding model, then define custom getter such that it reads the overriden value if available, else read the original value.
 	
-	--|---- Use blank still, not null -- check with business requriements though. This does not extend to all fields that are string valued, for example, don't use empty datetime field instead of null.. because empty datetime field is an ill-formatted entry
+	--|---- Use blank still, not null -- check with business requriements though. This does not extend to all fields that are string valued, for example, don't use empty datetime field instead of null.. because empty datetime field is an ill-formatted entry. 
+	--|----|---- This further related to: As much possible, add default value to a field if applicable. For example, you're making a campaign and want to count people contacted ~~> default=0! Maybe having "null" indicates that campain has been setup but not started.. but doing so is now indicative of even worse thing.. using a field for more than 1 purpose, i.e. if it's null, then campaign hasn't started. But if it is non-null, it has started, and can have value=0 or 1.. Why not just have a separate status column to identify the status. What if in future, you start a campaign, but want to rollback or pause for some time.. you'll reset it to null and lose data?
 	
 	-- DateTime field, always in UTC. Save timezone as needed - in separate field in data model. Also identify if timezone captured in one domain applies to other tables.
 	
