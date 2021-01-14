@@ -139,8 +139,13 @@
 			
 			database:
 			ACID, CAP
+			
 			normalization / denormalization
+			-- for normalization and different factors: see https://en.m.wikipedia.org/wiki/Database_normalization -- think of it as: not having multiple values in 1 column >> all value must relate to unique key combination >> all values must relate to the "full" unique key combination >> all "individual" value must relate only to unique combination and not to any other field >> unique combination should not be splittable. 
+			-- This is another reason to prefer storing constant data in table rather than in enum.. because once in Enum, it sort of becomes hidden.. specially the portion that different columns should not have relation between each other.
+			
 			Optimistic vs Pessimistic Locking
+			
 			
 			
 			
