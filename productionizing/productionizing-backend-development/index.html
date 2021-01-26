@@ -39,6 +39,7 @@
 			<a id="1607048361" href="one-line-summary.html">One line summary</a>
 			<a id="1606703843" href="personal-notes.html">Personal notes</a>
 			<a id="1606665918" href="/utilities/disclaimer-generic.html">Disclaimer</a>
+			<a id="1611203334" href="/utilities/acknowledgement-generic.html">Acknowledgement</a>
 			<section>
 				<h2>Glossary</h2>
 				<a id="1608303678" href="glossary/req-resp.html">Request and response related terms</a>
@@ -46,6 +47,7 @@
 				<a id="1608344347" href="glossary/testing.html">Testing related terms</a>
 				<a id="1608344358" href="glossary/housekeeping.html">Application housekeeping related terms</a>
 				<a id="1608344368" href="glossary/infrastructure.html">Infrastructure related terms</a>
+				<a id="1611200362" href="glossary/data-storage.html">Data storage related terms</a>
 				<a id="1608344385" href="glossary/architecture.html">Architecture related terms</a>
 			</section>
 			<section>
@@ -73,43 +75,17 @@
 			
 			<!-- TODO
 			
-			
-			Make separate glossary for storage. Link it in infrastructure, saying it has been separated. Include SSD, memory, disk storage . Cache as a smart map; in-memory, distributed or on fast disk... Add network latency in infra glossary.. same rack is faster for network
-			
-			
-			
 			//GLOSSARY
 			
-			Testing
-			-- negative tests; proper naming; arrange-act-assert
-			-- testing as means of documentation -- and matching iwth requirements (functional) - so keep it as small possible to individual "requirement" level. Give proper name. Arrange, act, assert. 
-			--Easier to check bugs
 			
-			
-			Monitoring: -- in housekeeping
-			-- LIGHTSTEP - DISTRIBUTED TRACING:  **DOn't give actual implementation since you didn't write it
--- OpenTracing API
--- Defines "Span" : smallest unit of distributed trace
--- OpenTracing defines how to collect Span
--- LightStep is a provider that allows for collecting Spans
--- OpenCensus made by Google, now joined with OpenTracing to form OpenTelemetry (datadog style metrics along with openTracing)
--- can also run locally in developer mode and see the queries being made, and time taken
--- tracing does not depend on language being used.. as long as everyone uses openTracing, then everyone gets the span trace, even for 3rd party library
 
-			
-			WRITING COMMENTS: -- in housekeeping
--- When in doubt search for google style guide on comment for that language.
--- Remember "comment maintenance" is also a burden that cannot be done by compiler - and takes team-time. So try to balance it
--- Maybe start by writing comment at top of file about what it does.
--- When writing comments, always start at top-most level "code-item", like Component (in JS) and Classes (in Python). This should be most general, and being highest in level, it should be more "declarative" in nature than imperative, i.e. highlight more on what/why rather than how. 
--- Then, go to specific functions "..which are exported" and write comments about their behavior. Include more description - but stick to what/why rather than how
--- Only inside code, if you are adding comment, then it's likely to be to explain something. BUT.. before doing so, consider the following:
---|----- Maybe change magic number by aptly named constant. Thus won't need to add comment
---|----- A good place for comment in if you feel that the function has stages/chunks but you don't want to make the code unnecessarily small by pre-emptively breaking it
+
+
+			In OOP:
 			-- Related: Give proper variable name, don't skimp!!
+			-- proper convention for variable naming, method and class naming.
 			
 			
-			-- Maintain read only replica for speed
 			
 			
 			Security
@@ -129,6 +105,7 @@
 			--|---- Section 26.13 on Pg.357 about file handling. 
 			--|----|---- Use CDN for file (I think this is more of a performance thing and to prevent getting your server drowned in false request).
 			--|----|---- Since user uploaded file can have xss content, so don't have it open in browser by only allowing it to be downloaded - done by setting "content-disposition:attachment"
+			--Link to glossary >> storage >> filesystem >> garbage data.. that it needs to be encrypted, else it can be accessed by someone who gets proper access to your notebook (i.e. filesystem). Also, that's why everything must be purged before throwing disk.
 			
 			--|---- **VERY VERY VERY IMPORTANT**: If working with custom user data which can be xml.. then realize that there can be a ddos attack done. See https://en.wikipedia.org/wiki/Billion_laughs_attack -- the article mentions that this attack can be done on any language with references (like, on YAML)
 			--|---- 
@@ -149,6 +126,9 @@
 			-- This is another reason to prefer storing constant data in table rather than in enum.. because once in Enum, it sort of becomes hidden.. specially the portion that different columns should not have relation between each other.
 			
 			Optimistic vs Pessimistic Locking
+			
+			Make separate glossary for storage. Link it in infrastructure, saying it has been separated. Include SSD, memory, disk storage . Cache as a smart map; in-memory, distributed or on fast disk... Add network latency in infra glossary.. same rack is faster for network
+			-- Maintain read only replica for speed
 			
 			
 			
@@ -234,6 +214,7 @@
 			-- single place to control what all is logged.. to have logs in standard format. To remove sensitive data
 			
 			
+			
 			HATEOAS + SWAGGER!!:
 			
 			-- By OPTIONS spec "The response payload, if any, might also describe the communication options in a machine or human-readable representation.  A standard format for such a representation is not defined by this specification, but might be defined by future extensions to HTTP.  A server MUST generate a Content-Length field with a value of "0" if no payload body is to be sent in the response."
@@ -261,6 +242,29 @@
 			
 			
 			Governor service
+			
+			
+			
+			Code arrangement
+			-- arrange by module, rather than by type: like add model at one place, all service at another, etc.. instead divide by functionality. 
+			-- this ties into data domain modelling... the problem that comes is DAG ordering.. Ideally the "home" app depends on all separate module, but each module depends on model.. which should instead be defined by "home" app. This breaks a single module into further 2 pieces: containing model, vs containing service. But, better would be if framework provides way to register models (like django)
+			-- link to "dependency inversion" -- forming a general code that calls a specific one -- to be guiding code arrangement
+			-- just to highlight again.. follow naming convention (link to OOP architecture) + any org specific naming (like using identifier, type, code, text suffix in field names), or any org specific business names (in one way >> entity and dto)
+			
+			-- after code arrangement is done.. then comments come up. The topmost level comment should describe the goal of code, something that's also reflected by code arrangement. Then describe the goal for each method in it.
+			
+			
+			WRITING COMMENTS: -- in housekeeping
+-- When in doubt search for google style guide on comment for that language.
+-- Remember "comment maintenance" is also a burden that cannot be done by compiler - and takes team-time. So try to balance it
+-- Maybe start by writing comment at top of file about what it does.
+-- When writing comments, always start at top-most level "code-item", like Component (in JS) and Classes (in Python). This should be most general, and being highest in level, it should be more "declarative" in nature than imperative, i.e. highlight more on what/why rather than how. 
+-- Then, go to specific functions "..which are exported" and write comments about their behavior. Include more description - but stick to what/why rather than how
+-- Only inside code, if you are adding comment, then it's likely to be to explain something. BUT.. before doing so, consider the following:
+--|----- Maybe change magic number by aptly named constant. Thus won't need to add comment
+--|----- A good place for comment in if you feel that the function has stages/chunks but you don't want to make the code unnecessarily small by pre-emptively breaking it
+
+<p id="1610857363">API documentation is a technical content containing instructions about how to effectively use and integrate with an API. It’s a concise reference manual containing all the information required to work with the API, with details about the functions, classes, return types, arguments and more, supported by tutorials and examples. This is traditionally done using by writing text content, like <a href="https://en.wikipedia.org/wiki/Javadoc" target="_blank">java-doc</a> in Java and <a href="https://en.wikipedia.org/wiki/Docstring" target="_blank">doc-string</a> in Python. Although the previous lines are pulled from a <a href="https://swagger.io/blog/api-documentation/what-is-api-documentation-and-why-it-matters/" target="_blank">blog post in Swagger.io</a>, I am personally of the view that Swagger is not a documentation tool, but a tool for generating api-specification (see <a href="#1608689286" data-nav-id="1608344358">discussion about Swagger within the housekeeping glossary</a>). For example, Swagger gives details about the API endpoint as a whole, but the code documentation is expected to give separate details at controller, service, utility class, etc. level. This section briefly highlights some considerations that a developer must keep when writing code documentation.</p>
 			
 			
 			
