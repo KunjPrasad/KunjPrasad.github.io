@@ -1,1 +1,10 @@
 link to prod prod - to help interviewee get an understanding of different hr questions.. why they exist and what is a way to resolve it
+
+
+
+
+interview:
+-- for every 1 person hired, 3 are denied because they couldn't code;
+and for every 5 people hired, 1 is denied because they are rude. So,
+be skilled, think out loud (to get partial credits), ask, analyze
+-- code review : should be explaining, not dictating

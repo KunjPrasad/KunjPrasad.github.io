@@ -51,6 +51,10 @@
 	-- Insecure deserialization vulnerability: https://blog.detectify.com/2018/03/21/owasp-top-10-insecure-deserialization/ -- and so, make DTO as POJO
 	--|--- related:  If working with custom user data which can be xml.. then realize that there can be a ddos attack done. See https://en.wikipedia.org/wiki/Billion_laughs_attack -- the article mentions that this attack can be done on any language with references (like, on YAML) -- point being -- only take expected data format from users.. don't take anything generic. However, this can' be avoided when working with files.. and that's why it should be done on different server (see repository + secuirty)
 	
+	
+	-- Serializer: A good practice can be to check that your request isn't getting more fields than expected (based on user role). It could be a sign of broken integration/communication somewhere if that's happening. See https://stackoverflow.com/questions/22178266/django-rest-framework-raise-error-when-extra-fields-are-present-on-post
+
+	
 
 
 	2way dto+controller:
@@ -62,10 +66,13 @@
 	-- Mostly similar to Entity but can be slightly different. How to prevent unnecessar code duplication - one way could be to use a framework that simplifies DTO construction from model while also giving flexibility to change (example DRF's ModelSerializer), and also flexibility to make totally different DTO is needed. Don't just extend model to form dto as that creates tight coupling.
 	-- Let's say you have a model that can have nullable fields (implying that a certain event did not occur). When this model is serialized, when the field has values, it gets returned. When field does not have values, a null is returned, but the response json can be defined in such a way that "null" values are auto-dropped. This is a known convention that a json having a field with null value is same as json not having that field. But this is response json (already discussed). Consider the flip side of request-json. Say, you want to update an existing model where you want to nullify the fields. You make a PATCH call. Should this have json request body with field name and a null value for it? Would this interfere with understanding that null valued field is as good as field being absent? You can say that you want asymmetry between how fields with null values are interpreted between request and response json. Now, consider if the request json is obtained by making call to some other service and by using its response json.. and we said that null values can be removed in response json. So, best, in such cases.. define a new field, like "nullify_{field}" in your DTO, such that if it is set, then you know that you must nullify the corresponding model fields.
 	
+	-- See https://stackoverflow.com/questions/12168624/pagination-response-payload-from-a-restful-api/12171176#12171176 -- use of link header for sending paginated response. Good idea. Decouples extra data from response body. Advantage of using "header" for pagination:: any swagger codegen client remains same.. essentially your data structure is same regardless of pagination / whole.. so is a good behavior in moving from mvp stage low list size to large list size.. Any analysis you may do on response (governor service), any documentation, etc..
+	
 	
 	
 	2way dto + user role: 
 	-- serialize / deserialize based on user role
+	
 	
 	
 	
