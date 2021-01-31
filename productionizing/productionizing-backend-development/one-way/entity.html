@@ -86,6 +86,27 @@
 			
 	
 	
+	data denormalization: statistics.. when speed is needed, or when doing
+reporting. That's why reporting is generally kept separate from data
+modeling, done separately (housekeeping). This can show up in sprint
+like behavior, causing your db to have both the entries.
+
+
+DB: generally, when you have foreign key relation, you want to save it
+from deletion, or cascade delete or set it to null. However,
+if-and-only-if you're storing some auditing / reporting value that you
+want to save even when original entry is deleted.. then don't have
+foreign key relation.. and just store the value. Realize that doing so
+can also help table make a column "multifunctional", i.e. the "id"
+value stored in a column refers to "id" of different table depending
+on value in some other column. Once again.. if-and-only-if, this saved
+data must exist even after original data in some table is deleted..
+then only do both above, else, have strong foreign key relation - or
+risk having inconsistent data that now needs to be programmatically
+normalized.
+	
+	
+	
 	
 	
 	2 way (Model-Model):

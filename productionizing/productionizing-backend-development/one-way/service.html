@@ -26,6 +26,11 @@
 	Retry logic: -- Making a unified client; Ambassador pattern
 	
 	
+	See http://web.archive.org/web/20120827100207/http://www.cbare.org/writing/Transactions/transactions.html -- mentioned in db-storage glossary. At end, it has "Tips for writing efficient transactions" which include "avoid performing slow operations like user input in a transaction", and generally "reduce time spent holding locks"
+	
+	Transaction is one request long, due to http being stateless and each request being independent
+	
+	One transaction per service. because service is representation of work asked for in a request; Controller is web to code matching and back - so it should not have transaction
 	
 	2way:
 	dto and service: do validation first and fail fast. 
@@ -43,6 +48,7 @@
 	Handle one type of DB or file or MQ call per service. This allows having @transaction. For file / MQ processing, the corresponding service shouldn't have @transaction
 	--|----|---- Above is an example of interaction with multiple data store. In such cases, always have a background sync / clenup process. Also design your code to be able to do so. Use Transactional outbox pattern.. or if your code is in initial or non-complex stages, then just a logging with a periodic check might also suffice.
 	
+	In recent times, with the emphasis on <a href="#1609350800" data-nav-id="1608344385">microservice</a> structure, it is preferred to process distributed transactions using asynchronous using <a href="https://microservices.io/patterns/data/transactional-outbox.html" target="_blank">transactional outbox pattern</a> rather than using <a href="https://en.wikipedia.org/wiki/X/Open_XA" target="_blank">XA</a> manager.
 	
 	-->
 	</p>
