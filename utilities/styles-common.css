@@ -170,6 +170,10 @@ nav section > h2 {
 	margin-bottom: 1rem;
 }
 
+.shown-individually-but-hidden-in-ebook {
+	display: none;
+}
+
 .table {
 	text-align:left;
 	caption-side: top;
