@@ -1,0 +1,86 @@
+<!--
+    HTML book section: Code Arrangement in Advanced Topics for Productionizing Backend Development, by Kunj Prasad on Github.
+    Copyright (C) 2020  Kunj Prasad
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<article>
+	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1612275340">here</a></strong></i></aside>
+	<h2>Code arrangement</h2>
+	<p id=""></p>
+	
+	<!--
+	
+			Code arrangement
+			-- arrange by module, rather than by type: like add model at one place, all service at another, etc.. instead divide by functionality. 
+			-- this ties into data domain modelling... the problem that comes is DAG ordering.. Ideally the "home" app depends on all separate module, but each module depends on model.. which should instead be defined by "home" app. This breaks a single module into further 2 pieces: containing model, vs containing service. But, better would be if framework provides way to register models (like django)
+			-- link to "dependency inversion" -- forming a general code that calls a specific one -- to be guiding code arrangement
+			-- just to highlight again.. follow naming convention (link to OOP architecture) + any org specific naming (like using identifier, type, code, text suffix in field names), or any org specific business names (in one way >> entity and dto)
+			
+			-- after code arrangement is done.. then comments come up. The topmost level comment should describe the goal of code, something that's also reflected by code arrangement. Then describe the goal for each method in it.
+			
+			--|---- Modular design means that one can have separate modules / repos where a portion of model is defined and then it is imported under the main project. When doing so, create an implementation-extension of the entity class in different modules and add it to main code, and then use those class as basis to have a unified DB migration file. Don't separate out migrations because in a scrum environment, it may not be clear on how relation between tables can evolve.. new parent tables can get made (particular standard data table), etc. - so, always create a copy of all DB tables involved in main app, and use that to make migrations, and define model level save() and validate() method. This also prevents validation logic to get distributed at multiple places - and keep it unified. 
+			
+			--|---- Producer vs consumer mindset in defining models. This is the first place where the difference shows up because all stages before it (defining response, request, url) are explicitly consumer focused. This is the first time where you go into an internal implementation where you may pick another library or module that then exists at par with other DB models you made. One common example is for authentication purpose, or say, audit tracking. (Not quite.. authentication - login / logout can also be from a common module) -- say more discussed later.. see advanced case of producer vs consumer
+	
+	
+	
+	
+			Discuss code arrangement based on above -- in infrastructue code repo (**maybe make 1way entry for it.. and add an interaction to arrange code keeping all contextually relevant pieces in 1 folder.. keep context priority of code-type, like all service, or all controller at one place)
+			-- differentiate between view utilities vs just utilities; any method requiring handle to request should be related to view and nothing else. Even though serializer deals with request body, the view should create a context for it and pass related arguments. Don't have the serializer directly call request or read from it
+			-- differentiate between global utils vs package level utils
+			-- positioning of constants
+			--|---- One thing that can be placed in global scale constants file (and not constants defined in each sub module) is if the project is importing a 3rd party library, and the utilities in it use some string formats, etc. Since the import applies globally, so it comes to be that any constants being defined for use therein must also be global. Best is to start by defining things locally, and then move them to global if it gets reused at different places - to have a DAG structure. This does require extra work in being agile to refactor.. but is good practice as it keeps context in understanding what a constant does and in what scope is it used.
+			-- Inheritance vs composition
+			-- abstraction vs encapsulation: DIfferent for python, JS vs for java
+			-- long file vs short file
+			
+			-- include documentation and scripts folder
+			
+			-- If you are having different project that can talk with each other.. then make sure that can also be done in local. It can be needed later on to be able to have this feature.
+			
+			Utility class/methods : mention they are defined if they are used at multiple places (maybe keep it in code arrangement). Also that there can be different utility for different controller / service / repo
+			
+			-- put common functionality in abstract classes.. Mixins..
+			
+			-- Advanced case: Producer vs consumer
+			--|---- In designing/coding - and particularly regarding models, REALIZE that the difference between producer and consumer mindset is and important difference to identify. When you are coding as producer, you want your codebase to be as compliant to SOLID, it'll be open for expansion, but different functionalities will be in different files and you'll have more "distributed" codebase. the drawback, maybe you may one change, but forget to make related change elsewhere because by design concept -- everything is open - so a change at one place doesn't/shouldn't affect other places. When coding as consumer, you purposefully accept that code won't go to someone else and you have full control over its consumption and API structure. You can add efficiency with this mindset. But this affects code resiliency. Most common, you'll run into import loops and/or will want to move some code to utils.. which brings up question of why not do that since beginning. STILL.. even in consumer mindset, remember to not break DAG!! -- things are easily factored as long as both app, module, sub-module level dag is not broken.. particularly removing order of __init__.py
+			--|---- This is probably biggest design contention when you are producing and using the codebase in your application. The tensions come up because a group is both producer and consumer - so both viewpoints are correct. However, traditional viewpoints of quickness, efficiency, related features at one place because you're the only one so why proliferate code -- come up and may blindside the efforts. Do realize it comes with a future cost in that there can be future issues.. so do keep that in mind - particularly if in scrum workflow. Again, nothing that can't be changed - but it'll need extra time/money. Personally, having a producer mindset is better because it keeps development open towards future changes, but it causes a distributed code.
+			--|---- **Thinking about producer vs consumer mindset is a good way to reason about having abstract classes in each project and then have them implemented in your project's home app. This way, the definitions in each sub-app gives a basic skeleton.. that you modify as necessary when adding it in home-app
+			--|---- one aspect is whether they should contain method to define nonDB-related ASPECT-LOGIC (like fields that should be logged), field based object-access, or whether that logic should be in some other class. Having things are one place bloats model, makes model definition dependant on context (which is something that may be good if you are end consumer -- as it keeps all related code at one place and low chance of missing things, but not a provider), also you may get forced to scenarios that don't respect DAG!
+			--|---- Thinking along lines of differences between producer and consumer mindset is also a good way to think whether the model should be kept as much POJO and related methods to moved to separate utility class, or if related methods be added inside the model itself. Former is a producer mindset and latter is a consumer mindset. The disadvantage of latter is that now, classes that lie higher up in DAG precedence can be made to have functions that apply on classes that come lower in DAG precedence. Then, it moves to having those special methods in separate utility.. then it becomes why not just put everything there.. or maybe DAG relation was previously not very defined, but it gets so at later time, and now the chain is broken.
+			--|---- Where should validation lie when dealing with discrete valued "status" type fields in model-vs-serializer -- see above comment!!
+			--|---- From above, it seems that producer should only give basic pojo classes. Actually, differentiation between the two depends on the amount of functionality you want to add. If you give max freedom of extension, then you won't be able to add function, or will give something too fragmented. A good trade-off is to give an interface and some sort of basic implementation.
+			
+			
+			
+			
+			
+	
+			WRITING COMMENTS: -- in code-arrangement: because even comments are code
+-- When in doubt search for google style guide on comment for that language.
+-- Remember "comment maintenance" is also a burden that cannot be done by compiler - and takes team-time. So try to balance it
+-- Maybe start by writing comment at top of file about what it does.
+-- When writing comments, always start at top-most level "code-item", like Component (in JS) and Classes (in Python). This should be most general, and being highest in level, it should be more "declarative" in nature than imperative, i.e. highlight more on what/why rather than how. 
+-- Then, go to specific functions "..which are exported" and write comments about their behavior. Include more description - but stick to what/why rather than how
+-- Only inside code, if you are adding comment, then it's likely to be to explain something. BUT.. before doing so, consider the following:
+--|----- Maybe change magic number by aptly named constant. Thus won't need to add comment
+--|----- A good place for comment in if you feel that the function has stages/chunks but you don't want to make the code unnecessarily small by pre-emptively breaking it
+
+<p id="1610857363">API documentation is a technical content containing instructions about how to effectively use and integrate with an API. It’s a concise reference manual containing all the information required to work with the API, with details about the functions, classes, return types, arguments and more, supported by tutorials and examples. This is traditionally done using by writing text content, like <a href="https://en.wikipedia.org/wiki/Javadoc" target="_blank">java-doc</a> in Java and <a href="https://en.wikipedia.org/wiki/Docstring" target="_blank">doc-string</a> in Python. Although the previous lines are pulled from a <a href="https://swagger.io/blog/api-documentation/what-is-api-documentation-and-why-it-matters/" target="_blank">blog post in Swagger.io</a>, I am personally of the view that Swagger is not a documentation tool, but a tool for generating api-specification (see <a href="#1608689286" data-nav-id="1608344358">discussion about Swagger within the housekeeping glossary</a>). For example, Swagger gives details about the API endpoint as a whole, but the code documentation is expected to give separate details at controller, service, utility class, etc. level. This section briefly highlights some considerations that a developer must keep when writing code documentation.</p>
+			
+			
+			
+	-->
+</article>

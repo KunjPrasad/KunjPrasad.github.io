@@ -63,23 +63,32 @@
 				<a id="1609472945" href="one-way/exception-handler.html">Exception handler</a>
 				<a id="1609472950" href="one-way/user-auth-auth.html">User auth/auth</a>
 				<a id="1609472955" href="one-way/feature-flag.html">Feature flag</a>
-				<a id="1609472960" href="one-way/req-attributes.html">Custom request attributes</a>
+				<a id="1609472960" href="one-way/req-attributes.html">Custom request attributes</a> <!-- TODO: Move under additional terms -->
 				<a id="1609385771" href="one-way/additional-terms.html">Additional terms</a>
 			</section>
 			<section>
 				<h2>2-way interactions</h2>
 				<a id="1609474984" href="two-way/transaction.html">Transaction</a>
 			</section>
-			
+			<section>
+				<h2>Advanced</h2>
+				<a id="1612275340" href="advanced/code-arrangement.html">Code arrangement</a>
+				<a id="1612275350" href="advanced/api-documentation.html">API documentation</a>
+				<a id="1612275360" href="advanced/data-governance.html">Data governance</a>
+				<a id="1612275370" href="advanced/logging.html">Logging</a>
+			</section>
 			
 			
 			<!-- TODO
 			
-			**IMPORTANT:: Remember to update sitemap periodically, and comment out sections under development
+			**IMPORTANT:: Remember to update sitemap periodically, and comment out sections under development. Best.. update f adding/removing links, change sitemap
+			
+			**IMPORTANT:: To new files, add 
+	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1609472915">here</a></strong></i></aside>
+			
 			
 			
 			//GLOSSARY
-			
 			
 			
 			Introduction: Link to productionizing as from wiki
@@ -136,18 +145,6 @@
 			
 			
 			
-			database:
-			ACID, CAP
-			
-			normalization / denormalization
-			-- for normalization and different factors: see https://en.m.wikipedia.org/wiki/Database_normalization -- think of it as: not having multiple values in 1 column >> all value must relate to unique key combination >> all values must relate to the "full" unique key combination >> all "individual" value must relate only to unique combination and not to any other field >> unique combination should not be splittable. 
-			-- This is another reason to prefer storing constant data in table rather than in enum.. because once in Enum, it sort of becomes hidden.. specially the portion that different columns should not have relation between each other.
-			
-			Optimistic vs Pessimistic Locking
-			
-			Make separate glossary for storage. Link it in infrastructure, saying it has been separated. Include SSD, memory, disk storage . Cache as a smart map; in-memory, distributed or on fast disk... Add network latency in infra glossary.. same rack is faster for network
-			-- Maintain read only replica for speed
-			
 			
 			
 			
@@ -156,33 +153,6 @@
 			-- Foolish consistency is hogoblin (link to introduction.html)
 			-- if needed, go for speed, and cover tech debt later. Business first (link to introduction.html, glossary/architecture.html)
 			
-			
-			
-			Discuss code arrangement based on above -- in infrastructue code repo (**maybe make 1way entry for it.. and add an interaction to arrange code keeping all contextually relevant pieces in 1 folder.. keep context priority of code-type, like all service, or all controller at one place)
-			-- differentiate between view utilities vs just utilities; any method requiring handle to request should be related to view and nothing else. Even though serializer deals with request body, the view should create a context for it and pass related arguments. Don't have the serializer directly call request or read from it
-			-- differentiate between global utils vs package level utils
-			-- positioning of constants
-			--|---- One thing that can be placed in global scale constants file (and not constants defined in each sub module) is if the project is importing a 3rd party library, and the utilities in it use some string formats, etc. Since the import applies globally, so it comes to be that any constants being defined for use therein must also be global. Best is to start by defining things locally, and then move them to global if it gets reused at different places - to have a DAG structure. This does require extra work in being agile to refactor.. but is good practice as it keeps context in understanding what a constant does and in what scope is it used.
-			-- Inheritance vs composition
-			-- abstraction vs encapsulation: DIfferent for python, JS vs for java
-			-- long file vs short file
-			
-			-- include documentation and scripts folder
-			
-			-- If you are having different project that can talk with each other.. then make sure that can also be done in local. It can be needed later on to be able to have this feature.
-			
-			Utility class/methods : mention they are defined if they are used at multiple places (maybe keep it in code arrangement). Also that there can be different utility for different controller / service / repo
-			
-			-- put common functionality in abstract classes.. Mixins..
-			
-			-- Advanced case: Producer vs consumer
-			--|---- In designing/coding - and particularly regarding models, REALIZE that the difference between producer and consumer mindset is and important difference to identify. When you are coding as producer, you want your codebase to be as compliant to SOLID, it'll be open for expansion, but different functionalities will be in different files and you'll have more "distributed" codebase. the drawback, maybe you may one change, but forget to make related change elsewhere because by design concept -- everything is open - so a change at one place doesn't/shouldn't affect other places. When coding as consumer, you purposefully accept that code won't go to someone else and you have full control over its consumption and API structure. You can add efficiency with this mindset. But this affects code resiliency. Most common, you'll run into import loops and/or will want to move some code to utils.. which brings up question of why not do that since beginning. STILL.. even in consumer mindset, remember to not break DAG!! -- things are easily factored as long as both app, module, sub-module level dag is not broken.. particularly removing order of __init__.py
-			--|---- This is probably biggest design contention when you are producing and using the codebase in your application. The tensions come up because a group is both producer and consumer - so both viewpoints are correct. However, traditional viewpoints of quickness, efficiency, related features at one place because you're the only one so why proliferate code -- come up and may blindside the efforts. Do realize it comes with a future cost in that there can be future issues.. so do keep that in mind - particularly if in scrum workflow. Again, nothing that can't be changed - but it'll need extra time/money. Personally, having a producer mindset is better because it keeps development open towards future changes, but it causes a distributed code.
-			--|---- **Thinking about producer vs consumer mindset is a good way to reason about having abstract classes in each project and then have them implemented in your project's home app. This way, the definitions in each sub-app gives a basic skeleton.. that you modify as necessary when adding it in home-app
-			--|---- one aspect is whether they should contain method to define nonDB-related ASPECT-LOGIC (like fields that should be logged), field based object-access, or whether that logic should be in some other class. Having things are one place bloats model, makes model definition dependant on context (which is something that may be good if you are end consumer -- as it keeps all related code at one place and low chance of missing things, but not a provider), also you may get forced to scenarios that don't respect DAG!
-			--|---- Thinking along lines of differences between producer and consumer mindset is also a good way to think whether the model should be kept as much POJO and related methods to moved to separate utility class, or if related methods be added inside the model itself. Former is a producer mindset and latter is a consumer mindset. The disadvantage of latter is that now, classes that lie higher up in DAG precedence can be made to have functions that apply on classes that come lower in DAG precedence. Then, it moves to having those special methods in separate utility.. then it becomes why not just put everything there.. or maybe DAG relation was previously not very defined, but it gets so at later time, and now the chain is broken.
-			--|---- Where should validation lie when dealing with discrete valued "status" type fields in model-vs-serializer -- see above comment!!
-			--|---- From above, it seems that producer should only give basic pojo classes. Actually, differentiation between the two depends on the amount of functionality you want to add. If you give max freedom of extension, then you won't be able to add function, or will give something too fragmented. A good trade-off is to give an interface and some sort of basic implementation.
 			
 			
 			
@@ -216,73 +186,6 @@
 			-- Advanced case: multi-representation of same data: Resume as text and pdf; DTP, model, url, create/update/delete
 			-- Using "If-Modified-Since". Should it bubble, i.e. when a child is changed, then also its parent entity is also updated (This also relates to keeping auditlog entry)? - I'd say no. This means that when showing a DTO, one should NOT show childDTO because that then breaks the meaning of parentDTO being non-modified. A workaround could be to simply return url where one can get childDTO
 			--|---- This is a good argument on why a REST GET url should only returns resource and no parent/child DTO. returning any extra information mixes the update time for two and so, is like a caching strategy. Best, and always, add cache depending on your use case and not preliminarily. This also sets up a guideline in that your GET call should end up asking for a resource and only that resource (not parent/child) should be returned
-			
-			
-			
-			
-
-			
-			
-			
-			
-			//ADVANCED UTILITIES
-			
-			LOG CONTROL
-			-- single place to control what all is logged.. to have logs in standard format. To remove sensitive data
-			
-			
-			
-			HATEOAS + SWAGGER!!:
-			
-			-- By OPTIONS spec "The response payload, if any, might also describe the communication options in a machine or human-readable representation.  A standard format for such a representation is not defined by this specification, but might be defined by future extensions to HTTP.  A server MUST generate a Content-Length field with a value of "0" if no payload body is to be sent in the response." -- This also decouples GET from OPTION. You don't have to change response structure to support HATEOAS.. but just make it a different call.
-			--|---- note the "Location" response header should be used to provide information about created resource. HATEOAS gives information on other things that can be done with the resource - and is business dependent logic. Maybe if all you are doing is returning some links then that can be done viaresponse headers instead.. but using HATEOAS also allows customizing and sending text data back to further guide user's decision. Also, firewall may remove non-standard headers, so having details in request body is better
-			
-			-- Make it role based
-			
-			1) In Hateoas links, apart from internationalization 
----- also give security detail : who all will be accessing the data. Is there any restriction on mutating data, etc. Maybe just give link to security policy
----- a question is if you can guide users into using your webpage/REST-url in suitable flow. Maybe each URL within each level can be numbered so that users are guided. For some who have already done part of work.. they can skip those portions and get to next step. Maybe give guidance on how a user can identify which step they should start with.. say by doing successive GET calls.
-
-			2) If a field/fields can take enumerated value only, then give all possible combination.. or url to get combination possibility, along with what they mean. This helps user understand enum values which are not in their language. Maybe give different enum-options based on the language selected by user?!! and/or add a translator at beginning so that the json data is translated to one understood by server.. even though it starts from one that is understood by server
-			
-			-- HATEOAS or swagger, or both?! See https://stackoverflow.com/questions/54839672/difference-between-swagger-hateoas  
-			--|---- If using Swagger, also set custom headers, authentication.. and also add unit tests to verify that swagger spec getting generated has expected values
-			--|---- Since HATEOAS is REST version of a UI, try to return only as much related content as allowed for a role
-			--|---- Don't show HATEOAS text on error, you might end up causing leaks if user is not allowed to see the text. The error message should be descriptive enough. Not sure though.. maybe there's better process. Like, can point to homepage or a support page.
-			
-			-- For Swagger: when reading model field description -- best if the plugin being used can do by reading DB comment. This keep DB field comment as only source of truth when defining field definition text.
-			
-			-- At a later stage... consider internationalizing your error response and your HATEOAS!! Maybe swagger also!
-			
-			-- The use of field in DTO to control validation application for error vs warning level validation can be explained in HATEOAS
-			
-			
-			
-			Governor service
-			
-			
-			
-			Code arrangement
-			-- arrange by module, rather than by type: like add model at one place, all service at another, etc.. instead divide by functionality. 
-			-- this ties into data domain modelling... the problem that comes is DAG ordering.. Ideally the "home" app depends on all separate module, but each module depends on model.. which should instead be defined by "home" app. This breaks a single module into further 2 pieces: containing model, vs containing service. But, better would be if framework provides way to register models (like django)
-			-- link to "dependency inversion" -- forming a general code that calls a specific one -- to be guiding code arrangement
-			-- just to highlight again.. follow naming convention (link to OOP architecture) + any org specific naming (like using identifier, type, code, text suffix in field names), or any org specific business names (in one way >> entity and dto)
-			
-			-- after code arrangement is done.. then comments come up. The topmost level comment should describe the goal of code, something that's also reflected by code arrangement. Then describe the goal for each method in it.
-			
-			
-			WRITING COMMENTS: -- in housekeeping
--- When in doubt search for google style guide on comment for that language.
--- Remember "comment maintenance" is also a burden that cannot be done by compiler - and takes team-time. So try to balance it
--- Maybe start by writing comment at top of file about what it does.
--- When writing comments, always start at top-most level "code-item", like Component (in JS) and Classes (in Python). This should be most general, and being highest in level, it should be more "declarative" in nature than imperative, i.e. highlight more on what/why rather than how. 
--- Then, go to specific functions "..which are exported" and write comments about their behavior. Include more description - but stick to what/why rather than how
--- Only inside code, if you are adding comment, then it's likely to be to explain something. BUT.. before doing so, consider the following:
---|----- Maybe change magic number by aptly named constant. Thus won't need to add comment
---|----- A good place for comment in if you feel that the function has stages/chunks but you don't want to make the code unnecessarily small by pre-emptively breaking it
-
-<p id="1610857363">API documentation is a technical content containing instructions about how to effectively use and integrate with an API. It’s a concise reference manual containing all the information required to work with the API, with details about the functions, classes, return types, arguments and more, supported by tutorials and examples. This is traditionally done using by writing text content, like <a href="https://en.wikipedia.org/wiki/Javadoc" target="_blank">java-doc</a> in Java and <a href="https://en.wikipedia.org/wiki/Docstring" target="_blank">doc-string</a> in Python. Although the previous lines are pulled from a <a href="https://swagger.io/blog/api-documentation/what-is-api-documentation-and-why-it-matters/" target="_blank">blog post in Swagger.io</a>, I am personally of the view that Swagger is not a documentation tool, but a tool for generating api-specification (see <a href="#1608689286" data-nav-id="1608344358">discussion about Swagger within the housekeeping glossary</a>). For example, Swagger gives details about the API endpoint as a whole, but the code documentation is expected to give separate details at controller, service, utility class, etc. level. This section briefly highlights some considerations that a developer must keep when writing code documentation.</p>
-			
 			
 			
 			

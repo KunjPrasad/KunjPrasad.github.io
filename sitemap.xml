@@ -12,26 +12,18 @@
   <priority>1.00</priority>
 </url>
 <url>
+  <loc>https://kunjprasad.github.io/utilities/disclaimer-generic.html</loc>
+  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://kunjprasad.github.io/utilities/acknowledgement-generic.html</loc>
+  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+<url>
   <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/</loc>
-  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-
-<!--
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-database-schema/</loc>
-  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/interview/interviewer/</loc>
-  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
--->
-
-<url>
-  <loc>https://kunjprasad.github.io/others/daily-software-tips.html</loc>
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>
   <priority>0.80</priority>
 </url>
@@ -47,16 +39,6 @@
 </url>
 <url>
   <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/personal-notes.html</loc>
-  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/utilities/disclaimer-generic.html</loc>
-  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/utilities/acknowledgement-generic.html</loc>
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>
   <priority>0.64</priority>
 </url>
@@ -168,6 +150,34 @@
   <priority>0.64</priority>
 </url>
 <url>
+  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/advanced/code-arrangement.html</loc>
+  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/advanced/api-documentation.html</loc>
+  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/advanced/data-governance.html</loc>
+  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/advanced/logging.html</loc>
+  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+-->
+
+<!--
+<url>
+  <loc>https://kunjprasad.github.io/productionizing/productionizing-database-schema/</loc>
+  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
   <loc>https://kunjprasad.github.io/productionizing/productionizing-database-schema/introduction.html</loc>
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>
   <priority>0.64</priority>
@@ -177,11 +187,28 @@
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>
   <priority>0.64</priority>
 </url>
+-->
+
+<!--
 <url>
   <loc>https://kunjprasad.github.io/productionizing/productionizing-productionizing/</loc>
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>
-  <priority>0.51</priority>
+  <priority>0.8</priority>
 </url>
 -->
+
+<!--
+<url>
+  <loc>https://kunjprasad.github.io/interview/interviewer/</loc>
+  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+-->
+
+<url>
+  <loc>https://kunjprasad.github.io/others/daily-software-tips.html</loc>
+  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
 
 </urlset>

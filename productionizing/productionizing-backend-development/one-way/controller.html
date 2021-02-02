@@ -85,6 +85,7 @@
 			--|----|---- /root/a/{aId} (..and always without queryParams) - if it returns 404 for missing data, and 403 if user does not have relation with data, then it leaks info about existence of {aId} to the user. So, best is to return 403 or 401 on initial user validation, and then always return 404 either if {aId} does not exist, or {aId} exists but user does not have relation to it - to prevent leakig the existence of data. THIS IS TEH REASON why above it is suggested to just raise 401/403 for the first time, and then never raise it again, and just raise 404
 			--|----|---- What about slugs received in process-serializer as part of request body? With same logic, that should always raise 400 error saying that the corresponding slug is not found. Do't say anything about not having permissions, etc.
 			--|---- Consider the case of user adding a phone number. The user is verified (i.e. has email and logged via password), but the phone number is not verified. When user gives a phone number, either it is available (i.e. noone else has mentioned it) and user verifies it via 2fa code. BUT.. consider if there's an overlap where someone else has also mentioned same phoen number. Also, 2 more cases - other person has verified it, or other person has not verified it. when the user gives phone number - should they be told that there's a conflict? Correct answer is "No" - here, the user hasn't verified new number as belonging to them, so ideally it should never get any sort of communication back from the service. In essence, we are still expanding the verification domain.. and phone number is still not verified -- so it should not receive any commuication back! Should other people have given same phone number, should we tell them there's a conflict - Yes! - but only if the previous user has a verified phone number. If the previous user also has an unverified phone number, then don't send any message of "conflict". This gives an example of validating in an "exploding data domain" manner to ensure consistent response/sttus is sent so that any information is not leaked by failure.	
+			--|---|---- Related: consider a username/password login system. If username does not exist, or username exists but pasword is wrong, then do you show different messages? - or different status. Many actually do.. but realize that this is a wrong thing todo - because this is authentication step and unless it is successful, you don't know who is the one making request. So, regardless of fact that this errors are coming in post message / form, the only error you return is "username not found or wrong password". You never show the difference between 2 cases above. If you are a system that shows a blank user photo on first login or if username not found.. then that's also wrong. Ideally you should be returning any random photo. This is to prevent information leak.
 			
 			
 			
@@ -109,6 +110,9 @@
 	2way dto+controller
 	-- for POST return slug after creation
 	-- read slug for PUT, PATCH, DELETE from url only and not from request body. Require slug value to match expected behavior (like, a-z,A-Z,0-9,_) is so is needed in business
+	
+	2way controller + repository: 
+	-- Use CQRS if reads are much heavy than writes. sending data from write to read repo can be done sync or async and can create related performance issues / behaviors when quick read operation is done after write. But if that's ok.. then CQRS can be considered.
 	
 	3way: 
 	-- feaure flag + role based validation
