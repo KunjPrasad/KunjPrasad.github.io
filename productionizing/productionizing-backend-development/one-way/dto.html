@@ -31,9 +31,10 @@
 	Different from entity - because S of SOLID
 	-- dto security: add file size limit, list size limit, string text size limit (this also limits xss attack), only certain string text characters allowed (link to xss/ internal xss glossary)
 	--|---- If you are making a POST/PUT call that takes a list entry (like doing bulk create/update, etc), then a good idea is to ensure that the list takes only a max number of entries. It is a sanity check to prevent someone from sending an absurdly high number of entries and stopping the processing.
-	-- Always virus check a downloaded file. If possible, also do a magic check
+	-- Always virus check a downloaded file. If possible, also do a magic check. Do file operations in separate vm: https://security.stackexchange.com/questions/206364/is-it-ever-safe-to-open-a-suspicious-html-file-e-g-email-attachment  -- upload files to directory that doesn't allow it to be executed
 	-- Always sanitize html. Even better get it as markup. 
 	--|---- In making a html safe.. define an "accept list" of tags that won't be escaped. DOn't instead define "reject list", i.e. list of tags that won't be accepted.. because you never know what might get missed. Having an accept list is better.
+	--|---- In making a html safe.. define an "accept list" of tags that won't be escaped. DOn't instead define "reject list", i.e. list of tags that won't be accepted.. because you never know what might get missed. Having an accept list is better. Additionally.. escape html. If you feel its getting duplicated in both dto and model.. first check- is that bad or breaking any behavior.  How about low performance... is there any data for it?
 	
 	-- give importance to Serializer and model field name. Use "id", "text", "code", "name", "datetime", "date" suffix as needed ..and specially use "indicator" suffix for booleans -- if you call a field as "is_done", then it becomes confusing to identify the corresponding method : `is_is_done()` or `get_is_done()`?
 	

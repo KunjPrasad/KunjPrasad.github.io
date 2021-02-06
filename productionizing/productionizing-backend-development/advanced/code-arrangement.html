@@ -36,6 +36,8 @@
 	
 	
 	
+		externalizing constants as properties.. also see it mentioned in one-way/extra-terms
+	
 	
 			Discuss code arrangement based on above -- in infrastructue code repo (**maybe make 1way entry for it.. and add an interaction to arrange code keeping all contextually relevant pieces in 1 folder.. keep context priority of code-type, like all service, or all controller at one place)
 			-- differentiate between view utilities vs just utilities; any method requiring handle to request should be related to view and nothing else. Even though serializer deals with request body, the view should create a context for it and pass related arguments. Don't have the serializer directly call request or read from it
@@ -64,6 +66,12 @@
 			--|---- From above, it seems that producer should only give basic pojo classes. Actually, differentiation between the two depends on the amount of functionality you want to add. If you give max freedom of extension, then you won't be able to add function, or will give something too fragmented. A good trade-off is to give an interface and some sort of basic implementation.
 			
 			
+			
+			Use proper naming
+			-- see discussion in #1611110640 in architecture glossary - about field and method naming in object
+			-- don't use "Impl" or "Interface" suffix. 
+			If a design pattern is being used, then that suffix can be used
+			For enums, having suffix like "Type", "Code", "category", could be useful for most cases
 			
 			
 			

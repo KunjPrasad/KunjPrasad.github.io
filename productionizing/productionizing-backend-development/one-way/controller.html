@@ -42,6 +42,13 @@
 	-- Understand and use the http-cache directive, particularly for subset of url serving static data (like those from standard table)
 	
 	
+	-- Add basic security response headers:: https://docs.spring.io/spring-security/site/docs/5.0.x/reference/html/headers.html
+	Configure Content security policy
+	Configure allowed hosts is possible
+	
+	
+	
+	
 	--|---- Make sperate url for different model=state-related or business-related specific actions.. rather than grouping them under 1 generic path that then adds a bunch of if-else!! Former is clearer to understand, better logging, better understanding of user intent by just looking at url. Related: See https://restful-api-design.readthedocs.io/en/latest/methods.html -- REST is generally about resources and CRUD operations on it. But sometimes, we may want to do some function on a resource. This article suggests that such operations should always be POST because they can be thought of as POSTing request to a message queue asking for an operation to get done.  Since every such messages are different, so it becomes a POST request. HOWEVER, I feel it can also be made as a PUT or PATCH if the operation is idempotent in nature.. or only causes partial changes.
 			--|---- For single item url, do not add query param. It is weird to have a single item slug and then also a filter. If you feel the need to do so, then ask if the item that needs to be sent is buisness logic dependent or not. If yes, you want to send it in request body. If not, then send it in header. **This is a good way to see when to add field to request body, or query param or header
 			
@@ -110,6 +117,9 @@
 	2way dto+controller
 	-- for POST return slug after creation
 	-- read slug for PUT, PATCH, DELETE from url only and not from request body. Require slug value to match expected behavior (like, a-z,A-Z,0-9,_) is so is needed in business
+	
+	2way controller+dto (for file)
+	Unless you are sure about the file being returned, use Content-disposition:attachment to trigger download rather than opening as html and triggering script runs. 
 	
 	2way controller + repository: 
 	-- Use CQRS if reads are much heavy than writes. sending data from write to read repo can be done sync or async and can create related performance issues / behaviors when quick read operation is done after write. But if that's ok.. then CQRS can be considered.

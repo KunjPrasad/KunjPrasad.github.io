@@ -25,7 +25,7 @@
 	<!--
 	-- model field level validation; model class level validation -- but warn that these mean permanent definition. Field/Class level validation includes things that you'd have wanted in SQL and in table definition itself.. but couldn't due o limitation of SQL. Think of Model as a deserialized form of database table row -- because that's what ORM does. If some validation logic seems getting repeated, then can define it in a separate class to promte reusability
 	--|---- define fields as something that is restrictive in type of values it can contain. don't just take any char-field. Take only a-z,A-Z,0-9 (link to xss/ internal xss glossary). This is good security practice.
-	--|---- In making a html safe.. define an "accept list" of tags that won't be escaped. DOn't instead define "reject list", i.e. list of tags that won't be accepted.. because you never know what might get missed. Having an accept list is better.
+	--|---- In making a html safe.. define an "accept list" of tags that won't be escaped. DOn't instead define "reject list", i.e. list of tags that won't be accepted.. because you never know what might get missed. Having an accept list is better. Additionally.. escape html. If you feel its getting duplicated in both dto and model.. first check- is that bad or breaking any behavior.  How about low performance... is there any data for it?
 	
 	-- give importance to Serializer and model field name. Use "id", "text", "code", "name", "datetime", "date", "number" suffix as needed ..and specially use "indicator" suffix for booleans -- if you call a field as "is_done", then it becomes confusing to identify the corresponding method : `is_is_done()` or `get_is_done()`?
 	
@@ -154,7 +154,10 @@ normalized.
 	-- What about PATCH call? PATCH is in itself non-idempotent. But recall that a past rule says to always return same data - so same data should also go out in PATCH call. Being a model serializer, PATCH will also use same structure in request (as in response) to get data, but now unlike PUT calls, it can only take partial fields. So, how does controller know what action to take ..and what's difference between PATCH vs FSMinducing @action endpoints. Hence: PATCH should allow partial updates where you are modifying one or other portion of data, but it should not cause a business processing. Like, iif you accept time-in, time-out.. PATCh can be used to update just one field. Contrast that with calls to "business process" this data, like, approve / deny, etc. That shouldn't be done by PATCH but via @action. So use PATCH if that does not modify the "business status" associated with the entity.
 	
 	
-	
+	3way (Model+Auth+Controller):
+	PII TAKE and SANITIZE
+	-- SANITIZE calls : PII should sanitize only the necessary columns, not relations.
+			
 	
 	
 	

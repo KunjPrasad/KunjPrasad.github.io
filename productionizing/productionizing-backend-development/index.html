@@ -88,60 +88,7 @@
 			
 			
 			
-			//GLOSSARY
-			
-			
-			Introduction: Link to productionizing as from wiki
-
-			In CICD, Testing:
-			https://towardsdatascience.com/ci-cd-by-example-in-python-46f1533cb09d
-			
-			
-			
-			
-			Good to include somewhere, maybe introduction, as motivation:
-			https://medium.com/better-programming/5-things-i-wish-i-had-known-before-majoring-in-software-development-7b2cb3cf288d
-			
-			
-
-			In OOP:
-			-- Related: Give proper variable name, don't skimp!!
-			-- proper convention for variable naming, method and class naming.
-			
-			
-			
-			TDD: This way you can just focus on ensuring that there's a test for all requirements. This is documentation + greatly helps in debugging because rather than going in nitty gritties of code, you go over tests. Declarative code is better because it is less error prone A drawback of code review in that it creates a development/pause cycle which reduces velocity. However, on other side, it gives space for new ideas to come or for ideas that were initially suppressed to come out. Less one person dominance. So, maybe not good for start-up phase, but better for later expansion.
-			-- Mobbing vs code review: Sprint vs Kamban -- these are dilemmas of speed vs consensus. When speed is needed and everything else is well defined.. it goes to Kamban, mob program style. When there can be variability and everyone needs to be on consensus, then need to give time to everyone.. and sprint / code review style becomes important
-
-
-			
-			Security
-			-- Security based on hidden variable name alone isn't security
-			-- Add other security issues. mention content security policy. Add ModHeader and add response header. Link to tips page
-			
-			--|---- Login CSRF
-			
-			--|---- Don't rely on cookie only for security. Use CSRFToken, or JWT. Using both is overkill. JWT does make you cloud ready
-			
-			-- Look for notes in spring security, like changing session after login, clearing session on logout, adding x-content-type-options: nosniff. 
-			-- See https://blog.avast.com/why-is-ebay-port-scanning-my-computer-avast and https://nullsweep.com/why-is-this-website-port-scanning-me/ -- don't port scan. If you want to do so for security, then offer as a service and start/stop it when user asks. Don't do so in a hidden cryptic way. Link to tips page
-			
-			-- Security - chpt 26 of 2 scoops - go through it
-			--|---- Basic thing for security:: see "Server Hardening", section 26.2 in pg.346 of 2 scoops:: Server hardening measures include but are not limited to things like setting up firewalls (help.ubuntu.com/community/UFW), changing your SSH port, and disabling/removing unnecessary services.
-			--|---- **VERY VERY VERY IMPORTANT**: Good practice -- You should disable the HTML field autocomplete browser feature on fields that are gateways to payment. This includes credit card numbers, CVVs, PINs, credit card dates, etc. The reason is that a lot of people use public computers or their personal computers in public venues. In fact, consider changing the form field itself to PasswordInput. Also on that line - never store credit card data.
-			--|---- Section 26.13 on Pg.357 about file handling. 
-			--|----|---- Use CDN for file (I think this is more of a performance thing and to prevent getting your server drowned in false request).
-			--|----|---- Since user uploaded file can have xss content, so don't have it open in browser by only allowing it to be downloaded - done by setting "content-disposition:attachment"
-			--Link to glossary >> storage >> filesystem >> garbage data.. that it needs to be encrypted, else it can be accessed by someone who gets proper access to your notebook (i.e. filesystem). Also, that's why everything must be purged before throwing disk.
-			
-			--|---- **VERY VERY VERY IMPORTANT**: If working with custom user data which can be xml.. then realize that there can be a ddos attack done. See https://en.wikipedia.org/wiki/Billion_laughs_attack -- the article mentions that this attack can be done on any language with references (like, on YAML)
-			--|---- 
-			
-			
-			-- sql injection
-			-- Avoid inernal XSS. This comment is written earlier also::  If your DTO fields, path param, etc. has constrainst, like can be a-z,A-Z,0-9,_, then also realize these constraints in the field definition. DOn't just take any arbitrary string. Take only the ones expected. This can be useful in preventing internal xss, i.e., say as part of your logic, you are logging these field values, etc. - and then are running some daily background task, possibly to collect some metric. Since these are external user data - you shouldn't be trusting it.. and some user may try to pass in a script that inadvertantly gets run. This is internal XSS. The point is - don't trust any data comingf rom out till you've verified it. Similar also holds for fields containing html text from user.. Best would be to just get markup (and define an enum type column which highlights that the entry being read is of markup type, not html).. but if you do need to store html, then escape it as you form the request body itself. Also note that this promotes reusability, setting standards in project.
-			
-			
+			TODO in "other": Add about tampermonkey; python http.server
 			
 			
 			
@@ -157,17 +104,6 @@
 			
 			
 			
-			-- don't indiscriminately use cookies. Add security: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Security   ;  Note that GDPR applies to them - so be careful and considerate in storing them: https://gdpr.eu/cookies/
-			
-			
-			-- SANITIZE calls : PII should delete data, not relations.
-			
-			
-			
-
-			
-			
-			
 			
 			//ONE WAY -- INTRODUCTION
 			
@@ -175,8 +111,6 @@
 			--|---- For this reason, process serializers in Django should not do anything with child slug.. if you are using SlugRelated field, then keep it as read-only, or create-new.. don't modify. On flip side, if you are worried about the entity changing in span of request.. then best you are pessimistic locking and not rely on just using single transaction.
 			
 
-			
-	
 			
 			
 			mvc - a 3-way interaction.. but idealy should be more.. but mvc squashes dto and entity. And controller squashes service and repo.
@@ -186,10 +120,6 @@
 			-- Advanced case: multi-representation of same data: Resume as text and pdf; DTP, model, url, create/update/delete
 			-- Using "If-Modified-Since". Should it bubble, i.e. when a child is changed, then also its parent entity is also updated (This also relates to keeping auditlog entry)? - I'd say no. This means that when showing a DTO, one should NOT show childDTO because that then breaks the meaning of parentDTO being non-modified. A workaround could be to simply return url where one can get childDTO
 			--|---- This is a good argument on why a REST GET url should only returns resource and no parent/child DTO. returning any extra information mixes the update time for two and so, is like a caching strategy. Best, and always, add cache depending on your use case and not preliminarily. This also sets up a guideline in that your GET call should end up asking for a resource and only that resource (not parent/child) should be returned
-			
-			
-			
-			
 			
 			
 			-->
