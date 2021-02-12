@@ -6,6 +6,7 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
+<!-- Common -->
 <url>
   <loc>https://kunjprasad.github.io/</loc>
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>
@@ -22,6 +23,7 @@
   <priority>0.64</priority>
 </url>
 
+<!-- Productionizing Backend Development -->
 <url>
   <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/</loc>
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>
@@ -38,10 +40,16 @@
   <priority>0.64</priority>
 </url>
 <url>
+  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/example-application.html</loc>
+  <lastmod>2021-01-28T00:02:58+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
   <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/personal-notes.html</loc>
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>
   <priority>0.64</priority>
 </url>
+<!-- Productionizing Backend Development / Glossary -->
 <url>
   <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/req-resp.html</loc>
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>
@@ -77,8 +85,7 @@
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>
   <priority>0.64</priority>
 </url>
-
-<!--
+<!-- Productionizing Backend Development / One-way -->
 <url>
   <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/introduction.html</loc>
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>
@@ -89,6 +96,8 @@
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>
   <priority>0.64</priority>
 </url>
+
+<!--
 <url>
   <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/dto.html</loc>
   <lastmod>2021-01-28T00:02:58+00:00</lastmod>

@@ -18,82 +18,24 @@
 <article>
 	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1609472905">here</a></strong></i></aside>
 	<h2>Entity</h2>
-	<p id="1610064998">An application capable of supporting a business must be able to interact with individual customer and provide services needed by them individually. Serving same set of data to everyone and everytime (..like this ebook) can't grow as a business because it ignores individual needs of someone who'd be willing to pay for the customized service. Thus, it is necessary to have a "data-repository" where user data between difference data pieces can be saved. For a small dataset, this can be done in memory, but that data will get lost on a power outage. Persisting it on disk is necessary to be able to store data long term and to only keep a small subset of working data in memory. A <a href="#1608527531" data-nav-id="1608344368">database</a> can be used to store data and corresponding data relations on disk. In current software landscape, it is very likely that an <a href="#1609290898" data-nav-id="1608344385">object-oriented paradigm</a> will be used for backend development. In this paradigm, the data for a certain feature maps to object of corresponding class. This object, linked to a business process, is Entity (also see <a href="https://stackoverflow.com/questions/2550197/whats-the-difference-between-entity-and-class" target="_blank">this question on StackOverflow</a>).</p>
-	<p id="1610065766">For completeness, it should be realized that one is free to construct database tables in a manner that they don't map to classes used in the program. However, doing so adds a friction in being able to push-data-to/pull-data-from the database and use it in the application. An <a href="https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping" target="_blank">Object-relational mapping (or ORM)</a> is a programming technique for converting data between incompatible systems so that there is a frictionless flow of data back and forth between the application and database. When working on a backend application, it is always preferable to have a database and framework with ORM support. <strong>For purpose of this ebook, it is assumed that the backend application is developed using a programming language and a framework that provides ORM support.</strong></p>
-	<p id="1610065800">A better understanding of "entity" also requires keeping database related considerations in mind. This is done in a separate ebook: <a href="/productionizing/productionizing-database-schema" target="_blank">Productionizing Database Schema</a>. Readers are suggested to refer it after finishing this e-book. This book covers design considerations that go in design of entity and does not need an understanding of realizing those designs in database.</p>
+	<p id="1610064998">As mentioned in the <a href="#1611510000" data-nav-id="1611200362">schema section</a> of the data storage glossary, the initial steps in database design involves creating the conceptual design, followed by logical design. Techniques from domain driven design and database normalization is applied in doing so. In current software landscape, it is very likely that an <a href="#1609290898" data-nav-id="1608344385">object-oriented paradigm</a> is used for the development of backend code for the business application. In this paradigm, the database tables in the logical design maps to a class, and a row in the table maps to an object of corresponding class. This object is called as an Entity or a Model (also see <a href="https://stackoverflow.com/questions/2550197/whats-the-difference-between-entity-and-class" target="_blank">this question on StackOverflow</a>). The mapping between an entity and a database table row, allowing an object to be saved as a row, and for a row to be read and converted to an object is achieved through use of software called an <a href="https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping" target="_blank">object-relational mapping tool, or an ORM</a>.  When working on a backend application, it is strongly preferred to use a database and framework with ORM support. Fortunately, this support is already available in commonly used frameworks. <strong>For purpose of this ebook, it is assumed that the backend application is developed using a programming language and a framework that provides ORM support.</strong></p>
+	<p id="1610065800">A quick side note: Database froms an important part of backend development. Database related concerns are covered in more depth in a separate ebook: <a href="/productionizing/productionizing-database-schema" target="_blank">Productionizing Database Schema</a>. Readers are suggested to refer it as needed. The topics covered in this book are not dependent on conent of "Productionizing Database Schema" e-book. So, readers can refer it after finishing this e-book.</p>
 	
+	<h3>Using domain driven design</h3>
+	<p id="1612753728">As mentioned in the <a href="#1611510000" data-nav-id="1611200362">schema section</a>, domain driven design is applied when forming the conceptual model. In context of the <a href="#1612649521" data-nav-id="1612649521">example application</a>, particularly the "<a href="#1612650690" data-nav-id="1612649521">Requirements - Part I</a>" section, realize that a "user" is central to all applications. This is a top-level domain. One sub-domain for the application is banking service, like, creating an account, depositing or withdrawing money from the account. Another sub-domain is optional life-insurance service. Under the banking service sub-domain, an individual account detail entry in the database table for user accounts will never use the information about user's insurance. On the other hand, under the life-insurance service sub-domain, an individual insurance entry in the database table for user insurance will never use the information about user's account balance or what transactions they made. <strong>Domain driven design suggests that the database tables and corresponding entities made to for an application domain are bounded to that context alone (see <a href="https://martinfowler.com/bliki/BoundedContext.html" target="_blank">Bounded context</a>) and must not get shared with other domains.</strong> When designing the entities, this means that "bank account" entity must not directly have insurance details in one of its columns, nor should it have a foreign key to entry in the insurance table; And same consideration also applies for the insurance table.</p>
+	
+	
+	
+	Normalization
+	-- example of failing normalization: If the filepath also contains filename.. even though there's a separate filename column
 	<!--
-	-- model field level validation; model class level validation -- but warn that these mean permanent definition. Field/Class level validation includes things that you'd have wanted in SQL and in table definition itself.. but couldn't due o limitation of SQL. Think of Model as a deserialized form of database table row -- because that's what ORM does. If some validation logic seems getting repeated, then can define it in a separate class to promte reusability
-	--|---- define fields as something that is restrictive in type of values it can contain. don't just take any char-field. Take only a-z,A-Z,0-9 (link to xss/ internal xss glossary). This is good security practice.
-	--|---- In making a html safe.. define an "accept list" of tags that won't be escaped. DOn't instead define "reject list", i.e. list of tags that won't be accepted.. because you never know what might get missed. Having an accept list is better. Additionally.. escape html. If you feel its getting duplicated in both dto and model.. first check- is that bad or breaking any behavior.  How about low performance... is there any data for it?
-	
-	-- give importance to Serializer and model field name. Use "id", "text", "code", "name", "datetime", "date", "number" suffix as needed ..and specially use "indicator" suffix for booleans -- if you call a field as "is_done", then it becomes confusing to identify the corresponding method : `is_is_done()` or `get_is_done()`?
-	
-	-- as best practice add both table and column level comments
-	-- Non updatable columns
-	-- Always keep separate numeric id. Don't go for string or natural key since logic may change in future.
-	
-	--|---- create class for common field names. Implementation differ in Java vs Python, it Java, include these as composition - don't do inheritance. In Django, add as a mixin.
-	--|---- Referential checks should be for each table for which the current table contains a column as a foreign key.. no need to go any further. Handle null values accordingly
-	
-	-- follow naming convention (link to OOP architecture) + any org specific naming (like using identifier, type, code, text suffix in field names), or any org specific business names 
-	
-	-- relations
-	--|---- explain why normalize data. When denormalize data and that it can be done even in SQL. However, if doing so, then check consistency of referential keys
-	
-	Data domain driven design. 
-	--|---- before finalizing the table design, do a data domain analysis (give link to matin fowler's page). Idea is to (1) ensure that you have identified and properly separated all tables into individual data domains. The data domains should be less than equal to count of individual profiles/roles. (2) used the domain to identify the ownership of each table under TAKE/SANITIZE by each profile. (3) The "id/slug" within tables for a data domain that don't overlap with another domain should not form part of tables in overlap region (example.. worker having contract - don't leak worker slug/id)
-	--|---- profile based design to also help with data privacy -- gdpr
-	
-	--  Using Enum rather than standard table creates problems in that old migration files would need changing. Polymorphic is like having different small db table that got joined using a column as a discriminator. The differene between this vs business processing is that i former, the discriminator column does not change. If dealing with former, then you'll need to keep your db table design most generic and then add specific valiation for each case.
-	-- This is another reason to prefer storing constant data in table rather than in enum.. because once in Enum, it sort of becomes hidden.. specially the portion that different columns should not have relation between each other.
-	
-	--|---- If storing file, don't use file-name in internal filepath. Use some uuid for internal filepath. One, this prevents anyone with acces sto filepath from understanding what file contains. Two, if you allow versions, then same filename can have multiple file path. Three, if you allow moving files, then you want to just change file name parent to signal that it has been moved.. not also worry about actually moving file, worrying about conflict, etc. ALSO.. either case, store file as encrypted on disk to prevent unwanted access.
-	
-	--|---- If storing file, don't use file-name in internal filepath. Use some uuid for internal filepath. One, this prevents anyone with acces sto filepath from understanding what file contains. Two, if you allow versions, then same filename can have multiple file path. Three, if you allow moving files, then you want to just change file name parent to signal that it has been moved.. not also worry about actually moving file, worrying about conflict, etc. ALSO.. either case, store file as encrypted on disk to prevent unwanted access.
-	
-	--|---- NOTE: failure of unique constraint cannot be checked anywhere in the code without running in race conditions and is done first by DB only
-	
-	-- Why hiding db id is good
-* https://stackoverflow.com/questions/396164/exposing-database-ids-security-risk -- best answer, it is a business intelligence security risk!
-* https://stackoverflow.com/questions/9904396/is-it-a-bad-practice-to-expose-db-internal-ids-in-urls
-			-- Above says to only use Slugs in url. OK - consider when you have a foreign key relation. Now, Since slugs are unique.. do you make a "Foreign key" relation using "id" or using "slug"?
-			--|---- I'd say this is where having some understanding of what a "slug" is - would be helpful. See https://stackoverflow.com/questions/427102/what-is-a-slug-in-django -- which shows how slug can be a nifty url line. Now, one could think that, say, if you're writing comments on a post of a given "slug", you'll talk about it as comment on post "about that slug". So, from users perspective, the relation should use slug. This also matches the "idea" that "id" field is just an internal representation and "slug" is what user sees - so slug is what keeps "relations" between data! However, from DB/service perspective, you now have a choice - either you say that (a) you do a foreign key on slug, and return slug. The advantage: when returning slug foreign key, you won't have to do another query.. that value is already in the table. HOWEVER.. if you're looking from the perspective where slugs can become long text so that they look nice in url, then "indexing" over long string can get problematic, and it can be much faster to make foreign key relations using "id", have foreign key index made using "integer" valued id - and then join on it. In such cases, doing a foreign key on "id" is much more beneficial. There is an intermediary case, say, when you have tables with many foreign keys - in this case, even though an integer index lookup is fast, there may be many such lookups needed and that'll slow things down. 
-			--|---- A RELATED HUGE ADVANTAGE: Now you can use slug for foreign key. This way, when a query is made on child table, you can return parent's slug back without doing a join query, because child table already has it. Furthermore, if you delve back into actual rationale behind having a slug (https://stackoverflow.com/questions/427102/what-is-a-slug-in-django) - you'll notice that "slug" is supposed to provide context to a resource, so it is natural that every other related resource references the parent-resource using "slug" field (rather than "id" field) - to maintain the contextual coverage. Note that doing so does NOT prevent you from going back and using "id" instead for foreign key - since slugs are unique.. and not changed once it is set (See next point)
-			--|----|---- DO NOT DO ABOVE IF YOU'VE USED NATURAL KEY FOR SLUG - for same reason as you never use natural key for making "id" - because natural keys almost always change in span of product, and then you're left scrambling to change all tables ..or even worse, they go from being unique to non-unique.
-			-- Disadvantages: 
-			--|---- (1) Anyone knowing the "slug" of 1st table can now immediately know about the slugs used elsewhere :: BUT then.. having unknowable slugs shouldn't be your only security aspect
-			--|---- (2) What if the structure started as parent > child relation, but later more tables' foreign key were added. NOTE: (a) If, when adding other foreign key, you change the slug to be like `{foreignKey#1|foreignKey#2|...}`, that's bad - don't change the slug once it is set. That being done.. sure the original intent of the table was to have a parent > child relation, but now it grew beyond it.. that's fine.. the "slug" field still remains unique - which it should by definition - nothing wrong with it.
-			
-	
-	--|---- What are considerations when designing a table for polymorphic entity? It can be modeled via a single table design with one column containing discriminator for different types. NOTE that what differentiates this from a db table for entity that can go through various stages, is that for the former, the enum valued column does not change its value after created. For the polymorphic table.. 
-			--|----|---- add a separate validation constrain for each case. 
-			--|----|---- Even more important question is how to design the table. Should it contain just one column which contains just the id and no explict foreign key link and the table to which that id corresponds to can change depending on polymorphic type.. or should there be an explicit foreign key dependency added? It depends on the use case. If what you are trying to do is (i) an aspect behavior and not a business behavior, (ii) deletion of original data does not cascade down to deletion of data in this table, (iii) you have no validation requirements on this table based on columns.. then you can store generic id without creating link, else always create link. An example of this is if you want to audit-track changes in model.
-			--|----|---- -- When adding a new enum (or even a standard table entry), be careful of adding it to code. Because DB runs before application, the application won't be able to read new value. this can happen both if using standard data table or enum. Best do migration and code changes in separate deployment. If doing so does not fail in lower env, then it's ready to go for prod
-			
-	--|---- If a model has fields that override value of a preceeding model, then define custom getter such that it reads the overriden value if available, else read the original value.
-	
-	--|---- Use blank still, not null -- check with business requriements though. This does not extend to all fields that are string valued, for example, don't use empty datetime field instead of null.. because empty datetime field is an ill-formatted entry. 
-	--|----|---- This further related to: As much possible, add default value to a field if applicable. For example, you're making a campaign and want to count people contacted ~~> default=0! Maybe having "null" indicates that campain has been setup but not started.. but doing so is now indicative of even worse thing.. using a field for more than 1 purpose, i.e. if it's null, then campaign hasn't started. But if it is non-null, it has started, and can have value=0 or 1.. Why not just have a separate status column to identify the status. What if in future, you start a campaign, but want to rollback or pause for some time.. you'll reset it to null and lose data?
-	
-	-- DateTime field, always in UTC. Save timezone as needed - in separate field in data model. Also identify if timezone captured in one domain applies to other tables.
-	
-	-- Add wrappers around basic methods that allow DB level interaction. Add referential checks. Multi-referential cehck for denormalized data. Add constrainst that you couldn't do due to lack of SQL structure
-	
-	
-	-- Adding constraints in design :: Both for DB and for validators, Start by adding as strong of a constraint as possible.. relax later if need comes. Don't start with a weak unique constraint
----- Note that same also applies when writing validators. If a validator holds for a field, then keep it as a field level validator and don't put on class yet. Maybe, in future you'll need different class level validator or will need separate field validator.
-			-- Unique DB check - can only be at DB level. If you try to add add logic in service - that won't work for race condition. ..because between validation and addition of data.. some other request may have added data that would fail validation. Wrap these with  suitable api-exception in your codebase. Don't try to check/catch for uniqueness anywhere before because they will not be thread safe. DB is the only place that can do so Do look into isolation level for your DB connection.
-			
-	
-	
 	data denormalization: statistics.. when speed is needed, or when doing
 reporting. That's why reporting is generally kept separate from data
 modeling, done separately (housekeeping). This can show up in sprint
 like behavior, causing your db to have both the entries.
 
 
-DB: generally, when you have foreign key relation, you want to save it
+	DB: generally, when you have foreign key relation, you want to save it
 from deletion, or cascade delete or set it to null. However,
 if-and-only-if you're storing some auditing / reporting value that you
 want to save even when original entry is deleted.. then don't have
@@ -105,10 +47,90 @@ data must exist even after original data in some table is deleted..
 then only do both above, else, have strong foreign key relation - or
 risk having inconsistent data that now needs to be programmatically
 normalized.
+
+When in agile process.. can any aspect of normalization be done later? I'd say focus of getting 1NF, 3NF, 5NF form because they make relations more explicit and prevent it from being hidden. 2NF, 4NF are useful to split one table in two, but that can also be done at a later stage as you application evolves
+	-->
+	
+	Use table and field level comment
+	
+	field name suffix
+	
+	DB constraints: failure of unique constraint cannot be checked anywhere in the code without running in race conditions and is done first by DB only
+	
+	field value constraint / validation : programmatically
+	-- always start with as strong constraint possible; weaken it only if needed later. Don't weaken it at early stage
+	-- say it's if constraint is defined by core requirements otherwise not possible in sql; referential checks
+	-- updatable = false
+	-- html escaping/unescaping should be under dto.. not model's responsibility!! TODO - add in dto. However.. controlling list of accept tags (it should have accept list of tags rather than deny list) is model responsibility
+	-- clean vs save
+	<!--
+	Use blank still, not null -- check with business requriements though. This does not extend to all fields that are string valued, for example, don't use empty datetime field instead of null.. because empty datetime field is an ill-formatted entry. 
+	--|----|---- This further related to: As much possible, add default value to a field if applicable. For example, you're making a campaign and want to count people contacted ~~> default=0! Maybe having "null" indicates that campain has been setup but not started.. but doing so is now indicative of even worse thing.. using a field for more than 1 purpose, i.e. if it's null, then campaign hasn't started. But if it is non-null, it has started, and can have value=0 or 1.. Why not just have a separate status column to identify the status. What if in future, you start a campaign, but want to rollback or pause for some time.. you'll reset it to null and lose data?
+	
+	-- DateTime field, always in UTC. Save timezone as needed - in separate field in data model. Also identify if timezone captured in one domain applies to other tables
+	-->
+	
+	custom field getter / setter - allows for encryption
+	-- custom getter:  If a model has fields that override value of a preceeding model, then define custom getter such that it reads the overriden value if available, else read the original value.
+	
+	keep separate id
+	<!--
+	-- Why hiding db id is good
+* https://stackoverflow.com/questions/396164/exposing-database-ids-security-risk -- best answer, it is a business intelligence security risk!
+* https://stackoverflow.com/questions/9904396/is-it-a-bad-practice-to-expose-db-internal-ids-in-urls
+			-- Above says to only use Slugs in url. OK - consider when you have a foreign key relation. Now, Since slugs are unique.. do you make a "Foreign key" relation using "id" or using "slug"?
+			--|---- I'd say this is where having some understanding of what a "slug" is - would be helpful. See https://stackoverflow.com/questions/427102/what-is-a-slug-in-django -- which shows how slug can be a nifty url line. Now, one could think that, say, if you're writing comments on a post of a given "slug", you'll talk about it as comment on post "about that slug". So, from users perspective, the relation should use slug. This also matches the "idea" that "id" field is just an internal representation and "slug" is what user sees - so slug is what keeps "relations" between data! However, from DB/service perspective, you now have a choice - either you say that (a) you do a foreign key on slug, and return slug. The advantage: when returning slug foreign key, you won't have to do another query.. that value is already in the table. HOWEVER.. if you're looking from the perspective where slugs can become long text so that they look nice in url, then "indexing" over long string can get problematic, and it can be much faster to make foreign key relations using "id", have foreign key index made using "integer" valued id - and then join on it. In such cases, doing a foreign key on "id" is much more beneficial. There is an intermediary case, say, when you have tables with many foreign keys - in this case, even though an integer index lookup is fast, there may be many such lookups needed and that'll slow things down. 
+			--|---- A RELATED HUGE ADVANTAGE: Now you can use slug for foreign key. This way, when a query is made on child table, you can return parent's slug back without doing a join query, because child table already has it. Furthermore, if you delve back into actual rationale behind having a slug (https://stackoverflow.com/questions/427102/what-is-a-slug-in-django) - you'll notice that "slug" is supposed to provide context to a resource, so it is natural that every other related resource references the parent-resource using "slug" field (rather than "id" field) - to maintain the contextual coverage. Note that doing so does NOT prevent you from going back and using "id" instead for foreign key - since slugs are unique.. and not changed once it is set (See next point)
+			--|----|---- DO NOT DO ABOVE IF YOU'VE USED NATURAL KEY FOR SLUG - for same reason as you never use natural key for making "id" - because natural keys almost always change in span of product, and then you're left scrambling to change all tables ..or even worse, they go from being unique to non-unique.
+			-- Disadvantages: 
+			--|---- (1) Anyone knowing the "slug" of 1st table can now immediately know about the slugs used elsewhere :: BUT then.. having unknowable slugs shouldn't be your only security aspect
+			--|---- (2) What if the structure started as parent > child relation, but later more tables' foreign key were added. NOTE: (a) If, when adding other foreign key, you change the slug to be like `{foreignKey#1|foreignKey#2|...}`, that's bad - don't change the slug once it is set. That being done.. sure the original intent of the table was to have a parent > child relation, but now it grew beyond it.. that's fine.. the "slug" field still remains unique - which it should by definition - nothing wrong with it.
+	-->
+	
+	abstract class/mixins for common fields
+	
+	standard data : enum vs new table 
+	-- standard table as 6NF form because of low cardinality of data
+	-- migration
+	-- TODO: add 2way model+model: standard data + other table: like a single table inheritance, so clean() can get complex - like a delegation
+	-- TODO: add 3way model+model+service: If standard data for a row changes, that is not multi table inheritance but a workflow, and Finite state machine considerations come in
+	<!--
+	Using Enum rather than standard table creates problems in that old migration files would need changing. Polymorphic is like having different small db table that got joined using a column as a discriminator. The differene between this vs business processing is that i former, the discriminator column does not change. If dealing with former, then you'll need to keep your db table design most generic and then add specific valiation for each case.
+	-- This is another reason to prefer storing constant data in table rather than in enum.. because once in Enum, it sort of becomes hidden.. specially the portion that different columns should not have relation between each other.
+	
+	What are considerations when designing a table for polymorphic entity? It can be modeled via a single table design with one column containing discriminator for different types. NOTE that what differentiates this from a db table for entity that can go through various stages, is that for the former, the enum valued column does not change its value after created. For the polymorphic table.. 
+			--|----|---- add a separate validation constrain for each case. 
+			--|----|---- Even more important question is how to design the table. Should it contain just one column which contains just the id and no explict foreign key link and the table to which that id corresponds to can change depending on polymorphic type.. or should there be an explicit foreign key dependency added? It depends on the use case. If what you are trying to do is (i) an aspect behavior and not a business behavior, (ii) deletion of original data does not cascade down to deletion of data in this table, (iii) you have no validation requirements on this table based on columns.. then you can store generic id without creating link, else always create link. An example of this is if you want to audit-track changes in model.
+			--|----|---- -- When adding a new enum (or even a standard table entry), be careful of adding it to code. Because DB runs before application, the application won't be able to read new value. this can happen both if using standard data table or enum. Best do migration and code changes in separate deployment. If doing so does not fail in lower env, then it's ready to go for prod
+	-->
+	
+	
+	
+	<h3>Keep model field as much constrained</h3>
+	<p id="1612756799">In context of the <a href="#1612649521" data-nav-id="1612649521">example application</a>, particularly the "<a href="#1612650690" data-nav-id="1612649521">Requirements - Part I</a>" section, a "user" will have a username. Let's say the username is stored as a string within the entity, and as a text in database, as is generally done. Here's a question: does it allow having all <a href="https://home.unicode.org/" target="_blank">unicode characters</a>, or just a-z? How about A-Z in capitals? What about special characters like &gt;, &lt;, etc.? - But if these are allowed, then the application may become vulnerable to <a href="#1608866075" data-nav-id="1608343369">XSS attack</a>. <strong>It is suggested that when defining an entity field, it should be such that only the expected values are allowed in the database table.</strong> Maybe down the line, you get a specific customer complaint of how their data is not getting saved and they would like the database to allow storing additional values. For example, you allowed users to store a-z, A-Z, 0-9 in username, which worked good initially. However, when your business expanded to Germany, the users complained about not being able to add umlauts. The suggestion is to expand your entity definition when a complaint comes, and to not do it pre-emptively when it's not going to be used. If your application's current use case is that it'll get usernames containing a-z, A-Z, 0-9 characters, then just allow only those characters to be saved.</p>
+	<!-- Mention above that while constraining prevents xss attacks.. it should not be considered mdel's responsibility to fend off all attacks. Not should fending attack be taken as main reason for constraining. The only reason it is done is because it matches modeling - that's it. Fending off attacks is a nice result of that. However, proper attack mitigation should only be kept at relevant layers. For a web-based attack, don't have DB layer take responsibility.. but do so in web interfacing layers.. like controllers and dto -->
+	
+	<!--
+	Follow up to 1612753728: 2way repository + service (This is indirect 3way since repo connects with entity): A service can touch different models and cover various context.
+	
+	Follow up to 1612753728: 2 way model + model: every model across a domain boundary should have a corresponding new table, with one-way or two-way sync between the two. Combine it with "a table in a domain should only reference others from same domain" -- the syncs form legal rules of use. This can however get tedious and that's where legal agreement comes, following which you can squash the 2 forms to one. However, if squashing, be areful about how the 2 will then interplay with a 3rd domain where the "squash" is also getting sync'd. You want to have clear policies. Or, maybe, the other table in different domain is a view of first table.
+	--|---- handles pii concerns. Give example of teacher / student / classroom-as-contract; and how last one can cause extra tables that promote security, but based on legal it can be squashed
+	--|---- 3 way: model + model + user : is the "LoginAs" or "ViewAs" behavior. If doing so, maybe just having a "View" (and not a table) that does not allow saving data is useful. Can give different authorization for the view
+	--|----|---- "data ownership driven design"; domain profile as corollary of "user" in different domains; 3rd party integration should be seen as different user and so if a data is sent out to it, there should be a new table at boundary
+	
+	Follow up to 1612753728: advanced/code arrangement: keep each context code in separate folder - has implications in changing from monolith to microservice; incl. follow up to 2way repo+service in that if service uses multiple contexts, keep it separate, or either define one context as being super to another.
+	
+	Follow up to 1612756799: 2way model+dto: Know how to constrain model vs how to constrain dto
+	
+	-->
 	
 	
 	
 	
+	
+	
+	<!--
+
 	
 	2 way (Model-Model):
 	-- make audit entries in same transaction as DB changes. One more reason to prefer a single transaction
