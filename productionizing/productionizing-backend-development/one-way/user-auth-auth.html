@@ -45,6 +45,8 @@
 			-- Don't have/rely on worflow where presence/lack of authentication acts as authorization. If you want to differentiate between, say, 2factor authenticated user vs 1factor authenticated.. then give those 2 different role/permission - even for same principal.
 	
 	--|---- Even if you have hierarchy in role, its best to treat each role independent and define permission such that the role behaves hierarchical. So, in English, "the role is not hierarchical, but the permission associated to the role is hierarchical"
+	
+	-- Have a user for system to run async tasks. Use id=1613710989 (referred in 1-way/entity)
 			
 	
 	2way: 
