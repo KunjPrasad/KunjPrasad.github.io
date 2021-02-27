@@ -28,6 +28,8 @@
 			-- link to "dependency inversion" -- forming a general code that calls a specific one -- to be guiding code arrangement
 			-- just to highlight again.. follow naming convention (link to OOP architecture) + any org specific naming (like using identifier, type, code, text suffix in field names), or any org specific business names (in one way >> entity and dto)
 			
+			-- code arrangement: link to id=1613930963 in entity.. maintain same order of comments.
+			
 			-- after code arrangement is done.. then comments come up. The topmost level comment should describe the goal of code, something that's also reflected by code arrangement. Then describe the goal for each method in it.
 			
 			--|---- Modular design means that one can have separate modules / repos where a portion of model is defined and then it is imported under the main project. When doing so, create an implementation-extension of the entity class in different modules and add it to main code, and then use those class as basis to have a unified DB migration file. Don't separate out migrations because in a scrum environment, it may not be clear on how relation between tables can evolve.. new parent tables can get made (particular standard data table), etc. - so, always create a copy of all DB tables involved in main app, and use that to make migrations, and define model level save() and validate() method. This also prevents validation logic to get distributed at multiple places - and keep it unified. 
