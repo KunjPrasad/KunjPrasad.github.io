@@ -1,228 +1,227 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
-<!-- Common -->
-<url>
-  <loc>https://kunjprasad.github.io/</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/utilities/disclaimer-generic.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/utilities/acknowledgement-generic.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
+	<!-- Common -->
+	<url>
+		<loc>https://kunjprasad.github.io/</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>1.00</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/utilities/disclaimer-generic.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/utilities/acknowledgement-generic.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
 
-<!-- Productionizing Backend Development -->
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/introduction.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-line-summary.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/example-application.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/personal-notes.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<!-- Productionizing Backend Development / Glossary -->
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/req-resp.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/security.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/testing.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/housekeeping.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/infrastructure.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/data-storage.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/architecture.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<!-- Productionizing Backend Development / One-way -->
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/introduction.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/entity.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
+	<!-- Productionizing Backend Development -->
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.80</priority>
+	</url>
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/introduction.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-line-summary.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/example-application.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/personal-notes.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
 
-<!--
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/dto.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/controller.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/service.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/repository.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/filter.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/renderer.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/exception-handler.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/user-auth-auth.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/feature-flag.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/req-attributes.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/additional-terms.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/two-way/transaction.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/advanced/code-arrangement.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/advanced/api-documentation.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/advanced/data-governance.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/advanced/logging.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
--->
+	<!-- Productionizing Backend Development / Glossary -->
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/req-resp.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/security.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/testing.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/housekeeping.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/infrastructure.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/data-storage.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/architecture.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
 
-<!--
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-database-schema/</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-database-schema/introduction.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-database-schema/personal-notes.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
--->
+	<!-- Productionizing Backend Development / One-way -->
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/introduction.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
+	<url>
+		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/entity.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.64</priority>
+	</url>
 
-<!--
-<url>
-  <loc>https://kunjprasad.github.io/productionizing/productionizing-productionizing/</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.8</priority>
-</url>
--->
+	<!--
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/dto.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/controller.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/service.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/repository.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/filter.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/renderer.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/exception-handler.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/user-auth-auth.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/feature-flag.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/req-attributes.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/additional-terms.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/two-way/transaction.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	 </url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/advanced/code-arrangement.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/advanced/api-documentation.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/advanced/data-governance.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/advanced/logging.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	-->
 
-<!--
-<url>
-  <loc>https://kunjprasad.github.io/interview/interviewer/</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
--->
+	<!--
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-database-schema/</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.80</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-database-schema/introduction.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-database-schema/personal-notes.html</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.64</priority>
+	</url>
+	-->
 
-<url>
-  <loc>https://kunjprasad.github.io/others/daily-software-tips.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kunjprasad.github.io/others/salary-negotiation.html</loc>
-  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
+	<!--
+	<url>
+	  <loc>https://kunjprasad.github.io/productionizing/productionizing-productionizing/</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.8</priority>
+	</url>
+	-->
+
+	<!--
+	<url>
+	  <loc>https://kunjprasad.github.io/interview/interviewer/</loc>
+	  <lastmod>2021-02-28T00:02:58+00:00</lastmod>
+	  <priority>0.80</priority>
+	</url>
+	-->
+
+	<!-- Others -->
+	<url>
+		<loc>https://kunjprasad.github.io/others/daily-software-tips.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.80</priority>
+	</url>
+	<url>
+		<loc>https://kunjprasad.github.io/others/salary-negotiation.html</loc>
+		<lastmod>2021-02-28T00:02:58+00:00</lastmod>
+		<priority>0.80</priority>
+	</url>
 
 </urlset>
