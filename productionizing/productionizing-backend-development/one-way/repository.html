@@ -24,13 +24,38 @@
 	-- Repository layer -- use it to add abstraction on data retrieval.. like, either using cache or DB, or saving file via different scheme (uri or http), or saving on local drives or saving in cloud
 			--|---- If adding cache, ensure that you are updating cache and backend both.. do proper integration and functional testing
 			
-	-- can also include Fao, or message, or multi repos calls. 
-	--|---- repository - syncing between multiple repos using Transactional outbox; or use log + periodic task
 	-- database connection password change. Make sure to add retries so the transition is handled smoothly and not fails which is then pushed to service
-	-- move old file and old data to different database/filesystem.
+	
+	
 	
 	-- one application should own 1 DB and also "vice versa". Keep one-one ownership and interaction with other business sub-pieces via REST call, using org-wide JWT for authentication
 	--|---- Best practice is to have one application interact with one DB. Don't have many applications interact with one DB. instead require  from other applications that they make an API call to one of them to get the response. Similarly, while it is possible for one application to interact with multiple DB.. it is best to instead break those to smaller-applications and maintain one-DB--one-application relation. This allows for better data modeling and separation. How should the other applications deal with service outage is something that is best discussed and identified.
+	
+	-- If you want to define a method like : <Entity> getByUnique(arg1, arg2, ..) -- how should it be defined when table changed and a new column added that should add to unique combo: (1) add new column and with value while keeping default on original args; in same commit also modify repo method to include new column. (2) make new entries, modify unique criteria and do 2nd migration
+	
+	
+	
+	2way (repo + repo)
+	querying multiple places before returning data (gatherer)
+	-- Use id=1615299781: CQRS (relate to CQRS in one-way/entity>>1615177377)
+	-- Use CQRS if reads are much heavy than writes. sending data from write to read repo can be done sync or async and can create related performance issues / behaviors when quick read operation is done after write. But if that's ok.. then CQRS can be considered.
+	-- Another example is moving low use data to different repo. For example, run a task every week to take all audit entries beyond, say, 3 months and push them to a different storage. For the records in DB, you can run background processing. Now, if a rare call comes to get old data.. first cehck in DB and data not found, so go in other storage to get data.
+	
+	--|----- 3way (controller + repo + repo)
+	If you doing data gather from multiple sources, maybe look into adding request headers to prevent making api if the gathered data will not be used by user. This adds performance by not making unwanted api calls (or, use GraphQL)
+	
+	
+	
+	2way (Repo +Repo)
+	-- repository - syncing between multiple repos using Transactional outbox; or use log + periodic task. Since Transactional outbox doesn't have unique fields.. means.. can also use message queue  -- see 1613747301 in one-way/entity. Be careful in designing transactional outbox.. it can create multiple messages per task. You api should be able to process messages once andnot multiply.
+	
+	--|---- corresponding 3way (model+repo+repo) ~~> File storage
+	-- explain why file is not saved in DB?
+	-- can also include Fao, or message, or multi repos calls. The goal is to be able to properly handle file storage without junk
+	-- move old file and old data to different database/filesystem.
+	-- do filesystem related changes before calling database.  Ideally your fao should be able to take binary data, a location.. and be able to store binary data such that given a location - it gives that binary data back. 1st task entry in DB: That you're about the create file. If this entry remains for say 1 hour, then delete file if existing - close transaction. If code fails now, the task exists to delete junk file - if existing. Then upload file at location. Then make DB changes in transacion. And also, remove the pending task entry made earlier. If the transaction fails, file will be deleted.
+	-- since file is saved in filesystem.. so DB should store only a filename, a token path (not related to filename) but that should be given to filesystem or fao to get the file. Use of scheme to use same file token but in different ways. Additinal file metadata - like hash, or length, etc.
+	-- don't put file min/max size or virus check validation -- because that's a web service level constraint.. and so should come on DTO .. not at model
 	
 	
 	

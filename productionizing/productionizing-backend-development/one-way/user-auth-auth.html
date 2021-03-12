@@ -22,6 +22,8 @@
 	
 	<!--
 	
+	Do a check on password strength during first time login
+	
 	session fixation attack; clear session on logout
 	
 	If possible, have 2factor auth: preferably via app and not by sms
@@ -48,6 +50,7 @@
 	
 	-- Have a user for system to run async tasks. Use id=1613710989 (referred in 1-way/entity)
 			
+	-- See 1613946647 in entity. Same reason, don't send role back to user -- because it is a business internal logic.
 	
 	2way: 
 	-- auth+entity(user)
@@ -69,6 +72,9 @@
 	--|----|---- RELATED: https://engineering.mixmax.com/blog/modern-csrf/
 	
 	--|---- (may be done in user-auth-auth 1way; or 2way auth+controller) If you also give an UI.. To prevent phishing, allow users to set an initial profile token that is showed when they log in. And allow this only on request coming from your UI domain (also adding for UI). This also tells user that they are the one logging in ..and they logged in for first time, then they see that they're loggin in for the first time. If doing so, remember to not ask for any PII when setting this value
+	
+	
+	2way (auth + controller) : Security: rate limit on sign on failure
 	
 	
 	3way: auth + user+code-arrangement:

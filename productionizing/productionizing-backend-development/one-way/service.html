@@ -23,7 +23,10 @@
 	<!--
 	This is where business logic starts. Do business dependent validation.
 	service code must be as much declarative in nature. 
-	Retry logic: -- Making a unified client; Ambassador pattern
+	Retry logic: -- Making a unified client; Ambassador pattern -- should this be in repo? This keeps service declarative and retry becomes the imperative logic.
+	
+	
+	Relate to 1610226800 in glossary/architecture -- generally methods should have Command-query separation. But service can do multiple things. In fact, it might be needed to trigger side-effect and return data, like in all non-GET calls
 	
 	
 	See http://web.archive.org/web/20120827100207/http://www.cbare.org/writing/Transactions/transactions.html -- mentioned in db-storage glossary. At end, it has "Tips for writing efficient transactions" which include "avoid performing slow operations like user input in a transaction", and generally "reduce time spent holding locks"

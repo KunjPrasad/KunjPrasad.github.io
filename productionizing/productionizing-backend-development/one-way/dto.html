@@ -32,6 +32,7 @@
 	-- dto security: add file size limit, list size limit, string text size limit (this also limits xss attack), only certain string text characters allowed (link to xss/ internal xss glossary)
 	--|---- If you are making a POST/PUT call that takes a list entry (like doing bulk create/update, etc), then a good idea is to ensure that the list takes only a max number of entries. It is a sanity check to prevent someone from sending an absurdly high number of entries and stopping the processing.
 	-- Always virus check a downloaded file. If possible, also do a magic check. Do file operations in separate vm: https://security.stackexchange.com/questions/206364/is-it-ever-safe-to-open-a-suspicious-html-file-e-g-email-attachment  -- upload files to directory that doesn't allow it to be executed
+	-- file not too short or too long. Too short makes multiple smal files and chokes system. Too long can tend to fail - cerating junk fle.
 	-- Always sanitize html. Even better get it as markup. 
 	--|---- In making a html safe.. define an "accept list" of tags that won't be escaped. DOn't instead define "reject list", i.e. list of tags that won't be accepted.. because you never know what might get missed. Having an accept list is better.
 	--|---- In making a html safe.. define an "accept list" of tags that won't be escaped. DOn't instead define "reject list", i.e. list of tags that won't be accepted.. because you never know what might get missed. Having an accept list is better. Additionally.. escape html. If you feel its getting duplicated in both dto and model.. first check- is that bad or breaking any behavior.  How about low performance... is there any data for it?
@@ -70,6 +71,18 @@
 	
 	-- See https://stackoverflow.com/questions/12168624/pagination-response-payload-from-a-restful-api/12171176#12171176 -- use of link header for sending paginated response. Good idea. Decouples extra data from response body. Advantage of using "header" for pagination:: any swagger codegen client remains same.. essentially your data structure is same regardless of pagination / whole.. so is a good behavior in moving from mvp stage low list size to large list size.. Any analysis you may do on response (governor service), any documentation, etc..
 	
+	
+	
+	Why you should be careful with REST design?
+**Just because you don't show something on a page doesn't mean users
+cannot do it. See TamperMonkey chrome. One can consistently tamper
+with pages and not have it all reset after a refresh. This is also a
+good way to prevent bad ux from affecting you!!
+
+--|----DTO: When sending response, don't send out internal data type. First..
+users don't and shouldn't need to know it - that's the entire idea of
+decoupling!!
+
 	
 	
 	2way dto + user role: 

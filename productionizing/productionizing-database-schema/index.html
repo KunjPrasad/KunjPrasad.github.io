@@ -88,6 +88,52 @@
 * https://speakerdeck.com/mathiasbynens/hacking-with-unicode
 			
 			
+			
+			Advanced SQL: Get nth smallest or largest
+* https://stackoverflow.com/questions/463054/sql-select-nth-member-of-group
+* https://stackoverflow.com/questions/16994871/sql-is-there-any-efficient-way-to-find-second-lowest-value
+* https://www.xaprb.com/blog/2008/08/08/how-to-select-the-nth-greatestleastfirstlast-row-in-sql/
+
+
+SQL:
+See https://stackoverflow.com/questions/24741051/order-by-before-select
+-- SQL first selects all data, then orders it.. that's why "order by"
+goes after "where" clause.. and that's why just in comparing "order +
+limit" to get something going vs using "where".. use "where". Why? -
+because SQL needs to get the entire data before it can order it.
+reference: http://use-the-index-luke.com/sql/partial-results/top-n-queries
+-- related: if you are trying to set some variable for each iteration,
+then that will get set before the order is done. So, if you do:
+    select t.id, @curRank := @curRank + 1 as rank
+    from table t, (SELECT @curRank := 0) r
+    order by t.id desc
+.. then you won't get @curRank=1 for last t.id. The rank will be 1 for
+lowest id, but now the first result will have last id and
+correspondingly, highest rank
+
+-- Followup: what happens when no "order" is specified.. don't assume
+it will go by "id" as default order. See
+https://www.exacthelp.com/2012/10/default-order-of-select-statement-in.html
+
+-- SQL way of getting now number::
+https://stackoverflow.com/questions/1895110/row-number-in-mysql  ---
+IMPORTANT: this can even be used to reset row number for every group
+change, you need to use 2 variables, and reset when the value of 2nd
+variable (set in past) does not match the column being grouped on
+which will be near boundary.. else set the 2nd variable to group
+column value
+select
+    @numWithinGroup := IF(@groupColumnValue = t.group_column,
+@numWithinGroup+1, 1) as number_within_group,
+    @groupColumnValue := t.group_column /* NOTE: If you do this before
+@numWithinGroup update, then the intent of query will fail. Order
+matters */
+from
+    table t,
+    (SELECT @numWithinGroup := 0, @groupColumnValue := '') tSupport
+order by ?? <-- what order. see previous comment, best to order the
+data first before starting this
+			
 			-->
 		</nav>
 		<main tabindex="0"></main>

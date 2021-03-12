@@ -121,9 +121,6 @@
 	2way controller+dto (for file)
 	Unless you are sure about the file being returned, use Content-disposition:attachment to trigger download rather than opening as html and triggering script runs. 
 	
-	2way controller + repository: 
-	-- Use CQRS if reads are much heavy than writes. sending data from write to read repo can be done sync or async and can create related performance issues / behaviors when quick read operation is done after write. But if that's ok.. then CQRS can be considered.
-	
 	3way: 
 	-- feaure flag + role based validation
 	
