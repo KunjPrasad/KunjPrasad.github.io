@@ -82,5 +82,16 @@
 			--|----|---- One good thing about thinking in terms of "Profile" and RBAC rather than "user" is now you can think of how TAKE/SNITIZE request on all other DB tables look like for each "profile". Also, (profile + rbac) define permissions
 			
 			
+			
+			
+	How should you provide "Login as" feature.. what things must be considered
+	-- Avoid facebook issue when token is leaked -- https://krebsonsecurity.com/tag/facebook-view-as-bug/  https://about.fb.com/news/2018/09/security-update/  -- Note to not leak any information tied to user (like token, etc.) since those aren't uniquely defined now. What about defining JWT in response header?? -- essentially, following spring security's model, the Run-As should be a different user than actual user.. still be careful to not leak data.
+	-- How to handle experience for the user who is logging in as other.. can they logout? Is a temporary user made? Housekeeping? 
+	-- See how spring does it with "Run As authentication" :: https://www.baeldung.com/spring-security-run-as-auth  - particularly, how is authentication handled  (https://docs.spring.io/spring-security/site/docs/4.2.20.RELEASE/apidocs/org/springframework/security/access/intercept/RunAsManager.html)   docs (https://docs.spring.io/spring-security/site/docs/3.0.x/reference/runas.html)
+	-- How does django-impersonate work?
+	-- see  https://stackoverflow.com/questions/2242909/django-user-impersonation-by-admin
+	-- How does unix do it?
+	-- PII: does "run as" argument go in POST body or in GET query param: This isn't a search, you are leaking user id / slug / email. Maybe run-as can be in query param as long as only slug is used. Don't ever use "id". Don't use email because of PII concerns
+			
 	-->
 </article>

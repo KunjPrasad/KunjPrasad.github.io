@@ -42,7 +42,7 @@
 	-- Another example is moving low use data to different repo. For example, run a task every week to take all audit entries beyond, say, 3 months and push them to a different storage. For the records in DB, you can run background processing. Now, if a rare call comes to get old data.. first cehck in DB and data not found, so go in other storage to get data.
 	
 	--|----- 3way (controller + repo + repo)
-	If you doing data gather from multiple sources, maybe look into adding request headers to prevent making api if the gathered data will not be used by user. This adds performance by not making unwanted api calls (or, use GraphQL)
+	If you doing data gather from multiple sources, maybe look into adding request headers to prevent making api if the gathered data will not be used by user. This adds performance by not making unwanted api calls (or, use GraphQL on front end.)
 	
 	
 	

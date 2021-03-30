@@ -1,0 +1,47 @@
+<!--
+    HTML book section: Entity + User 2-way interaction to Productionizing Backend Development, by Kunj Prasad on Github.
+    Copyright (C) 2020  Kunj Prasad
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<article>
+	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1616385324">here</a></strong></i></aside>
+	
+	<h2>Entity + User</h2>
+	
+	<!--
+	
+	
+	2-way (Model-Auth): 
+	-- althought it is mentione separately, it should happen almost immediately as part of data model design
+	-- Data ownership driven design.
+	-- analyze requests with data ownership in mind. Start with data-ownership first design (good example on back forth communication storage, like in chat -- how to make it PII based - helps with take sanitize. Identify which party accesses which data). Ownership should flow down links. So, manyToMany is like a sink for PII and a good boundary between different roles. You must be very clear on ownership and backed by legal if you are going up up from manyToMany back. The conclusion you come to here must also match for corresponding audit log table
+	-- PII Take and Sanitize (if you have separate data domain, this is easier)
+	-- If getting multiple data by 3rd party api, store them in separate table and then link to it. This allows easier control if data policies change in future
+	-- be careful defining authorization for contract based relation: 
+			--|---- Say you have a client and worker. When the two are in contract, then the client can see worker relation. But, if the contract is terminated for any reason, then the client shouldn't be able to do so. This means: (1) have a separate endpoint for clinet where worker's data is available. DOn't bundle it with some other endpoint allowing worker access to the data even after contract is over; (2) have a different authorization to acess the data via endpoint - don't just look for client-role on user making the request, but also if the client is allowed data acess for worker slug in path param. ALSO - best do this check as a permission and not within view because (a) this definition, as a permission is more apt, and, (b) view methods must be declarative in nature
+			--|---- ALSO, a second design consideration for "time-bound-contract" type behavior is -- never give slug of one party out to another. Think of it like this.. if you enter into a contract with a 3rd party app to get your name, age from Facebook in exchange for taking some quiz.. but instead Facebook also gives it your "id/slug" and now this site becomes the go-to place where other 3rd party give a Facebook-id and get historical data. Then did Facebook do anything wrong? Yes -- **it shouldn't have given out your unique identifier that remains for perpetuity out to a service with which you have a temporary contract**. The better model design is to make a contract table that has foreign key from 3rd party app and from your profile. Now, what goes to 3rd party app is not you id/slug but the slug of contract. If they want your details.. they are given other fields like name, etc.. which can be general and not constrained to be unique. Here, you can control the degree of personalization on data outflow - maybe just give out first name not full name, maybe just the zip code and not exact coordinates. This way, the 3rd party cannot make something tailored to the user of given slug in their code -- which means, things can still get personalized but not individualized (separate topic: unless facebook offers that feature.. but then, its under their control which is still better than letting it out in wild). With the new model, you become "user associated with a contract", rather than "user with that slug.." which gives your application better control rather than have the providers take control.
+	-- 5 Ws of PII
+Who? What? Why? When? Where?
+[When + Where: Should be consistent across all DTOs for org - for same
+role] : Governor
+---- Privacy depends on country laws, but with privacy becoming
+important.. keep it in focus and also to transparently communicate it
+to users.. and reflect the same in data model and in table / column
+comments
+
+	
+	-->
+	
+</article>

@@ -56,6 +56,12 @@
 	
 	
 	-- Serializer: A good practice can be to check that your request isn't getting more fields than expected (based on user role). It could be a sign of broken integration/communication somewhere if that's happening. See https://stackoverflow.com/questions/22178266/django-rest-framework-raise-error-when-extra-fields-are-present-on-post
+	
+	
+	
+	
+	2way dto+controller: (..possibly also needs repository ..because you'll have to make dynamic query on DB side)
+	-- If the desire is to use graphQL on backend to only get certain fields and nothing extra/else.. then maybe better to use request headers in request to control fields being returned. This keep things restful, but gives necessary goodies
 
 	
 

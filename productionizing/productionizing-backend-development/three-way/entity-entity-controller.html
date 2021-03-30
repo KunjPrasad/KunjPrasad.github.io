@@ -1,0 +1,32 @@
+<!--
+    HTML book section: Entity + Entity + Controller 3-way interaction to Productionizing Backend Development, by Kunj Prasad on Github.
+    Copyright (C) 2020  Kunj Prasad
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<article>
+	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1616385648">here</a></strong></i></aside>
+	
+	<h2>Entity + Entity + Controller</h2>
+	
+	<!--
+	
+	3way (Model-Model-controller)
+	-- PUT call, being idempotent, should allow you to break constraint of Finite state machine. POST, PATCH gets affected by FSM and so they should be the verbs used in corresponding endpoint. Even delete.. if some state does not allow sudden delete, then it should not be via DELETE operation. 
+	-- What about PATCH call? PATCH is in itself non-idempotent. But recall that a past rule says to always return same data - so same data should also go out in PATCH call. Being a model serializer, PATCH will also use same structure in request (as in response) to get data, but now unlike PUT calls, it can only take partial fields. So, how does controller know what action to take ..and what's difference between PATCH vs FSMinducing @action endpoints. Hence: PATCH should allow partial updates where you are modifying one or other portion of data, but it should not cause a business processing. Like, iif you accept time-in, time-out.. PATCh can be used to update just one field. Contrast that with calls to "business process" this data, like, approve / deny, etc. That shouldn't be done by PATCH but via @action. So use PATCH if that does not modify the "business status" associated with the entity.
+	
+	
+	-->
+	
+</article>

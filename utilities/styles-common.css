@@ -73,7 +73,7 @@ main a[target="_blank"] {
 	padding-right: 1rem;
 }
 
-nav {
+nav.book-toc {
 	overflow-y: auto;
 	padding: 1rem;
 	border: 2px solid var(--gray);
@@ -88,28 +88,35 @@ nav a {
 	white-space: nowrap;
 	font-weight: normal;
 	color: var(--blue-link);
+}
+
+nav.book-toc a {
 	padding: 0.5rem 0.25rem;
 }
 
-nav a:hover {
+nav.book-toc a:hover {
 	font-weight: normal;
 	color: var(--red-link);
 }
 
-nav a:focus {
+nav.book-toc a:focus {
 	/* Keeping focus below hover, else a focused element being hovered on changes style */
 	font-weight: bold;
 	color: var(--red-link);
 }
 
-nav section > a {
+nav.book-toc section > a {
 	margin-left: 1rem;
 }
 
-nav section > h2 {
+nav.book-toc section > h2 {
     font-size: 1rem;
 	color: var(--gray-dark);
     padding: 0.5rem 0.25rem;
+	margin: 0;
+}
+
+nav.article-toc ul {
 	margin: 0;
 }
 

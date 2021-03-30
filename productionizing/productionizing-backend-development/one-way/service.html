@@ -25,6 +25,8 @@
 	service code must be as much declarative in nature. 
 	Retry logic: -- Making a unified client; Ambassador pattern -- should this be in repo? This keeps service declarative and retry becomes the imperative logic.
 	
+	Follow up to one-way/entity/1612753728:  a servic can touch different data domains.. so be wary of it -- services, and corresponding controllers may not conform to same data domain as repository. Put a text in code-arrangement linking to the id user for this conncept
+	
 	
 	Relate to 1610226800 in glossary/architecture -- generally methods should have Command-query separation. But service can do multiple things. In fact, it might be needed to trigger side-effect and return data, like in all non-GET calls
 	

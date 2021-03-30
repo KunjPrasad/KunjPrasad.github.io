@@ -1,0 +1,31 @@
+<!--
+    HTML book section: Entity + Repository 2-way interaction to Productionizing Backend Development, by Kunj Prasad on Github.
+    Copyright (C) 2020  Kunj Prasad
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<article>
+	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1616385091">here</a></strong></i></aside>
+	
+	<h2>Entity + Repository</h2>
+	
+	<!--
+	
+	2way (model+repository): Optimistic vs pessimistic lock. Optimistic clearly in 2way interaction. Pessimistic seems to be just related to repository, but realize that you can lock a top level table to control locks on everything below - and so repo code should do that early on. See data-storage glossary. It has 2 links; also the waybackMachine link on transaction has some good details on when to use what. Link to app-level concurrency handling by introducing serializability. top level table locking -- also good if using statistic denorm column in top row. If using any app-level constraint using multiple data, then do lock. if you additionally need versioning, use optimistic lock
+	-- Follow up one-way/entity/#1616345107 - if doing optimistic locking, then version can be one of the entries in the common superclass
+	
+	
+	-->
+	
+</article>
