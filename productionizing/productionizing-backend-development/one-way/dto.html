@@ -58,6 +58,9 @@
 	-- Serializer: A good practice can be to check that your request isn't getting more fields than expected (based on user role). It could be a sign of broken integration/communication somewhere if that's happening. See https://stackoverflow.com/questions/22178266/django-rest-framework-raise-error-when-extra-fields-are-present-on-post
 	
 	
+	-- Don't accept anything from request body in DTO that the service can know by querying DB. So, for example if you've given slug in DTO, you don't need to also give value of some matching unique column. 
+	
+	
 	
 	
 	2way dto+controller: (..possibly also needs repository ..because you'll have to make dynamic query on DB side)
