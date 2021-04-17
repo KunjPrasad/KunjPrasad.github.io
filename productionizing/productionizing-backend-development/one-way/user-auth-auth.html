@@ -52,19 +52,12 @@
 			
 	-- See 1613946647 in entity. Same reason, don't send role back to user -- because it is a business internal logic.
 	
+	
+	
+	
+	
 	2way: 
-	-- auth+entity(user)
-	--|---- Constraining users to have a strong password is something that must be done since beginning of application. strong password via multilingual
-	--|---- Salting pwd. Don't ask for sensitive data for login
-	--|---- ask sensitive data at most once
-	
-	(NOTE: below is also covered in repository interaction. In the discussion below, design of DB table is entity interaction.. but actual retrieval is repository interaction)
-	--|----|---- Addition to above, in DB, separate out the table, so that the sub-portion that can be accessed by wider role user is a single table and the other restricted role access table is separate, joined to the former via a oneToOne relation.. and defining method preventing object access by other roles. How to define such a method is framework/language specific. This is a valid use case of havig role based security be defined at repository level. This is needed because when the code is running, then the server is one making request to DB to access data.. but it's actually doing it as part of a request triggered by a user. So, we need a mechanism to ensure that the request user is allowed access to a certain DB table. This should also ideally occur for all @OneToOne and @manyToOne ..maybe also for @OneToMany
-	-- Sensitive data exposure is a vulnerability. Add extra auditing / controls around sensitive data. Another option is to disallow reads of sensitive data except for admin role:: https://blog.detectify.com/2016/07/01/owasp-top-10-sensitive-data-exposure-6/ -- Maybe move all sensitive data to separate table
 			
-	
-	
-	
 	-- auth + controller
 	--|---- if your CORS setting allows having request from different domain (because you are a provider), then need CSRF prevention even on a GET call. If you have a UI then allowing calls only from it can prevent need for CSRF on GET. Still need to tackle it for othr calls.
 	--|---- In most case, CSRF is restricted to attack where an attacking website tricks user to make a request that causes a mutation (in favor of attacker). However, when server returns a response --in these cases-- it will not have CORS' allow all origin header. So, even though a mutation is made, the response of it never goes back to attacker.  HOWEVER consider the case where the server is of a business that is an utility-provider, say, like USPTO. Now, server can and should expect that different domains will be calling it - and so, it now needs to set CORS header to allow all origin. But this opens up a different problem in that even for non-mutating calls (GET call), the attacker can now see sensitive user data - and the webpage won't restrict it because CORS is effectively disabled. In such cases, it is necessary to have CSRF protection even on GET calls. 

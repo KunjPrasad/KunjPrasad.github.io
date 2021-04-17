@@ -41,6 +41,21 @@ important.. keep it in focus and also to transparently communicate it
 to users.. and reflect the same in data model and in table / column
 comments
 
+
+
+One reason to have one to one table is you want to assign different permissions on the two table! See one-way/entity, 1616835133 -- that's a reason to have separate many-to-many table.
+
+
+
+	-- auth+entity(user)
+	--|---- Constraining users to have a strong password is something that must be done since beginning of application. strong password via multilingual
+	--|---- Salting pwd. Don't ask for sensitive data for login
+	--|---- ask sensitive data at most once
+	
+	(NOTE: below is also covered in repository interaction. In the discussion below, design of DB table is entity interaction.. but actual retrieval is repository interaction)
+	--|----|---- Addition to above, in DB, separate out the table, so that the sub-portion that can be accessed by wider role user is a single table and the other restricted role access table is separate, joined to the former via a oneToOne relation.. and defining method preventing object access by other roles. How to define such a method is framework/language specific. This is a valid use case of havig role based security be defined at repository level. This is needed because when the code is running, then the server is one making request to DB to access data.. but it's actually doing it as part of a request triggered by a user. So, we need a mechanism to ensure that the request user is allowed access to a certain DB table. This should also ideally occur for all @OneToOne and @manyToOne ..maybe also for @OneToMany
+	-- Sensitive data exposure is a vulnerability. Add extra auditing / controls around sensitive data. Another option is to disallow reads of sensitive data except for admin role:: https://blog.detectify.com/2016/07/01/owasp-top-10-sensitive-data-exposure-6/ -- Maybe move all sensitive data to separate table
+
 	
 	-->
 	

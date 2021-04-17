@@ -37,6 +37,11 @@
 	
 	One transaction per service. because service is representation of work asked for in a request; Controller is web to code matching and back - so it should not have transaction
 	
+	
+	If the business processing involves sub processes that are done using different language - then consider each such sub-process as an independent service. ...And, whenever you see a new service, start by adding "validations" - are you allowed to access data; is it ok to store provided data as is or should it be modified, or instead of modifying, should a validation error be raised. A data which may be ok for one language may not be ok for other.. like, html needs escaped data or else it runs into xss issue. SQL can have sql injection. If you're converting user provided data into, say, a html or even a pdf - then it needs to be escaped, have control on tags allowed, else will have xss issues. A repository layer can be seen as a service for a database where special care needs to be taken to prevent injection.
+	
+	
+	
 	2way:
 	dto and service: do validation first and fail fast. 
 	

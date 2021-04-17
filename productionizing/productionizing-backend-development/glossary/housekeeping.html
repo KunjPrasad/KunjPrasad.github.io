@@ -17,8 +17,26 @@
 -->
 <article>
 	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1608344358">here</a></strong></i></aside>
+	
+	<nav class="article-toc">
+		<h2>Table of contents</h2>
+		<a href="#1618628169" data-nav-id="1608344358">Web application housekeeping related terms</a>
+		<ul>
+			<li><a href="#1608688160" data-nav-id="1608344358">Cron job</a></li>
+			<li><a href="#1608688169" data-nav-id="1608344358">Daemon thread</a></li>
+			<li><a href="#1608738865" data-nav-id="1608344358">Startup tasks</a></li>
+			<li><a href="#1608686638" data-nav-id="1608344358">Application Monitoring</a><ul>
+				<li><a href="#1608738330" data-nav-id="1608344358">Audit log or Audit trail</a></li>
+				<li><a href="#1608686649" data-nav-id="1608344358">Logging</a></li>
+				<li><a href="#1608687416" data-nav-id="1608344358">Distributed tracing</a></li>
+			</ul></li>
+			<li><a href="#1608688467" data-nav-id="1608344358">Data privacy update</a></li>
+			<li><a href="#1608689286" data-nav-id="1608344358">OpenAPI and Swagger</a></li>
+		</ul>
+	</nav>
+	
 	<h2>Web application housekeeping related terms</h2>
-	<p>This page lists the various terms that relate to web application housekeeping tasks. These are one-off or regular tasks run as cron jobs that don't directly contribute to processing of the current request and forming a response. However, they may prepare the application for future business processing or clear stale data from past processing, and so, are essential to the application.</p>
+	<p id="1618628169">This page lists the various terms that relate to web application housekeeping tasks. These are one-off or regular tasks run as cron jobs that don't directly contribute to processing of the current request and forming a response. However, they may prepare the application for future business processing or clear stale data from past processing, and so, are essential to the application.</p>
 	
 	<h3>Cron job</h3>
 	<p id="1608688160">See article about cron job at <a href="https://en.wikipedia.org/wiki/Cron" target="_blank">Wikipedia</a>. Cron jobs are periodic tasks that are executed based on a schedule. These can be used to run arbitrary housekeeping tasks on demand or periodically.</p>

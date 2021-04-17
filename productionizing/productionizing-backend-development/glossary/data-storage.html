@@ -17,8 +17,32 @@
 -->
 <article>
 	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1611200362">here</a></strong></i></aside>
+	
+	<nav class="article-toc">
+		<h2>Table of contents</h2>
+		<a href="#1618627233" data-nav-id="1611200362">Data storage related terms</a>
+		<ul>
+			<li><a href="#1611200928" data-nav-id="1611200362">Why data storage?</a></li>
+			<li><a href="#1611201475" data-nav-id="1611200362">Memory</a></li>
+			<li><a href="#1611202564" data-nav-id="1611200362">Secondary storage</a></li>
+			<li><a href="#1611499255" data-nav-id="1611200362">File system storage</a></li>
+			<li><a href="#1608527531" data-nav-id="1611200362">Database</a><ul>
+				<li><a href="#1608528587" data-nav-id="1611200362">Relational database, or RDBMS</a><ul>
+					<li><a href="#1611407572" data-nav-id="1611200362">Database normalization</a></li>
+				</ul></li>
+				<li><a href="#1608529017" data-nav-id="1611200362">Non relational database, or NoSQL database</a></li>
+				<li><a href="#1611510000" data-nav-id="1611200362">Schema</a></li>
+				<li><a href="#1611510020" data-nav-id="1611200362">Transaction</a></li>
+				<li><a href="#1611510040" data-nav-id="1611200362">CAP theorem</a></li>
+				<li><a href="#1611510050" data-nav-id="1611200362">Relational vs Non relational database</a></li>
+				<li><a href="#1611508641" data-nav-id="1611200362">Database vs File system</a></li>
+			</ul></li>
+			<li><a href="#1608530099" data-nav-id="1611200362">Cache</a></li>
+		</ul>
+	</nav>
+	
 	<h2>Data storage related terms</h2>
-	<p>This page lists the various terms that relate to data storage. Although data storage is part of supporting infrastructure needed to host the web application, it is a bg topic in itself and so, it is discussed separately to cover the various related terms. </p>
+	<p id="1618627233">This page lists the various terms that relate to data storage. Although data storage is part of supporting infrastructure needed to host the web application, it is a bg topic in itself and so, it is discussed separately to cover the various related terms. </p>
 	
 	<h3>Why data storage?</h3>
 	<p id="1611200928">An application capable of supporting a business must be able to interact with individual customer and provide services needed by them individually. Serving same set of data to everyone and everytime (..like this ebook) can't grow as a business because it ignores individual needs of someone who'd be willing to pay for the customized service. Additionally, recall that <a href="#1608922565" data-nav-id="1608303678">HTTP requests are in themselves stateless</a>., Thus, it is necessary to have a "data-repository" where user data can be save, and served back to the user at a later time.</p>

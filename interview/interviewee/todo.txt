@@ -14,6 +14,13 @@ be skilled, think out loud (to get partial credits), ask, analyze
 
 Design review  -- or maybe make it as a separate topic page and then link here
 
+- are we doing POC or huge user base?
+- if doing huge user base, then what's the POC and learnings from it?
+- architecture always means you have trade offs. What's the trade off? what if you go one way or other? why did product choose one way and not other?
+- if you're designing for something that will trigger a different / new user experience over an established flow: then always add A/B. 
+- Are you doing something to solve a problem: Identify ways to extract impact metrics
+- sync vs async processing
+
 You want to get as much critical feedback as early as possible. You
 cannot do anything once your code hits the prod.
 * If you got no reviews, you didn't need any design review
@@ -54,6 +61,17 @@ assign to yourself or to others
 When writing design (i.e. even before review starts, just making doc)
 - do pair writing - and/or - run it internally like a mini design
 review
+
+
+
+architecture interview:
+- you cannot solve it because the question will always be undefined. So, don't think that way
+- ask interviewee if the design in for POC or high user. This is a trick question: if interviewee says high user, then ask them what was POC design and findings. Before they realize what happened, say that you'll start with POC and will then do high user. If they insist high use.. then ask what all factors contribute to high use: more users, different geographic location, different countries. What is causing bottleneck?
+- Based on above, always think of starting with POC.. hence, always start with normalized db design. Also, going from normalized to denormalized design is easy.. but not the other way
+- If you aren't able to identify any "unique" combination in db.. that's a sign to use messaging (MQ or Kafka)
+- As mentioned above, as application goes from POC to high use.. it'll know of bottlenecks that would need to be optimized away either by improvement on existing behavior or having new behavior. Identify what you want to optimize? What is something that will get hurt by this optimization? One way to optimize is by going from exact behavior to "being in a tolerance". How much tolerance in a metric is allowed? Tolerances can enable you to make a lower complexity solution
+- Clarify requirements.. and in doing so, don't just ask question to get answer.. but also do what if this different thing, or this opposite thing? Why not?
+- If you interviewer said: is there anything i can clarify.. it means they are expecting you to ask question. On flip side, if you don't want to or cannot think of any - then tell them that you'd like to slowly work on the requirements and clarify if you see a roadblock. It's software, and ideally everything should be reversible given enough time and money. So, when a choice constraint would show up, you'll check with them on requirements.
 
 
 

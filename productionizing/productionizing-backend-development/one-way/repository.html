@@ -34,6 +34,9 @@
 	-- If you want to define a method like : <Entity> getByUnique(arg1, arg2, ..) -- how should it be defined when table changed and a new column added that should add to unique combo: (1) add new column and with value while keeping default on original args; in same commit also modify repo method to include new column. (2) make new entries, modify unique criteria and do 2nd migration
 	
 	
+	-- Always use "order by" when querying for data - else DB can have weird behavior -- add in repository! what happens when no "order" is specified.. don't assume it will go by "id" as default order. See https://www.exacthelp.com/2012/10/default-order-of-select-statement-in.html
+	--|---- Some frameworks provide features to pull all related data in a many-to-many relation. For such features.. use it only if it possible to control the order of results in join table
+	
 	
 	2way (repo + repo)
 	querying multiple places before returning data (gatherer)
