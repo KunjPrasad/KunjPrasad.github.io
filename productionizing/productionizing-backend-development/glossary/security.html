@@ -17,8 +17,57 @@
 -->
 <article>
 	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1608343369">here</a></strong></i></aside>
+	
+	<nav class="article-toc">
+		<h2>Table of contents</h2>
+		<a href="#1618697341" data-nav-id="1608343369">Security related terms</a>
+		<ul>
+			<li><a href="#1608736802" data-nav-id="1608343369">Authentication</a><ul>
+				<li><a href="#1608739818" data-nav-id="1608343369">Cookie and Token based authentication</a><ul>
+					<li><a href="#1608743016" data-nav-id="1608343369">JWT authentication</a></li>
+				</ul></li>
+				<li><a href="#1608748483" data-nav-id="1608343369">OpenID and OAuth</a></li>
+			</ul></li>
+			<li><a href="#1608754365" data-nav-id="1608343369">Authorization</a><ul>
+				<li><a href="#1608825700" data-nav-id="1608343369">Permission bits</a></li>
+				<li><a href="#1608825749" data-nav-id="1608343369">Access control list, or ACL</a></li>
+				<li><a href="#1608827544" data-nav-id="1608343369">Role based access control, or RBAC</a></li>
+				<li><a href="#1608830335" data-nav-id="1608343369">Rate limiting, or Throttling</a></li>
+				<li><a href="#1608830395" data-nav-id="1608343369">Cross-origin resource sharing, or CORS</a></li>
+			</ul></li>
+			<li><a href="#1608860102" data-nav-id="1608343369">Data in transit</a><ul>
+				<li><a href="#1608857950" data-nav-id="1608343369">Man-in-the-middle attack, and need for HTTPS</a></li>
+				<li><a href="#1608857959" data-nav-id="1608343369">DNS over HTTPS</a></li>
+			</ul></li>
+			<li><a href="#1608860588" data-nav-id="1608343369">Data at rest</a><ul>
+				<li><a href="#1608862099" data-nav-id="1608343369">Password strength</a></li>
+				<li><a href="#1608862270" data-nav-id="1608343369">Salting</a></li>
+				<li><a href="#1612449281" data-nav-id="1608343369">Data disposal</a></li>
+			</ul></li>
+			<li><a href="#" data-nav-id="1608343369">Common security issues</a><ul>
+				<li><a href="#1612447317" data-nav-id="1608343369">Dependency update</a></li>
+				<li><a href="#1612495974" data-nav-id="1608343369">Code injection</a><ul>
+					<li><a href="#1612580218" data-nav-id="1608343369">SQL injection</a></li>
+					<li><a href="#1608866075" data-nav-id="1608343369">Cross-site scripting, or XSS</a></li>
+					<li><a href="#1612578951" data-nav-id="1608343369">Server side XSS</a></li>
+				</ul></li>
+				<li>Request forgery attack<ul>
+					<li><a href="#1608864350" data-nav-id="1608343369">Cross-site request forgery, or CSRF, or XSRF</a></li>
+					<li><a href="#1612364320" data-nav-id="1608343369">Login CSRF</a></li>
+					<li><a href="#1608863938" data-nav-id="1608343369">Server-side request forgery, or SSRF</a></li>
+				</ul></li>
+				<li><a href="#1608862776" data-nav-id="1608343369">Insecure direct object references, or IDOR</a></li>
+			</ul></li>
+			<li>Security related resources<ul>
+				<li><a href="#1608831915" data-nav-id="1608343369">Center for Internet Security, or CIS</a></li>
+				<li><a href="#1608832263" data-nav-id="1608343369">Mozilla WebAppSec</a></li>
+				<li><a href="#1608831965" data-nav-id="1608343369">Open Web Application Security Project, or OWASP</a></li>
+			</ul></li>
+		</ul>
+	</nav>
+	
 	<h2>Security related terms</h2>
-	<p>This page lists the various terms that relate to securing the request. Please note that complete application security goes much further and the list below is not exhaustive. For example, physically securing the servers by <a href="https://opensource.com/article/18/9/linux-iptables-firewalld" target="_blank">setting firewall</a>, installing only necessary software, updating/patching softwares, securing database via passwords, mitigation strategy <a href="#1612491901" data-nav-id="1608343369">DDoS attacks</a>, etc. are some examples of securing an application that must also be performed.</p>
+	<p id="1618697341">This page lists the various terms that relate to securing the request. Please note that complete application security goes much further and the list below is not exhaustive. For example, physically securing the servers by <a href="https://opensource.com/article/18/9/linux-iptables-firewalld" target="_blank">setting firewall</a>, installing only necessary software, updating/patching softwares, securing database via passwords, mitigation strategy <a href="#1612491901" data-nav-id="1608343369">DDoS attacks</a>, etc. are some examples of securing an application that must also be performed.</p>
 	
 	<h3>Authentication</h3>
 	<p id="1608736802">A web application receives requests from someone/somewhere, that then needs to be processed and a corresponding response returned. However, in doing so, the application must prevent one user from mistakenly or attackingly assume identity of another user to access someone else's data. This is where the concept of Authentication comes in, wherein, the web application asks for details from user making the request to verify that "the entity making a request" is same as a given "user of the application". Traditionally, this is done by collecting an username and pasword from the user. Authentication as a topic goes further detailed beyond simply collecting these a password and it is highly instructive to refer to this article at <a href="https://en.wikipedia.org/wiki/Authentication" target="_blank">Wikipedia</a>. As the application evolves and becomes more critical, it is highly suggested to enforce stronger authentication, like, Multifactor authentication. Also note that even though the above article includes "Authorization" section towards the end, it is a different concept altogether. In this book, authentication and authorization are dealt separately.</p>
@@ -94,7 +143,7 @@
 	
 	<h4>Request forgery attack</h4>
 	
-	<h5>Cross-site request forgery, or CSRF, or XSRF</h>
+	<h5>Cross-site request forgery, or CSRF, or XSRF</h5>
 	<p id="1608864350">See details about CSRF at <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery" target="_blank">Wikipedia</a>, <a href="https://owasp.org/www-community/attacks/csrf" target="_blank">OWASP</a>. CSRF attacks exploit the property of web browsers that they will automatically include any <a href="#1609041933" data-nav-id="1608303678">cookies</a> used by a given domain in any web request sent to that domain, and that they do so without notifying the users. This behavior, along with use of <a href="#1608739818" data-nav-id="1608343369">cookie based authentication</a>, improper <a href="#1608830395" data-nav-id="1608343369">CORS</a> setting at server side and improper endpoint design can make a user vulnerable to CSRF attack. At a high level, the attack works by tricking a user into taking actions that trigger scripts which make a call from the browser of user to the server. In doing so, browser send all cookies and server authenticates this forged request as intentionally made by user due to presence of cookie based authentication. Hence, to the server, the forged request appears as real and it will perform any appropriately requested actions including returning data, manipulating session state, or making changes to the victim's account. The quickest solution to preventing a CSRF attack is to double submit a cookie, i.e. require a header containing same data as is present in cookie, an example shown in <a href="https://medium.com/cross-site-request-forgery-csrf/double-submit-cookie-pattern-65bb71d80d9f" target="_blank">this article</a>. Additionally, <a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security" target="_blank">strict transport security, or, HSTS</a> must also be enforced to strengthen this solution (reference: <a href="https://security.stackexchange.com/questions/73406/the-spring-security-framework-recommends-against-using-double-submit-cookies-to/100624#100624" target="_blank">here</a> and <a href="https://security.stackexchange.com/questions/220797/is-the-double-submit-cookie-pattern-still-effective/220810#220810" target="_blank">here</a>). However, a complete solution also requires analyzing the CORS policy set by the service. Also, note that if the web application is susceptible to XSS attack, then the attacker can still gain access to the cookie and fixing CSRF via sending a different header fails. For more details on CSRF prevention, see <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" target="_blank">OWASP Cheatsheet</a>. Also, as much possible, the cookies set by the web application should also be secured as suggested <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Security" target="_blank">here</a>.</p>
 	
 	<h5>Login CSRF</h5>
@@ -112,7 +161,7 @@
 	<h4>Center for Internet Security, or CIS</h4>
 	<p id="1608831915">CIS home page can be found <a href="https://www.cisecurity.org/" target="_blank">here</a>. Particularly, note the <a href=" https://www.cisecurity.org/controls/cis-controls-list/" target="_blank">20 points guidelines</a> provide dby CIS covering for various aspects of software security.</p>
 	
-	<h4>Open Web Application Security Project, or OWASP</h4>
+	<h4>Mozilla WebAppSec</h4>
 	<p id="1608832263">The <a href="https://wiki.mozilla.org/WebAppSec" target="_blank">Mozilla Web Application Security wiki</a> provides a list of <a href="https://wiki.mozilla.org/WebAppSec/Secure_Coding_Guidelines" target="_blank">secure coding guidelines</a> that is extremely useful.</p>
 	
 	<h4>Open Web Application Security Project, or OWASP</h4>

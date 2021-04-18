@@ -17,8 +17,47 @@
 -->
 <article>
 	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1608303678">here</a></strong></i></aside>
+	
+	<nav class="article-toc">
+		<h2>Table of contents</h2>
+		<a href="#1618696259" data-nav-id="1608303678">Request and response related terms</a>
+		<ul>
+			<li><a href="#1608922545" data-nav-id="1608303678">Remote procedure call, or RPC</a><ul>
+				<li><a href="#1608922555" data-nav-id="1608303678">Remote method invocation, or RMI</a></li>
+				<li><a href="#1608925640" data-nav-id="1608303678">Web services</a></li>
+				<li><a href="#1608925630" data-nav-id="1608303678">Simple Object Access Protocol, or SOAP</a></li>
+				<li><a href="#1608927383" data-nav-id="1608303678">Representational State Transfer, or REST</a></li>
+			</ul></li>
+			<li><a href="#1609003848" data-nav-id="1608303678">Web servers and Application servers</a></li>
+			<li><a href="#1608922565" data-nav-id="1608303678">HyperText Transfer Proptocol, or HTTP</a><ul>
+				<li><a href="#1608993702" data-nav-id="1608303678">Request URL</a><ul>
+					<li><a href="#1609006646" data-nav-id="1608303678">Context root</a></li>
+					<li><a href="#1609007236" data-nav-id="1608303678">Path parameter</a></li>
+					<li><a href="#1609008266" data-nav-id="1608303678">Query parameter</a></li>
+					<li><a href="#1609008276" data-nav-id="1608303678">Slug</a></li>
+				</ul></li>
+				<li><a href="#1609036000" data-nav-id="1608303678">Request method</a><ul>
+					<li><a href="#1609036019" data-nav-id="1608303678">Idempotent request method</a></li>
+					<li><a href="#1609036099" data-nav-id="1608303678">Safe request method</a></li>
+				</ul></li>
+				<li><a href="#1609038553" data-nav-id="1608303678">Headers</a><ul>
+					<li><a href="#1609041933" data-nav-id="1608303678">Cookies</a></li>
+				</ul></li>
+				<li><a href="#1609041974" data-nav-id="1608303678">Request and response body</a></li>
+				<li><a href="#1609085465" data-nav-id="1608303678">Response status</a></li>
+			</ul></li>
+			<li>Advanced HTTP based communication<ul>
+				<li><a href="#1609087160" data-nav-id="1608303678">Long Polling</a></li>
+				<li><a href="#1609087200" data-nav-id="1608303678">Websocket</a></li>
+				<li><a href="#1609092373" data-nav-id="1608303678">Server Sent Events (or, SSE)</a></li>
+				<li><a href="#1609092300" data-nav-id="1608303678">Long  polling vs Websocket vs SSE</a></li>
+			</ul></li>
+			<li><a href="#1613521031" data-nav-id="1608303678">OLTP and OLAP</a></li>
+		</ul>
+	</nav>
+	
 	<h2>Request and response related terms</h2>
-	<p>This page lists the various terms that relate to request and response. Since the scope of this book is to cover backend handling of REST calls, it may not cover all of the terms. Nonetheless, it is important for a backend software developer to be aware of these terms and what they mean.</p>
+	<p id="1618696259">This page lists the various terms that relate to request and response. Since the scope of this book is to cover backend handling of REST calls, it may not cover all of the terms. Nonetheless, it is important for a backend software developer to be aware of these terms and what they mean.</p>
 	
 	<h3>Remote procedure call, or RPC</h3>
 	<p id="1608922545">See article about RPC at <a href="https://www.w3.org/History/1992/nfs_dxcern_mirror/rpc/doc/Introduction/WhatIs.html" target="_blank">W3</a> and <a href="https://en.wikipedia.org/wiki/Remote_procedure_call" target="_blank">Wikipedia</a>. RPC is a <strong>technique</strong> for building distributed systems by allowing a program on one machine (client) to call a subroutine on another machine (server) without knowing that the invoked subroutine is occurring on a different machine. Thus, it provides concepts for achieving a <a href="https://en.wikipedia.org/wiki/Request%E2%80%93response" target="_blank">request–response</a> communication. On the client side, it is coded as if it the call being made is a normal (local) procedure call and without the programmer explicitly coding the details for the remote interaction, or hardware and OS details of remote server. That is, the programmer writes essentially the same code whether the subroutine is local to the executing program, or remote. Hence, RPC is not a transport protocol. One way to achieve this is by combining all local parameters passed to the method (local means, at client side) in a message format (the processing forming message is called "marshalling") and sending it to remote server, which then unpacks the message to obtain individual parameters (the process of unpacking parameters from message is called "unmarshalling"), executes the invoked method and then returns the result, performing the same communication steps in reverse order (Reference: <a href="https://en.wikipedia.org/wiki/Remote_procedure_call#Message_passing" target="_blank">Wikipedia</a>).</p>

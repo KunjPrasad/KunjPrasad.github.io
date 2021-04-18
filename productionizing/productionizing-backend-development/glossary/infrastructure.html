@@ -17,8 +17,29 @@
 -->
 <article>
 	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1608344368">here</a></strong></i></aside>
+	
+	<nav class="article-toc">
+		<h2>Table of contents</h2>
+		<a href="#1618695712" data-nav-id="1608344368">Infrastructure related terms</a>
+		<ul>
+			<li><a href="#1608393835" data-nav-id="1608344368">Server</a></li>
+			<li><a href="#1608394258" data-nav-id="1608344368">Cloud computing</a></li>
+			<li><a href="#1608395384" data-nav-id="1608344368">Load balancer</a></li>
+			<li><a href="#1612493359" data-nav-id="1608344368">Content delivery network, or CDN</a></li>
+			<li><a href="#1612491901" data-nav-id="1608344368">Denial of Service, or DoS attack</a></li>
+			<li><a href="#1618696016" data-nav-id="1608344368">Data storage</a></li>
+			<li><a href="#1617405655" data-nav-id="1608344368">Web application framework</a></li>
+			<li><a href="#1608564873" data-nav-id="1608344368">Code repository</a></li>
+			<li><a href="#1608565983" data-nav-id="1608344368">Continuous Delivery (or, CD), and Continuous Integration (or, CI)</a></li>
+			<li><a href="#1608570000" data-nav-id="1608344368">Virtualization versus Containerization</a></li>
+			<li><a href="#1608572592" data-nav-id="1608344368">System Monitoring</a><ul>
+				<li><a href="#1608575849" data-nav-id="1608344368">SLO, SLI and Error budget</a></li>
+			</ul></li>
+		</ul>
+	</nav>
+	
 	<h2>Infrastructure related terms</h2>
-	<p>This page lists the various terms that relate to infrastructure and other applications needed to support the deployment and hosting of a web application. Since this book focuses on backend development, it may not use all of the terms. Nonetheless, it is important for a backend software developer to be aware of these terms and what they mean.</p>
+	<p id="1618695712">This page lists the various terms that relate to infrastructure and other applications needed to support the deployment and hosting of a web application. Since this book focuses on backend development, it may not use all of the terms. Nonetheless, it is important for a backend software developer to be aware of these terms and what they mean.</p>
 	
 	<h3>Server</h3>
 	<p id="1608393835">See article about server on <a href="https://en.wikipedia.org/wiki/Server_(computing)" target="_blank">Wikipedia</a>. It is a combination of software and hardware that reads an incoming request and returns a response. The entity making the request is called a "client". In backend development, developers leverage an existing software framework that handles common task of reading a generic incoming request and sending a generic response, and leaves gaps for pluggable custom code to provide specific business logic. Also note, a server should be able to handle multiple simultaneous request from each client in an independent manner, i.e., without letting any request know about others. So, how does a server know about the client to which it should send a response to? In short, it uses client address and port to define a connection over which the response is sent (see <a href="https://unix.stackexchange.com/questions/75011/how-does-the-server-find-out-what-client-port-to-send-to" target="_blank">here</a>).</p>
@@ -36,7 +57,7 @@
 	<p id="1612491901">See articles about Denial of Service or DoS attack at <a href="https://en.wikipedia.org/wiki/Denial-of-service_attack" target="_blank">Wikipedia</a>, <a href="https://www.comparitech.com/net-admin/dos-vs-ddos-attacks-differences-prevention/" target="_blank">this article</a> and at  <a href="https://aws.amazon.com/shield/ddos-attack-protection/" target="_blank">AWS</a>. A denial-of-service, or DoS attack is a cyber-attack in which the attacker seeks to make a web resource unavailable to its intended users by disrupting services of the server hosting the resource. It is typically accomplished by flooding the targeted machine or resource with superfluous requests in an attempt to overload systems and prevent some or all legitimate requests from being fulfilled. Think of it like driving with a passenger who keeps asking "are we there yet?" - to which you, the driver, needs to respond. However, the passenger's intention is not to get the answer but to keep asking it so frequently that you cannot focus on driving, thereby bringing the driving activity to a stop. A distributed denial of service, or DDoS attack is when there are many such systems performing the attack which itself could have been initiated by a single entity. Since the requests in DDoS attack come from different ip-addresses, it is much harder to deal with compared to DoS attack. Unlike other attacks that use weakness in code or user authentication/authorization (these are discussed in the <a href="#1608343369" data-nav-id="1608343369">security glossary</a>), the DoS or DDoS attack seeks to make the entire service unavailable for all users. Combating DDos attack is something that cannot be done within the web application and involves invest in infrastructure components to enable handling such attacks; For this reason, it is discussed under the infrastructure glossary. One DDoS attack mitigation strategy is to use CDNs or ocloud-based providers and have it handle DDoS attacks. Some other options to handle the attack are using load balancers and using criteria to drop requests that are likely spurious, like ones coming from certain ip-address, or physical region, and at a much higher than baseline rate. </p>
 
 	<h3>Data storage</h3>
-	<p>Since the topic of  data storage is big enough, it is discussed separately under <a href="#1611200362" data-nav-id="1611200362">data storage</a> glossary.</p>
+	<p id="1618696016">Since the topic of  data storage is big enough, it is discussed separately under <a href="#1611200362" data-nav-id="1611200362">data storage</a> glossary.</p>
 	
 	<h3>Web application framework</h3>
 	<p id="1617405655">See article about web application framework on <a href="https://en.wikipedia.org/wiki/Web_framework" target="_blank">Wikipedia</a>. A web framework, or web application framework, is a software framework that is designed to support the development of web applications including web services, web resources, and web APIs. These provide a standard way to build and deploy web applications on the world wide web, an most often automate these common activities. For example, many web frameworks provide libraries for database access, templating frameworks, and session management. In doing so, they often promote code reuse, standardize web application design and deployment process which makes it easier to find support and resources, and prevent spending developer time on common boilerplate code. An an example, Django is a popular framework when developing in Python language, and Spring is a popular framework for development in Java language.</p>
