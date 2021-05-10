@@ -27,6 +27,9 @@
 	-- database connection password change. Make sure to add retries so the transition is handled smoothly and not fails which is then pushed to service
 	
 	
+	a RESTful controller can be used as a repository by end user (CQRS) - in a microservice architecture
+	
+	
 	
 	-- one application should own 1 DB and also "vice versa". Keep one-one ownership and interaction with other business sub-pieces via REST call, using org-wide JWT for authentication
 	--|---- Best practice is to have one application interact with one DB. Don't have many applications interact with one DB. instead require  from other applications that they make an API call to one of them to get the response. Similarly, while it is possible for one application to interact with multiple DB.. it is best to instead break those to smaller-applications and maintain one-DB--one-application relation. This allows for better data modeling and separation. How should the other applications deal with service outage is something that is best discussed and identified.

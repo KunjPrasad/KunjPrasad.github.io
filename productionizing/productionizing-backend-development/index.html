@@ -54,9 +54,8 @@
 			<section>
 				<h2>1-way interaction</h2>
 				<a id="1609385770" href="one-way/introduction.html">Introduction</a>
-				<a id="1609472905" href="one-way/entity.html">Entity</a> <!-- TODO at bottom of page -->
-				<a id="1609472910" href="one-way/dto.html">Data transfer object (DTO)</a>
 				<a id="1609472915" href="one-way/controller.html">Controller</a>
+				<a id="1609472910" href="one-way/dto.html">Data transfer object (DTO)</a>
 				<a id="1609472920" href="one-way/service.html">Service</a>
 				<a id="1609472930" href="one-way/repository.html">Repository</a>
 				<a id="1609472935" href="one-way/filter.html">Filter</a>
@@ -70,13 +69,15 @@
 			<section>
 				<h2>2-way interactions</h2>
 				<a id="1616383424" href="two-way/entity-entity.html">Entity + Entity</a>
-				<a id="1616383834" href="two-way/entity-dto.html">Entity + DTO</a>
 				<a id="1616384383" href="two-way/entity-controller.html">Entity + Controller</a>
+				<a id="1616383834" href="two-way/entity-dto.html">Entity + DTO</a>
 				<a id="1616384531" href="two-way/entity-service.html">Entity + Service</a>
 				<a id="1616385091" href="two-way/entity-repository.html">Entity + Repository</a>
 				<a id="1616385324" href="two-way/entity-user.html">Entity + User</a>
 				<a id="1616385461" href="two-way/entity-others.html">Entity + Others</a>
-				<!--Use id=1615299814 for repo+repo -->
+				<a id="1619574603" href="two-way/controller-dto.html">Controller + DTO</a>
+				<a id="1619574610" href="two-way/controller-user.html">Controller + User</a>
+				<a id="1615299814" href="two-way/repository-repository.html">Repository + Repository</a>
 			</section>
 			<section>
 				<h2>3-way interactions</h2>
@@ -106,6 +107,9 @@
 			TODO in "other": Add about tampermonkey; python http.server
 			
 			TODO: Did you cover that - as much possible.. all async background work work should be done via controller.. and then one off commands should invoke the endpoint, specially if the async task is something that is needed to run periodically. If it needs to run one-time in the lifetime, then it can be done without having controller
+			
+			
+			TODO:: Search for the word "community" in introduction, one-way/architecture.. and prod-prod.. add that a good architecture is a balance of requirements. When you add something, you compromise on something else - overall you want to have something that matches your business use case; based on the tools you are using
 			
 			
 			

@@ -1,5 +1,5 @@
 <!--
-    HTML book section: Filter in 1-way interaction to Productionizing Backend Development, by Kunj Prasad on Github.
+    HTML book section: Controller + DTO 2-way interaction to Productionizing Backend Development, by Kunj Prasad on Github.
     Copyright (C) 2020  Kunj Prasad
 
     This program is free software: you can redistribute it and/or modify
@@ -16,11 +16,14 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <article>
-	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1609472935">here</a></strong></i></aside>
-	<h2>Filter</h2>
-	<p id="">Can be pre/post filter. Add a 2-way, errors are generally caught before filter.. so make sure to catch filter level error. Check your framework. Used to store logic common to all controllers.</p>
+	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1619574603">here</a></strong></i></aside>
+	
+	<h2>Controller + DTO</h2>
 	
 	<!--
-	Pull from one-way/controller/#1618888639 -- earlier we said that everything request related has to be controller.. if you want to have a common processing apply to all controller, then put in filter
+	
+	-- Provide a context object to DTO through which controller can provide request related details to DTO -- so DTO doesn't directly query request object. But then, why..? Won't it be simply better to change the initialization of DTO with its validation. This way controller can add specific details to DTO after it is initially made, but before running validations. Maybe add it in 2-way: dto + controller
+	
 	-->
+	
 </article>

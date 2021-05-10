@@ -17,55 +17,159 @@
 -->
 <article>
 	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1609472915">here</a></strong></i></aside>
-	<h2>Controller</h2>
-	<p id=""></p>
 	
+	<nav class="article-toc">
+		<h2>Table of contents</h2>
+		<a href="#1618888639" data-nav-id="1609472915">Controller</a>
+		<ul>
+			<li><a href="#" data-nav-id="1609472915"></a></li>
+			<li><a href="#" data-nav-id="1609472915"></a></li>
+			<li><a href="#" data-nav-id="1609472915"></a></li>
+			<li><a href="#" data-nav-id="1609472915"></a></li>
+		</ul>
+	</nav>
+	
+	<h2>Controller</h2>
+	<p id="1618888639">The interaction between a user and a web application through HTTP(S) requests is the core requirement for having a web business. At the server, a "request" object is a programmatic representation of all details sent by the user and contains information like the <a href="#1608993702" data-nav-id="1608303678">request url</a>, <a href="#1609041974" data-nav-id="1608303678">request body</a>, <a href="#1609038553" data-nav-id="1608303678">request headers</a>, etc (Reference: <a href="https://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html" target="_blank">HttpServletRequest object in Java</a>). Eventually, this request should cause some business processing to occur at the server and the result of the processing returned to the user. A controller is defined as the code component that accepts as input the request sent by user, and causes a suitable business processing to occur. Modern web application development frameworks simplify this step a lot by providing boiler-plate code to handle a generic web request made to the business application. The frameworks leaves it to the developer to add application-specific codes and details, like, mapping request url and request method to a business processing method that gets executed when user sends a request to the url, and, converting request body to an object that is provided to the business processing method as an input, etc. In this ebook, the discussion on "controller" does NOT cover the boiler-plate code provided by the frameworks. Readers are asked to refer to the documentation for the framework to understand that code. It is only the application-specific coding that is covered in the discussion on "controller". Even among those, the topic of converting request body to an object is covered separately in a <a href="#1609472910" data-nav-id="1609472910">later chapter</a> because there can be multiple considerations to keep in mind during the process.</p>
+	
+	<h3>When outside "controller", do NOT "request"</h3>
+	<p id="1619283137">Once the server receives a user request, it is generally processed in a single thread. Most web frameworks store the "request" object as a thread-local object (Reference: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/ThreadLocal.html" target="_blank">Thread-local in Java</a>) and provides utility method to access the "request" object from anywhere in the code. However, it is strongly suggested to not code in a manner that requires access to the "request" object outside the controller object. This is suggested because doing so creates a "separation of responsibility" between the controller code which is responsible for translating details in a "request" object to ones that can be used for business processing. In future, if it becomes necessary to allow similar features be accessible over other protocols like <a href="#1608922555" data-nav-id="1608303678">remote method invocation (RMI)</a>, then it will only be needed to add a new controller-like layer for the protocol, and the core business logic won't need to be changed. Needing to access the "request" object as part of the business processing is a sure-shot indication that the controller method is not properly coded. A <a href="#1612275370" data-nav-id="1612275370">later chapter</a> covers another use case where a thread-local helper object is used rather than using the request object outside the controller code.</p>
+	
+	<h3>RESTful URL design</h3>
+	<p id="1619285670">This section covers considerations that should be kept in mind when designing the URLs for business application that gets handled by controller. <a href="#1608927383" data-nav-id="1608303678">REST</a> design principles suggest that the <a href="#1608993702" data-nav-id="1608303678">URL(s)</a> for the web application must be constructed in a manner that someone with no knowledge about the business web application and the URL(s) supported by it, is able to discover the URL of interest to them. A good example of seeing such a design in action is a filesystem, consisting of folders (or directories) and files or subfolders within the directory. To access a file in a filesystem, a user can start at the top-most level directory, i.e. the root directory, and iterate down different folders till the desired file is found. At each level, the user is presented with a list of options, i.e. files and folders, that they can interact with. Having a pre-existing knowledge of the folder structure in the filesystem is not a pre-requisite for the user to interact with the filesystem. Ideally, when properly designed, a RESTful architecture should promote similar interaction. A user should be able to start their with the web application, starting from the root URL, and working their way up to the desired URL.</p>
+	<p id="1619287660">Consider the question: In the example of windows filesystem, how does a user know that they can click on a file and press "Shift + Delete" to permanently delete that file. One answer is: the user knows it because it is a standard operation. The corollary to this answer in a web application is the use of appropriate <a href="#1609036000" data-nav-id="1608303678">request method</a> with a url to perform a desired operation. This is covered in more details <a href="#1619288257" data-nav-id="1609472915">later</a>. Another possible option is that when a user clicks on a file, then, in addition to the file content, they are also provided the information that pressing "Shift + Delete" will permanently delete that file. The corollary to this answer in a web application is the use of <a href="https://en.wikipedia.org/wiki/HATEOAS" target="_blank">HATEOAS</a> design constraint. Use of HATEOAS is covered in more details in a <a href="#1619285636" data-nav-id="1612275350">later chapter</a>. Using the example of filesystem or otherwise, the sub-sections below discuss additional insights on the design of web application URL(s).</p>
+	
+	<h4>Example web application URL(s)</h4>
+	<p id="1619295280">Let's use the two requirements identified in a previous chapter (<a href="#1612650690" data-nav-id="1612649521">here</a> and <a href="#1613439952" data-nav-id="1612649521">here</a> to identify a set of URL(s) that the banking web application may have. Subsequent sub-sections can use this list for further discussions. For now, let's assume that a login and logout function exists and that those endpoint are outside the scope of discussion. There can be an endpoint through which the user can see and modify their information, an endpoint through which they can see their bank account information but cannot modify it, an endpoint through which they can see their insurance information and enroll or unenroll from it, an endpoint to see their account transactions, and finally an endpoint to create new message, see their past messages and corresponding response.</p>
+	
+	<h4>Shallow vs nested URL</h4>
+	<p id="1619285987">For the use case mentioned <a href="#1619295280" data-nav-id="1609472915">above</a>, let's say there is a url <code>GET /users/{userSlug}</code>though which user can see their information. Side-note: For now, we're not discussing whether the use of <code>GET /users/{userSlug}</code> is proper given that each user will have a unique userSlug. Side-note #2: recall from <a href="#1613946647" data-nav-id="1609472905">previous discussion</a> about entity that a "slug" value should be used to retrieve data from the server. Coming back to the discussion, what should be the url for a user to view their bank account details. One option is to design the url as <code>GET /users/{userSlug}/bankAccounts/{bankAccountSlug}</code>. Another option is to design the url as <code>GET /bankAccounts/{bankAccountSlug}</code>. Former design is what's referred as the nested URL pattern (I am not sure if that is an industry standard name, but it seems to be apt) because the URL to access the sub-resources is formed by extending the parent resource URL. The latter design is called shallow URL pattern because the URL to access any resource is formed by extending the root URL by only one time.</p>
+	
+	<h5>Benefits of shallow URL design</h5>
+	<p id="1619365342">So which is a better design to use - shallow or nested URL? One feature of nested URL is that the parent child relation between two entities are clearly defined. This means that a <code>User</code> entry gets made first and the <code>BankAccount</code> entry gets made after. The downside is that these relations can constrain some use cases. For example, if an administrative staff at the bank wants to get a list all bank-accounts with negative balance, then it is not possible to do so because the staff does not know about the userSlug, and even if they did, then making calls one-by-one for every user is plain cumbersome! For this case, it would have been useful to instead have a shallow URL like <code>GET /bankAccounts</code> to get a list of all bank-account that can then be filtered to returned relevant data. A quick fix is to make both URLs, i.e., <code>GET /users/{userSlug}/bankAccounts</code> and <code>GET /bankAccounts</code>, and wire-in the former URL such that its invocation redirects to the latter URL with a query parameter, like, <code>GET /bankAccounts?users=userSlug</code>. This allows performing simple queries where user for a bankAccount is defined, and also performing complex queries for bankAccounts. Another positive for using the shallow URL design is that nested URL design can get too long. For example, the nested design based URL to get a transaction entry for a bank account will be <code>GET /users/{userSlug}/bankAccounts/{bankAccountSlug}/transactions/{transactionSlug}</code>. If you want to get the transaction-dispute message for the transaction, then add another <code>/messages/{messageSlug}</code> at the end of it. What if there's a ned to get all messages for a user? Then, an intuitive URL to use would be <code>GET /users/{userSlug}/messages</code>, which seems to be a mash up of both the nested and shallow design. Why not just keep it simple and only use shallow URL design!</p>
+	
+	<h5>Downsides of shallow URL design</h5>
+	<p id="1619368662">In addition to advantages, there are some downsides of using the shallow URL design. One downside is that there is a loss of contextual information binding the various nested URLs. In the example about bank accounts, using a shallow url design causes a loss of contextual information that a <code>BankAccount</code> is only formed after a <code>User</code> entry is made. Having a <code>GET /bankAccounts</code> directly under the root context may inadvertently imply that a <code>BankAccount</code> entry can be made without having a <code>User</code> entry. Another downside is that a shallow URL pollutes the HATEOAS response (briefly mentioned <a href="#1619287660" data-nav-id="1609472915">above</a>). For a shallow URL design, when someone pulls the HATEOAS response from the root context, they'll get the information that there are 2 child URLs that can be used: <code>GET /users</code> and <code>GET /bankAccounts</code>. However, if the nested URL design were used, then they'll get the information that there is only 1 child URL than can be used: <code>GET /users</code>. When they access HATEOAS information for <code>GET /users</code>, then they get information about <code>GET /users/{userSlug}/bankAccounts</code> URL. Doing so prevents prevents overwhelming users by providing them a whole lot of information up front, and instead only providing information piece-meal on how they can interact with the system. A corollary filesystem related example is structuring files within hierarchically ordered directories rather than adding all files inside the top level folder. Both design allows storing and retrieving files, but the former structure enables having some context associated with each file based on which they are grouped together. It also overwhelms the user to search for relevant file in a giant list of files.</p>
+	
+	<h5>You don't just "Redirect" a "POST"</h5>
+	<p id="1619570758">In a <a href="#1619365342" data-nav-id="1609472915">previous section</a>, it is suggested as a design option to have two URLs like <code>GET /users/{userSlug}/bankAccounts</code> and <code>GET /bankAccounts?users=userSlug</code>, and where the former redirects to latter. Doing so allows one to start with the former nested URL design and then at a later time, switch over to the latter shallow URL design. However, it should be realized that the simplicity of this suggestion is because it is done for GET calls. POST requests can be much more difficult to redirect. Referring to the <a href="https://tools.ietf.org/html/rfc2616" target="_blank">Internet Engineering Task Force (IETF) Request for Comments (RFC) 2616</a>, a browser must not change the request method on redirect, but it is observed to not be the case! The status code of 307 Temporary Move status code was added to make it expressly clear that the same request method must be used. Even so, redirecting POST requests doesn't seemless works like it does for GET request. In this case, the browser should alert the user and present an option to proceed or to cancel without reposting data to the new location. This doesn't make for a good user experience continuously having to tell the browser that it is ok to proceed! Even worse, it can make some users suspicious if there's any security flaws in  the application. Since POST, PUT, PATCH, DELETE request cannot be easily redirected, so this rekindles the discussion on whether a proper URL design is to have it shallow or to have it nested. (Related reference: <a href="https://www.itprotoday.com/server-virtualization/redirecting-post-requests" target="_blank">here</a> and <a href="https://stackoverflow.com/questions/2604530/a-good-way-to-redirect-with-a-post-request" target="_blank">here</a>)</p>
+	
+	<h5>Summary on nested vs shallow URL design</h5>
+	<!-- in REST, its not about whats correct or wrong, but about discoverability - and that's documentation and will be done later -->
+	
+	<h4>List vs single item URL</h4>
+	<p id="1619288885"></p>
+	<!--
+	--|---- For every list endpoint, also have a corresponding single item endpoint.. else it's just weird
+			
+	--|---- At any point, if you're returning a list that is unbounded, either as sub-field when doing a GET one object call, or if making a list call - that is not a good design. A good design always filters in some way or other to prevent sending unbounded list. Speaking generally, returning unbounded list at any point just tells that the design isn't hashed out on what to do once the list is obtained. Sending an unbounded list is giving a view of entire DB and that is not a good thing to do. Maybe at start.. but not for long term. Consider adding search and pagination. Also whenever returning, consider adding a default sort
+	
+	-- Unique definitions can act as proxy for id - and go as RPC action under List URL, for example: /transactions/{id} is a item type id, but can also have /transactions/latest
+	
+	In general, if you have a one-one relation.. that information can go at same path level as the object to which it has one-to-one relation.
+	-->
+	
+	<h4>Path parameter vs query parameter vs request header</h4>
+	<p id=""></p>
 	<!--
 	
-	Includes URL also
+	--|---- Using header, path param vs query param - think of it like directory. An advantage of using path param is that the parent/child relation is explicit -- having entries in query param don't make the parent child relation explicit; Query param good to present a search like behavior in flat list of items. On other hand, there may be contextual reasons to not add parent param in url path because that is unique (for user of certain role) and can be removed. Or, what if you want child resource but want to filter on multiple parent-id (matrix param is alternative, but that can get involved - can be at non terminal locations, see https://www.baeldung.com/spring-mvc-matrix-variables)  Related: see https://stackoverflow.com/questions/9169081/rest-apis-custom-http-headers-vs-url-parameters
 	
-	Realize -- and mention that a RESTful controller can be used as a repository by end user (CQRS) - in a microservice architecture
+	--|---- Realize that url with patha nd quer param gets bookmarked, but header is not saved. So, anything not related to respource but more on resource negotiation or authentication should be in header
 	
-	Acknowledge that the terminology is Java focused - it means portions of code that interact with request and no more. Controller, in MVC does more and we'll come to it later. Converting request body text to object comes here. 
+	--|---- For single item url, do not add query param. It is weird to have a single item slug and then also a filter. If you feel the need to do so, then ask if the item that needs to be sent is buisness logic dependent or not. If yes, you want to send it in request body. If not, then send it in header. **This is a good way to see when to add field to request body, or query param or header
 	
-	Or maybe this should be a 2-way interaction concern You need a validated DTO before sending to service. The problem is coming in whether validation should be as part of DTO construction or otherwise. Since validation being done are as part of field definition, it can be done as part of constructor.. but not sure if that'll raise error in proper way. The framework may require a specific way.. so that makes it a 2-way interaction. ~~> Concern: only do request level appropriate validation, like, if you were expecting list, did you get it or get string. Did you get generic string or only containing a-z,A-Z,0-9, etc. NOTE: Only do validations related to field definitions and no relation with underlying business process or entity involved. Like, you can say that an integer value holding hours of day must be between 0-23 only. But don't assert that it is between 9am-5pm, etc. Can still do multi field validation only if the current form is transformable to new form in which constraints apply. For example, let's say you are collecting start and end time. Other way to represent it could be start time and duration. since duration less than 0 does not make sense, so one can think of having start time less than end time as constraint. But, no business specific ones.. like the difference between two must be certain period, etc.
+	--|---- Enum type are good for use in filter
+	-->
 	
-	controller should be even less code, just validating data and passing to service.
-	
+	<h4>An endpoint for every RPC action</h4>
+	<p id=""></p>
+	<!--
 	-- separate and specific url for a RPC action -- conforms to "I of solid. -- interface segregation ..better understanding for a client of what they are doing with minimal processing magic which manifests itself as less if-else branch on view side.
+	
+	--|---- Make sperate url for different model=state-related or business-related specific actions.. rather than grouping them under 1 generic path that then adds a bunch of if-else!! Former is clearer to understand, better logging, better understanding of user intent by just looking at url. Related: See https://restful-api-design.readthedocs.io/en/latest/methods.html -- REST is generally about resources and CRUD operations on it. But sometimes, we may want to do some function on a resource. This article suggests that such operations should always be POST because they can be thought of as POSTing request to a message queue asking for an operation to get done.  Since every such messages are different, so it becomes a POST request. HOWEVER, I feel it can also be made as a PUT or PATCH if the operation is idempotent in nature.. or only causes partial changes.
+	
+	-- in reference to flat vs nested url: think of it like grep vs ls command.. both re useful, one does not remove other.
+	-->
+	
+	<h4>URL versioning</h4>
+	<p id="1619373122"></p>
+	<!--
+	--|---- See https://stackoverflow.com/questions/389169/best-practices-for-api-versioning -- for URL versioning
+	
+	the reason to not have urls like /v1/resource is that then home context, i.e. http://server/ is expected to return values v1, v2, etc.. which is absurd. When hitting home endpoint, it is logically better to return list of resources available from the business, and so the next expected url is htttp://server/resource . But is you've started with resource, best practice is to follow it up with "id", giving http://server/resource/{id} . One way to think of version is that this url is a collection os methods and you want to execute a particular method. Hence, this single-id url becomes a list type.. and so you should add a query para. In addition to being weird, this becomes even more confusing for actual lits type urls.. because then oe of query param is for version.. but not others. If you use header.. that seems to work, is restful - in sense if we consider different versions to have equivalent logic (see later section on response about how request header should just change data format but not response data). for example, just returning data with different format, but returning same data. This is generally not true and versions can be non compatabile. In this case, we want version to be explicitly there in url.. so that if the url is shared, then the ersion is identified ..unlike just using request header where version is hidden in request header, and so if someone reruns the url, they may forget to give speciic version. so we want version in url, but above shows that resource should be the one to follow server in url path. Here's the thing.. for the people / API / organiations that are so particular about versioning and backward incompatibility, chances are they are already know what resources are possible. In this case, add version at front.. so that copies for resource/{id} can be added in path. If you're worries about discoverability, then from http://server, link to http://server/resource which always points to most recent version and has hateoas links to different historical versions with corresponding information on how the do processing. Once again, over here, a totally new user will access versioned url only after knowing about unversioned url.. understanding the resource endpoint from there and then being able to see other historical versions
+	-->
+	
+	<h4>Using proper request method</h4>
+	<p id="1619288257"></p>
+	<!--
+	-- This is also briefly mentioned above in #1619287660
+	
+	-- say patch and options are not yet considered.. check to see if they are mentioned in 2way or 3way topics. PATCH should only be preferred if one or up to all fields can be overwritten in same request.. and there is no context information based on processing status
 	
 	-- stick to http spec of keeping GET as a safe method, and of having PUT, GET, DELETE as idempotent. See here: https://developer.mozilla.org/en-US/docs/Glossary/idempotent -- For this reason, never make "delete last entry" as a delete call because it is not idempotent. If it can change, then instead use POST and model it as a RPC call -- done via POSTING of a message that is then picked up and processed
 	
-	--Just like "Location" is valid response header.. so can use Response header for pagnations response. But don't send page number request via header - that must be via queryParam: https://softwareengineering.stackexchange.com/questions/289044/rest-api-paging-via-headers    https://stackoverflow.com/questions/12168624/pagination-response-payload-from-a-restful-api    
+	-- How about. get data for some latest "id". If you use GET, system can cache
+	-->
 	
-	-- at least aspire to level 2 REST
-	--|---- use proper response code
+	<h4>Be Level-2 mature</h4>
+	<p id=""></p>
 	
-	-- Understand and use the http-cache directive, particularly for subset of url serving static data (like those from standard table)
+	<h3>Request header best practices</h3>
+	<!-- Accept, content-type (include encoding)-->
 	
+	<h3>Response header best practices</h3>
+	<p id=""><!--Maybe call this section "response" and describe response related things.. like that response should depend on url and request method.. "communicated" response data content should not change based on request header -- as also said above in versioning --></p>
+	
+	<!--
+	-- Understand and use the http-cache directive, particularly for subset of url serving static data (like those from standard table) ..maybe a better place would be to add in glossary under cahing
 	
 	-- Add basic security response headers:: https://docs.spring.io/spring-security/site/docs/5.0.x/reference/html/headers.html
 	Configure Content security policy
 	Configure allowed hosts is possible
+	--|---- Before deleting it.. at least check if it is mentioned in the security glossary
+	--|---- Sidenote: is there a multi-way item for discussion about CORS and security when API is of client provider
+	
+	"Location" response header
+	-->
+	
+	<h4>Paginated response</h4>
+	<p id=""></p>
+	<!--
+	--Just like "Location" is valid response header.. so can use Response header for pagnations response. But don't send page number request via header - that must be via queryParam: https://softwareengineering.stackexchange.com/questions/289044/rest-api-paging-via-headers    https://stackoverflow.com/questions/12168624/pagination-response-payload-from-a-restful-api    
+	-->
+	
+	
+	
+	<!--
+	
+	See https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/ -- can it be useful
+	
+	Includes URL also
+	
+
+	Or maybe this should be a 2-way interaction concern You need a validated DTO before sending to service. The problem is coming in whether validation should be as part of DTO construction or otherwise. Since validation being done are as part of field definition, it can be done as part of constructor.. but not sure if that'll raise error in proper way. The framework may require a specific way.. so that makes it a 2-way interaction. ~~> Concern: only do request level appropriate validation, like, if you were expecting list, did you get it or get string. Did you get generic string or only containing a-z,A-Z,0-9, etc. NOTE: Only do validations related to field definitions and no relation with underlying business process or entity involved. Like, you can say that an integer value holding hours of day must be between 0-23 only. But don't assert that it is between 9am-5pm, etc. Can still do multi field validation only if the current form is transformable to new form in which constraints apply. For example, let's say you are collecting start and end time. Other way to represent it could be start time and duration. since duration less than 0 does not make sense, so one can think of having start time less than end time as constraint. But, no business specific ones.. like the difference between two must be certain period, etc.
+	
+	controller should be even less code, just validating data and passing to service.
 	
 	
 	
 	
-	--|---- Make sperate url for different model=state-related or business-related specific actions.. rather than grouping them under 1 generic path that then adds a bunch of if-else!! Former is clearer to understand, better logging, better understanding of user intent by just looking at url. Related: See https://restful-api-design.readthedocs.io/en/latest/methods.html -- REST is generally about resources and CRUD operations on it. But sometimes, we may want to do some function on a resource. This article suggests that such operations should always be POST because they can be thought of as POSTing request to a message queue asking for an operation to get done.  Since every such messages are different, so it becomes a POST request. HOWEVER, I feel it can also be made as a PUT or PATCH if the operation is idempotent in nature.. or only causes partial changes.
-			--|---- For single item url, do not add query param. It is weird to have a single item slug and then also a filter. If you feel the need to do so, then ask if the item that needs to be sent is buisness logic dependent or not. If yes, you want to send it in request body. If not, then send it in header. **This is a good way to see when to add field to request body, or query param or header
-			
-	--|---- At any point, if you're returning a list that is unbounded, either as sub-field when doing a GET one object call, or if making a list call - that is not a good design. A good design always filters in some way or other to prevent sending unbounded list. Speaking generally, returning unbounded list at any point just tells that the design isn't hashed out on what to do once the list is obtained. Sending an unbounded list is giving a view of entire DB and that is not a good thing to do. Maybe at start.. but not for long term. Consider adding search and pagination. Also whenever returning, consider adding a default sort
-			
-	--|---- Using header, path param vs query param - think of it like directory. An advantage of using path param is that the parent/child relation is explicit -- having entries in query param don't make the parent child relation explicit; Query param good to present a search like behavior in flat list of items. On other hand, there may be contextual reasons to not add parent param in url path because that is unique (for user of certain role) and can be removed. Or, what if you want child resource but want to filter on multiple parent-id (matrix param is alternative, but that can get involved - can be at non terminal locations, see https://www.baeldung.com/spring-mvc-matrix-variables)  Related: see https://stackoverflow.com/questions/9169081/rest-apis-custom-http-headers-vs-url-parameters
-			--|---- Realize that url with patha nd quer param gets bookmarked, but header is not saved. So, anything not related to respource but more on resource negotiation or authentication should be in header
-			--|---- See https://stackoverflow.com/questions/389169/best-practices-for-api-versioning -- for URL versioning
-			
 	
-	The url can be denormalized (to capture context) - but that doesn't mean that the backend is denormalized.. backend can still be normalized if that's the use case
-			
+	
+	
+	
+	
+	-- This is best done in 2way(user + service): Doing so assigns validations specifically to service, regardless of how it came.. whether in DTO, or URL, or query param. Service gets all objects are "independent" params.. and it starts by first validating DTO, then by validating relations. This gives 404 or 400. 401 and 403 now comes from 2way (user + controller) only - so whether a url is accessible or not! This adds consistency. Maybe, best do it as 3way: user+controller+service
+	------- This is what the quote was for above [[This will bring up discussion on handling permissions (exploding validation), and raising proper response status. Is that ok? When to discuss response status -- use header "success is easy, failure is not" -- discuss 400 vs 401 vs 403 vs 404 vs others.. prevent information leak]]
+	
+	
+	
 	
 	
 	2way: controlle+entity
+	-- See one-way/controller/#1619285987 -- top level domains will always go directly under root. If something matches one-one with the top-level domain, that can also be made to go under root directly. 
+	
 	--|---- Let's say you are dealing with a child resource under a parent resource. There are 2 ways to proceed in terms of URL:
 			Option-1: "/root/parent/{parentSlug}" and "/root/parent/{parentSlug}/child/{childSlug}", or,
 			Option-2: "root/parent/{parentSlug}" and "/root/child/{childSlug}".
