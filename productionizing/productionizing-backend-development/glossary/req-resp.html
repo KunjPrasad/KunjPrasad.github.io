@@ -16,11 +16,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <article>
-	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1608303678">here</a></strong></i></aside>
+	<h2>Request and response related terms</h2>
+	<p id="1618696259">This page lists the various terms that relate to request and response. Since the scope of this book is to cover backend handling of REST calls, it may not cover all of the terms. Nonetheless, it is important for a backend software developer to be aware of these terms and what they mean.</p>
 	
 	<nav class="article-toc">
-		<h2>Table of contents</h2>
-		<a href="#1618696259" data-nav-id="1608303678">Request and response related terms</a>
+		<h3>Table of contents</h3>
 		<ul>
 			<li><a href="#1608922545" data-nav-id="1608303678">Remote procedure call, or RPC</a><ul>
 				<li><a href="#1608922555" data-nav-id="1608303678">Remote method invocation, or RMI</a></li>
@@ -55,9 +55,6 @@
 			<li><a href="#1613521031" data-nav-id="1608303678">OLTP and OLAP</a></li>
 		</ul>
 	</nav>
-	
-	<h2>Request and response related terms</h2>
-	<p id="1618696259">This page lists the various terms that relate to request and response. Since the scope of this book is to cover backend handling of REST calls, it may not cover all of the terms. Nonetheless, it is important for a backend software developer to be aware of these terms and what they mean.</p>
 	
 	<h3>Remote procedure call, or RPC</h3>
 	<p id="1608922545">See article about RPC at <a href="https://www.w3.org/History/1992/nfs_dxcern_mirror/rpc/doc/Introduction/WhatIs.html" target="_blank">W3</a> and <a href="https://en.wikipedia.org/wiki/Remote_procedure_call" target="_blank">Wikipedia</a>. RPC is a <strong>technique</strong> for building distributed systems by allowing a program on one machine (client) to call a subroutine on another machine (server) without knowing that the invoked subroutine is occurring on a different machine. Thus, it provides concepts for achieving a <a href="https://en.wikipedia.org/wiki/Request%E2%80%93response" target="_blank">request–response</a> communication. On the client side, it is coded as if it the call being made is a normal (local) procedure call and without the programmer explicitly coding the details for the remote interaction, or hardware and OS details of remote server. That is, the programmer writes essentially the same code whether the subroutine is local to the executing program, or remote. Hence, RPC is not a transport protocol. One way to achieve this is by combining all local parameters passed to the method (local means, at client side) in a message format (the processing forming message is called "marshalling") and sending it to remote server, which then unpacks the message to obtain individual parameters (the process of unpacking parameters from message is called "unmarshalling"), executes the invoked method and then returns the result, performing the same communication steps in reverse order (Reference: <a href="https://en.wikipedia.org/wiki/Remote_procedure_call#Message_passing" target="_blank">Wikipedia</a>).</p>
@@ -133,4 +130,6 @@
 	
 	<h3>OLTP and OLAP</h3>
 	<p id="1613521031">The difference between OLTP vs OLAP is covered in articles at <a href="https://stackoverflow.com/questions/21900185/what-are-oltp-and-olap-what-is-the-difference-between-them" target="_blank">StackOverflow</a> and <a href="https://www.stitchdata.com/resources/oltp-vs-olap/" target="_blank">here</a>. OLTP, or "On-line Transaction Processing", is characterized by a large number of short on-line transactions. Such operations have a strong emphasis being on "short", i.e. the user sees a response very soon after making a request. On the other hand, OLAP, or "On-line Analytical Processing" involves processing of historical data via complex aggregations. Such operations are not made very often because, (1) nobody wants to make a request and wait for a long time before getting response, and, (2) the actual reason - the response data only changes negligibly within a small time, and so, there's no reason to make such requests often. Note that OLTP and OLAP is categorization of request being processed by the server, based on the efforts needed to process the request. However, both requests can be web requests, sent using HTTP, etc., and those are not the factors that differentiate OLTP vs OLAP.</p>
+	
+	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read this article, and more, in ebook <a href="/productionizing/productionizing-backend-development/#1608303678">here</a>.</strong></i></aside>
 </article>

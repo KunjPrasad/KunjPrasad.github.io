@@ -16,11 +16,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <article>
-	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1608343369">here</a></strong></i></aside>
+	<h2>Security related terms</h2>
+	<p id="1618697341">This page lists the various terms that relate to securing the request. Please note that complete application security goes much further and the list below is not exhaustive. For example, physically securing the servers by <a href="https://opensource.com/article/18/9/linux-iptables-firewalld" target="_blank">setting firewall</a>, installing only necessary software, updating/patching softwares, securing database via passwords, mitigation strategy <a href="#1612491901" data-nav-id="1608343369">DDoS attacks</a>, etc. are some examples of securing an application that must also be performed.</p>
 	
 	<nav class="article-toc">
-		<h2>Table of contents</h2>
-		<a href="#1618697341" data-nav-id="1608343369">Security related terms</a>
+		<h3>Table of contents</h3>
 		<ul>
 			<li><a href="#1608736802" data-nav-id="1608343369">Authentication</a><ul>
 				<li><a href="#1608739818" data-nav-id="1608343369">Cookie and Token based authentication</a><ul>
@@ -65,9 +65,6 @@
 			</ul></li>
 		</ul>
 	</nav>
-	
-	<h2>Security related terms</h2>
-	<p id="1618697341">This page lists the various terms that relate to securing the request. Please note that complete application security goes much further and the list below is not exhaustive. For example, physically securing the servers by <a href="https://opensource.com/article/18/9/linux-iptables-firewalld" target="_blank">setting firewall</a>, installing only necessary software, updating/patching softwares, securing database via passwords, mitigation strategy <a href="#1612491901" data-nav-id="1608343369">DDoS attacks</a>, etc. are some examples of securing an application that must also be performed.</p>
 	
 	<h3>Authentication</h3>
 	<p id="1608736802">A web application receives requests from someone/somewhere, that then needs to be processed and a corresponding response returned. However, in doing so, the application must prevent one user from mistakenly or attackingly assume identity of another user to access someone else's data. This is where the concept of Authentication comes in, wherein, the web application asks for details from user making the request to verify that "the entity making a request" is same as a given "user of the application". Traditionally, this is done by collecting an username and pasword from the user. Authentication as a topic goes further detailed beyond simply collecting these a password and it is highly instructive to refer to this article at <a href="https://en.wikipedia.org/wiki/Authentication" target="_blank">Wikipedia</a>. As the application evolves and becomes more critical, it is highly suggested to enforce stronger authentication, like, Multifactor authentication. Also note that even though the above article includes "Authorization" section towards the end, it is a different concept altogether. In this book, authentication and authorization are dealt separately.</p>
@@ -166,4 +163,6 @@
 	
 	<h4>Open Web Application Security Project, or OWASP</h4>
 	<p id="1608831965">The <a href="https://owasp.org/" target="_blank">OWASP</a> is a nonprofit foundation that works to improve the security of software. <a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top 10</a> vulnerabilities is a good place to check the more common security issues that should be identified and rectified in an application. A complete list of OWASP projects can be found <a href="https://owasp.org/projects/" target="_blank">here</a>.</p>
+	
+	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read this article, and more, in ebook <a href="/productionizing/productionizing-backend-development/#1608343369">here</a>.</strong></i></aside>
 </article>

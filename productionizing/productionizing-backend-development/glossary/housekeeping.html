@@ -16,11 +16,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <article>
-	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1608344358">here</a></strong></i></aside>
+	<h2>Web application housekeeping related terms</h2>
+	<p id="1618628169">This page lists the various terms that relate to web application housekeeping tasks. These are one-off or regular tasks run as cron jobs that don't directly contribute to processing of the current request and forming a response. However, they may prepare the application for future business processing or clear stale data from past processing, and so, are essential to the application.</p>
 	
 	<nav class="article-toc">
-		<h2>Table of contents</h2>
-		<a href="#1618628169" data-nav-id="1608344358">Web application housekeeping related terms</a>
+		<h3>Table of contents</h3>
 		<ul>
 			<li><a href="#1608688160" data-nav-id="1608344358">Cron job</a></li>
 			<li><a href="#1608688169" data-nav-id="1608344358">Daemon thread</a></li>
@@ -34,9 +34,6 @@
 			<li><a href="#1608689286" data-nav-id="1608344358">OpenAPI and Swagger</a></li>
 		</ul>
 	</nav>
-	
-	<h2>Web application housekeeping related terms</h2>
-	<p id="1618628169">This page lists the various terms that relate to web application housekeeping tasks. These are one-off or regular tasks run as cron jobs that don't directly contribute to processing of the current request and forming a response. However, they may prepare the application for future business processing or clear stale data from past processing, and so, are essential to the application.</p>
 	
 	<h3>Cron job</h3>
 	<p id="1608688160">See article about cron job at <a href="https://en.wikipedia.org/wiki/Cron" target="_blank">Wikipedia</a>. Cron jobs are periodic tasks that are executed based on a schedule. These can be used to run arbitrary housekeeping tasks on demand or periodically.</p>
@@ -64,4 +61,6 @@
 	
 	<h3>OpenAPI and Swagger</h3>
 	<p id="1608689286">REST, being an architecture and not a specification, does not require for there be fixed interfaces and URLs, but instead promotes API discovery via <a href="https://en.wikipedia.org/wiki/HATEOAS" target="_blank">HATEOAS</a>. However, this does interfere with a lot of use cases where a client may want to have an advanced knowledge of available REST endpoints which is agreed to be provided as part of a service by the business but without an access to the source code. <a href="https://swagger.io/resources/open-api/" target="_blank">OpenAPI specifications</a> standardizes the format in which this information can be shared. <a href="https://swagger.io/" target="_blank">Swagger</a> is a set of open-source tools built around the OpenAPI specification that can help with the designing, building, documenting and consuming of REST APIs. Thus, for modern web applications exposing service via REST endpoints, it should be seen as almost a requirement to also provide Swagger documents and to keep them up to date.</p>
+	
+	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read this article, and more, in ebook <a href="/productionizing/productionizing-backend-development/#1608344358">here</a>.</strong></i></aside>
 </article>

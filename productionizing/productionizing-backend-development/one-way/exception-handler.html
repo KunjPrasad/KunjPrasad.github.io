@@ -16,9 +16,18 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <article>
-	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1609472945">here</a></strong></i></aside>
 	<h2>Exception handler</h2>
 	<p id=""></p>
+	
+	<nav class="article-toc">
+		<h3>Table of contents</h3>
+		<ul>
+			<li><a href="#" data-nav-id=""></a></li>
+		</ul>
+	</nav>
+	
+	<p id=""></p>
+	
 	<!--
 	..and they come after filter but before view. Check your implementation.. else catch error in filter
 	always raise error instead of returning a non-200 response. 
@@ -46,4 +55,6 @@
 	-- Maybe have a threadlocal to every request. This can provide handle to request. Can also define variables that can store logging context.. like, different variables encounted during processing that should be collected so it can be logged. Other option could be to set attribute directly on request If using threadlocal via a filter/middleware - remember to clear it on exit -- regardless of whether there is an error or not. On that note.. when executing custom action endpoint that triggers some change in a particular model status, you can store both the past and new status and log it
 	
 	-->
+	
+	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read this article, and more, in ebook <a href="/productionizing/productionizing-backend-development/#1609472945">here</a>.</strong></i></aside>
 </article>

@@ -16,11 +16,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <article>
-	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1611200362">here</a></strong></i></aside>
+	<h2>Data storage related terms</h2>
+	<p id="1618627233">This page lists the various terms that relate to data storage. Although data storage is part of supporting infrastructure needed to host the web application, it is a bg topic in itself and so, it is discussed separately to cover the various related terms. </p>
 	
 	<nav class="article-toc">
-		<h2>Table of contents</h2>
-		<a href="#1618627233" data-nav-id="1611200362">Data storage related terms</a>
+		<h3>Table of contents</h3>
 		<ul>
 			<li><a href="#1611200928" data-nav-id="1611200362">Why data storage?</a></li>
 			<li><a href="#1611201475" data-nav-id="1611200362">Memory</a></li>
@@ -40,9 +40,6 @@
 			<li><a href="#1608530099" data-nav-id="1611200362">Cache</a></li>
 		</ul>
 	</nav>
-	
-	<h2>Data storage related terms</h2>
-	<p id="1618627233">This page lists the various terms that relate to data storage. Although data storage is part of supporting infrastructure needed to host the web application, it is a bg topic in itself and so, it is discussed separately to cover the various related terms. </p>
 	
 	<h3>Why data storage?</h3>
 	<p id="1611200928">An application capable of supporting a business must be able to interact with individual customer and provide services needed by them individually. Serving same set of data to everyone and everytime (..like this ebook) can't grow as a business because it ignores individual needs of someone who'd be willing to pay for the customized service. Additionally, recall that <a href="#1608922565" data-nav-id="1608303678">HTTP requests are in themselves stateless</a>., Thus, it is necessary to have a "data-repository" where user data can be save, and served back to the user at a later time.</p>
@@ -98,4 +95,5 @@
 	<h3>Cache</h3>
 	<p id="1608530099">See article about cahces on <a href="https://en.wikipedia.org/wiki/Cache_(computing)" target="_blank">Wikipedia</a>, <a href="https://aws.amazon.com/caching/" target="_blank">AWS</a>. A cache is a <strong>hardware or software</strong> component that stores data so that future requests for that data can be served faster; the data stored in a cache might be the result of an earlier computation or a copy of data stored elsewhere. An important precaution when using cache is to ensure that stale data is not being sent to user in a manner unexpected by user. Hardware components can include adding a hard disk drive (HDD) if one wasn't previously available, or upgrading from a HDD to solid state drive (SSD) or memory. Caches can be set up anywhere there is a temporal correlation in responses. It enables speeding up the overall processing by returning a previous copy of the response ather than the alternate process of re-computing the response result from zero. A "cache hit" occurs when the requested data can be found in a cache, while a cache miss occurs when it cannot. For the cache to improve the overall processing response, its size should be of the order of request rate multiplied by the temporal correlation period of the response. Hence, for a highly repeating request, having even a small size cache would be sufficent to notice improvements, but for high request rate or not repeating request, even a large size cache wouldn't be helpful. As the cache gets full, it starts to remove old (i.e., least recently used) or unused (i.e., least frequently used) data on a "cache miss", so that new data can be stored, with the expectation that it will get requested for again. The process of removing data from cache is called "evication".Reuse of cache data defines its "hit rate". Optimizing a cache involves analyzing the way cahce is used to ensure a high hit rate and with a low eviction rate (to get the benefit of cache use rather than terms getting constantly evicted and then re-loaded). A cache can also be distributed wherein one cache node returns data corresponding to a particular "shard" or "partition" of entire dataset. A cache can be added at various places during request processing, like, to store data pulled from database, or to store user profile for corresponding cookie, or even <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" target="_blank">at front end to reuse previous responses</a>. They can even be used as in-memory NoSQL datastore (<a href="https://www.infoq.com/news/2011/11/distributed-cache-nosql-data-sto/" target="_blank">reference</a>).</p>
 	
+	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read this article, and more, in ebook <a href="/productionizing/productionizing-backend-development/#1611200362">here</a>.</strong></i></aside>
 </article>
