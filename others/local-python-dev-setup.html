@@ -1,0 +1,91 @@
+<!--
+    HTML article: Local Python Development Setup, by Kunj Prasad on Github.
+    Copyright (C) 2020  Kunj Prasad
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Salary negotiation</title>
+		<meta name="description" content="Local Python development setup">
+		<meta name="author" content="Kunj Prasad">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv='Pragma' content='no-cache'>
+		<meta http-equiv='Cache-Control' content='no-cache'>
+		<style type="text/css">
+			main a[target="_blank"] {
+				background-image: url("data:image/svg+xml,%3Csvg role='img' xmlns='http://www.w3.org/2000/svg' height='0.85rem' width='0.85rem' viewBox='0 0 512 512'%3E%3Cpath fill='currentColor' d='M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z' class=''%3E%3C/path%3E%3C/svg%3E");
+				background-repeat: no-repeat;
+				background-position-x: right;
+				background-position-y: center;
+				padding-right: 1rem;
+			}
+			h2 {
+				margin-top: 1.5rem;
+				margin-bottom: 0;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<header>
+			<h1>Local Python development setup</h1>
+			<p>Python is a popular programming language. However, one of the entry barriers I felt was getting the local development environment setup to start with coding. Hence, this small writeup with details on setting it up on your machine. This is not a writeup on learning the language, but on getting it installed locally in a somewhat professional setting.</p>
+		</header>
+		
+		<nav>
+			<h2>Table of contents</h2>
+			<ul>
+				<li><a href="#download-python">Download Python</a></li>
+				<li><a href="#download-pycharm">Download Pycharm</a></li>
+				<li><a href="#setting-venv">Setting up virtual environment</a></li>
+				<li><a href="#pip-install">Install libraries using pip</a></li>
+				<li><a href="#working-with-git">Working with Git</a><ul>
+					<li><a href="#git-bash-on-windows">Git bash on windows</a></li>
+					<li><a href="#code-quality-tools">Adding code quality check tools</a></li>
+				</ul></li>
+			</ul>
+		</nav>
+		
+		<main>
+			<h2 id="download-python">Download Python</h2>
+			<p>Nothing special.. go to to <a href="https://www.python.org/downloads/" target="_blank" rel="noopener noreferrer">Python downloads page</a>, get the file and install it on your system. Just a heads up: Do not install any other python libraries after installing python.</p>
+			<p>At the time of writing, there are 2 major version of Python: Python-2 and Python-3. Python 2.7.18 seems to be the last release of Python 2. The <a href="https://www.python.org/psf/" target="_blank" rel="noopener noreferrer">Python Software Foundation (PSF)</a> declared that <a href="https://www.python.org/doc/sunset-python-2/" target="_blank"  rel="noopener noreferrer">Python-2 will be sunset</a>, mentioning that "As of January 1st, 2020 no new bug reports, fixes, or changes will be made to Python 2, and Python 2 is no longer supported". Unless you are absolutely sure, always go for Python-3, and for the latest version of Python 3.</p>
+			<p>To verify the installation on Windows, open the comman prompt and type <code>python --version</code> which should give the version of installed Python. On Mac, open the "Terminal" application and type <code> python -V</code> and that gives the version of installed python. For both PC and Mac, typing <code>python</code>, either on the command prompt in PC or in Terminal on Mac, should open the Python Shell, where individual python commands can be run. A Python Prompt comprising of three greater-than symbols </code>&gt;&gt;&gt;</code> will show up. If you want to exit from the python shell, type <code>exit()</code> and press enter. References: <a href="https://www.wikihow.com/Check-Python-Version-on-PC-or-Mac" target="_blank" rel="noopener noreferrer">Wikihow (PC, Mac install verification)</a>, <a href="https://stackoverflow.com/questions/56715476/how-do-i-test-if-python-is-installed-on-windows-10-and-run-an-exe-to-install" target="_blank" rel="noopener noreferrer">StackOverflow (PC install verification)</a>, <a href="https://www.tutorialsteacher.com/python/python-interective-shell" target="_blank" rel="noopener noreferrer">TutorialsPoint</a>.</p>
+			
+			<h2 id="download-pycharm">Download Pycharm</h2>
+			<p>Python code are written in files with <code>.py</code> extension. You can use any kind of text editor to write code. However, it is very easy and preferred to setup an <a href="https://en.wikipedia.org/wiki/Integrated_development_environment" target="_blank" rel="noopener noreferrer">Integrated Development Environment</a>. For Python, one of the preferred IDE is <a href="https://www.jetbrains.com/pycharm/" target="_blank" rel="noopener noreferrer">Pycharm</a>. The free community edition of Pycharm can be downloaded and installed for local development from <a href="https://www.jetbrains.com/pycharm/download/" target="_blank" rel="noopener noreferrer">this</a> page. Once installed, feel free to open Pycharm. However, we'll need to do one more important setup before we start development.</p>
+			
+			<h2 id="setting-venv">Setting up virtual environment</h2>
+			<p>When you write a python code, it may depend on other python libraries. When these libraries are installed, the default behavior is that they get installed in your system. So, if you write a project that does not depend on those libraries or on a different version of the libraries, then it creates a difficult situation with regards to managing the various versions of the libraries. There are various ways to manage libraries, but the multitude of option can itself get confusing. In this section, the use of <code><a href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener noreferrer">venv</a></code> is suggested to manage libraries (Reference: <a href="https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe" target="_blank" rel="noopener noreferrer">StackOverflow</a>). Readers are encouraged to read in details about <code><a href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener noreferrer">venv</a></code>. In short, <strong>after the virtual evironment is activated</strong>, any installation of python libraries are done only in the virtual environment and not globally in your system's Python library. The keeps the system Python install "pristine", i.e. free from project dependent libraries. Each project can now define it's own virtual environment, activate it when the project is being worked on, and install libraries used by the project in the corresponding virtual environment. If it is needed to switch to another project, then simply deactivate the virtual environment for the first project and activate it for the next project.</p>
+			<p>To begin with, create a directory where you want to work on your python project. For PC, open command prompt, go to the python project directory, and type <code>python -m venv myvenv</code> and press enter. The first value <code>venv</code> is part of the command. The second value <code>myvenv</code> is the name of subdirectory inside your python project directory where the libraries will be kept. Next, activate virtual environment by typing <code>myvenv\Scripts\activate.bat</code>. Few things to note: (1) Please check the documentation for venv, the command might have changed. Or, maybe you are working on Mac or Linux, and the steps are different; (2) The command starts with <code>myvenv</code> because that was the name of directory chosen when creating a virtual environment. If you chose a different name, then use that; (3) The sign of successful virtual environment activation is that you will see <code>(myvenv)</code> prepended to the comand prompt. This is because "myvenv" was used as the name. If you use any other name, that will show up; (4) To deactivate the virtual environment, type <code>deactivate</code> and press enter.</p>
+			<p>One more quick update.. We need to <a href="https://www.jetbrains.com/help/pycharm/configuring-project-and-ide-settings.html" target="_blank" rel="noopener noreferrer">update the Pycharm settings</a>, particularly, <a href="https://www.jetbrains.com/help/pycharm/configuring-python-interpreter.html" target="_blank" rel="noopener noreferrer">updating the python interpreter</a> for the project. Now, you can add python from virtual environment, if Pycharm hasn't already detected it.</p>
+			
+			<h2 id=pip-install">Install libraries using pip</h2>
+			<p><a href="https://docs.python.org/3/installing/index.html" target="_blank" rel="noopener noreferrer">This page</a> is the official documentation on intalling libraries in Python. It mentions that <code>pip</code> is the preferred installer program, and starting with Python 3.4, it is included by default with the Python binary installers. The documentation for <code>pip</code> can be found <a href="https://pip.pypa.io/en/stable/cli/pip/" target="_blank" rel="noopener noreferrer">here</a>. Libraries can be installed using <code>pip install ...</code> command. It is extremely suggested to define a requirements file in your python project directory and using the file to install and update libraries. An example of requirements file can be seen <a href="https://pip.pypa.io/en/stable/cli/pip_install/#example-requirements-file" target="_blank" rel="noopener noreferrer">here</a>. If the file name is "requirements.txt", then the command to install libraries by reading it would be <code>pip install -r requirements.txt</code>. Every time the pip installer runs, it will add a library if it is missing, or update it to the version specified in the requirements file. BUT.. add and update the libraries to which place?</p>
+			<p>This is a great way to see the virtual environment in action. Once again, don't install any python libraries globally. Instead, go to your python project and activate the virtual environment (once again, a quick cross-check is that it should show <code>(myvenv)</code> or corresponding virtual environment folder name before the prompt). Type <code>pip list</code> to see the list of installed libraries. The list will show additional libraries after they are installed using <code>pip</code>. Now, deactivate the vitual environment and type <code>pip list</code> again. You'll notice that the list of installed libraries have greatly shrunk. This is because the virtual environment for the project has been deactivate, and so you are just seeing the basic libraries installed at the system level. This verifies how virtual environment keeps your system clean by installing project level libraries at the corresponding level rather than getting installed at global or system level.</p>
+			
+			<h2 id="working-with-git">Working with Git</h2>
+			<p>Modern code development process involves developing code at local machine and then sending it back to a code repository existing on internet. Since code can come from various developers, there are "version control system" that manage the entry of new code/changes to the existing code. One such version control system that is hugely popular is <a href="https://en.wikipedia.org/wiki/Git" target="_blank" rel="noopener noreferrer">Git</a> which is used by code repositories like <a href="https://github.com/" target="_blank" rel="noopener noreferrer">Github</a>, <a href="https://about.gitlab.com/" target="_blank" rel="noopener noreferrer">Gitlab</a>, etc. When working with Git, there are few more configurations that could be explored and are mentioned below.</p>
+			
+			<h3 id="git-bash-on-windows">Git bash on windows</h3>
+			<p>For downloading Git for windows, it also installs Git Bash. Git Bash emulates a bash environment on windows. It enables running git features in command line plus most of standard unix commands (Reference: <a href="https://gitforwindows.org/" target="_blank" rel="noopener noreferrer">Git for windows</a>, <a href="https://superuser.com/questions/1053633/what-is-git-bash-for-windows-anyway" target="_blank" rel="noopener noreferrer">SuperUser's StackExchange</a>. If you are using Git Bash for working with Git, then a sall extra configuration is needed to enable running Python (installed on Windows) from Git Bash. The steps are listed <a href="https://stackoverflow.com/questions/32597209/python-not-working-in-the-command-line-of-git-bash" target="_blank" rel="noopener noreferrer">here</a>.</p>
+			
+			<h3 id="code-quality-tools">Adding code quality check tools</h3>
+			<p>generally having a high quality code is a good thing to have! It can improve code readability, making it easier for other developers to understand the intent of a code and to use it in future efforts. When working on a personal project, it may seem unnecessary to care about code quality tools, but, including them is a good way to get used to way coding is expected from a software developer. <a href="https://realpython.com/python-code-quality/" target="_blank" rel="noopener noreferrer">This article</a> has a good list of various code quality check tools. Personally, I really like <a href="https://github.com/ambv/black" target="_blank" rel="noopener noreferrer">Black</a>, <a href="https://flake8.pycqa.org/en/latest/" target="_blank" rel="noopener noreferrer">Flake8</a> and <a href="https://github.com/timothycrosley/isort" target="_blank" rel="noopener noreferrer">ISort</a>. For big python projects, it is also very helpful to provide type hints in the code so that other developers can understand the intent of the code, expected argument type and return types; To achieve this goal, <a href="http://mypy-lang.org/" target="_blank" rel="noopener noreferrer">MyPy</a> can be used which is an optional static type checker for Python. Last, it might be useful to have these tools automatically get invoked every time the code that you wrote is checked in to a code repository. When working with Git, pre-commit hooks can be setup that get invoked every time a code is checked in. The steps to do so are covered in details <a href="https://www.vantage-ai.com/blog/speed-up-your-python-development-workflow-with-pre-commit-and-makefile" target="_blank" rel="noopener noreferrer">here</a> and primarily rely on using the <a href="https://pre-commit.com/" target="_blank" rel="noopener noreferrer">pre-commit python library</a>.</p>
+		</main>
+	 </body>
+</html>
