@@ -39,6 +39,9 @@
 	the controller may require returning datetime in a timezone different from what is captured in different data domain. Ex.: the teacher and school are in different timezone but are physically close. Here, school start time is in school timezone, but you want to send alert to teacher in their timezone.
 	
 	
+	Use id=1624554408:: For one-many related entities, do you also show the related entries or just show the slug? Depends on use case, generally not good thing to show full data of related object because the 2 entities can have different modified time. Depends on use case whether you'd want to fetch new data when either child is modified or added. What if there is one-one relation, then depends on use case. However, considering that DB design chose to use 2 separate tables rather than make one table, it's agood idea to maybe not return both when one is queried ---- [[NOTE: This only discusses implications of showing related entity data when converting to DTO; Not on how controller should be formatted, or scenarios where this may happen]]
+	
+	When creating entity, allow for logic where user also provides "slug" in dto and the created entity uses that slug or fails. This allows request-user to set expectation for slug they are about to create.. and can be helpful in coding for front-end that can simultaneously add-new + update-existing entry in same request
 	
 	-->
 	

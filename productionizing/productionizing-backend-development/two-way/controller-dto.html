@@ -28,6 +28,17 @@
 	
 	<p id=""></p>
 	
+	<h4>Paginated response</h4>
+	<p id="1624549699"></p>
+	<!--
+	--Just like "Location" is valid response header.. so can use Response header for pagnations response. But don't send page number request via header - that must be via queryParam: https://softwareengineering.stackexchange.com/questions/289044/rest-api-paging-via-headers    https://stackoverflow.com/questions/12168624/pagination-response-payload-from-a-restful-api    
+	
+	GET, PUT, POST, PATCH -- all should return same type of object, preferably also with last mod time. This can be used for doing a check in subsequent calls and not getting data if old data hasn't changed
+	---- For custom action URL, it can send a data which is different
+	
+	-->
+	
+	
 	<!--
 	
 	-- Provide a context object to DTO through which controller can provide request related details to DTO -- so DTO doesn't directly query request object. But then, why..? Won't it be simply better to change the initialization of DTO with its validation. This way controller can add specific details to DTO after it is initially made, but before running validations. Maybe add it in 2-way: dto + controller

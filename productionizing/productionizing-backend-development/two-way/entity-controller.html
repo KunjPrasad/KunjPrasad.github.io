@@ -32,7 +32,8 @@
 	
 	2way (model+controller): For const data, keep your service as source of truth.. and expose a url to return data to users.. thus, the const data at server is the sole location of truth
 	
-	
+	Use id=1624554394:: Repeat of 1619368662 in one-way/controller - if an entity is referred by many others that have foreign key to it, then, can add an endpoint in parent controller to get list of ids for the child entities. Alternately, go to child entity's collection url, and add filter by unique key of parent entity (not id or slug) ---- [[NOTE: IMP: The only thing this point is saying is to provide extra url. It does not discuss what should actually be returned - which is one in 3-way interaction]]
+	--|---- Based on above, and also Follow up on 1624479332 in one-way/controller - third bullet point.. which says that make a nested url within collection-url if a filter returns only 1 entry.. if 2 entities has one-one relation, then make a nested url endpoint but within single-resource-url such that calling the endpoint gives information about the related resource. If using shallow url design (1619285987), then just return slug -- see 1619368662 ,, which refers links to <a href="#1624477208" data-nav-id="1619574603"> on why only slug is returned
 	-->
 	
 	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read this article, and more, in ebook <a href="/productionizing/productionizing-backend-development/#1616384383">here</a>.</strong></i></aside>

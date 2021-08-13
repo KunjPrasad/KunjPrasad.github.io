@@ -33,6 +33,7 @@
 	3way (Model-Model-controller)
 	-- PUT call, being idempotent, should allow you to break constraint of Finite state machine. POST, PATCH gets affected by FSM and so they should be the verbs used in corresponding endpoint. Even delete.. if some state does not allow sudden delete, then it should not be via DELETE operation. 
 	-- What about PATCH call? PATCH is in itself non-idempotent. But recall that a past rule says to always return same data - so same data should also go out in PATCH call. Being a model serializer, PATCH will also use same structure in request (as in response) to get data, but now unlike PUT calls, it can only take partial fields. So, how does controller know what action to take ..and what's difference between PATCH vs FSMinducing @action endpoints. Hence: PATCH should allow partial updates where you are modifying one or other portion of data, but it should not cause a business processing. Like, iif you accept time-in, time-out.. PATCh can be used to update just one field. Contrast that with calls to "business process" this data, like, approve / deny, etc. That shouldn't be done by PATCH but via @action. So use PATCH if that does not modify the "business status" associated with the entity.
+	-- PATCH should be used where you want to effect PUT but only a few fields of the entity is changing, so only those are sent. Meaning.. there shouldn't be any state machine involved.
 	
 	
 	-->
