@@ -108,7 +108,7 @@ const personalNotesNavAnchorId = "1606703843";
  */
 export const onDocumentLoad = () => {
 	attachNoteHandlers();
-	//on clicking hash tag inside the <main> that instead wants to trigger a click on corresponding nav-item, do so
+	//attach binding for hash-type anchor tag (i.e., <a href="#...">) inside the <main>, where the desired goal is to open items from other pages of ebook. Hence, it ends up behaving as if a corresponding nav-item was clicked
 	bindMainHashLinkToNavClick();
 	// adding post-load operation:
 	// -- if custom-note link is clicked, then after the page load, also update upload status

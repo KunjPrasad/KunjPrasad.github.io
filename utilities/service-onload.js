@@ -61,7 +61,7 @@ export const getNavAndMainElemIdFromLocationHash = () => {
  */
 export const prepareNavAnchorToLoadInMain = (postLoadOperationMap = {}) => {
 	$("nav a").each(function() {
-		$(this).on("click", function(event) { // `this` refers to each "nav a" element, so don't early bind when defining the function
+		$(this).on("click", function(event) { // `this` refers to each "nav a" element, so don't use a fat arrow notation, else that'll "early bind" this to something unexpected
 			event.preventDefault();
 			const anchorTagId = $(this).attr('id');
 			let {navElementId, mainElementId} = getNavAndMainElemIdFromLocationHash();
