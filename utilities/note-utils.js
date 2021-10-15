@@ -1,4 +1,5 @@
 import { downloadBlobAsFile, getFileText  } from '/utilities/file-utils.js';
+import { sanitizeText } from '/utilities/string-utils.js';
 
 // IMPORTANT: NOTE that the key prefixes MUST NOT have hyphen/dash, else some function may break.
 const LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX = "noteFilename";
@@ -7,11 +8,11 @@ const LOCALSTORAGE_NOTES_KEY_PREFIX = "notes";
 
 /**
  * Utility method to get the key used to store data related a book in the localStorarge.
- * @param {string} localStorageKeyPrefix - The key prefix. NOTE: It MUST NOT have hyphen/dash, else some function may break.
  * @param {string} bookKey - A key specific to the html book. NOTE: It MUST NOT have hyphen/dash, else some function may break.
+ * @param {string} localStorageKeyPrefix - The key prefix. NOTE: It MUST NOT have hyphen/dash, else some function may break.
  * @returns {string}
  */
-const getLocalStorageKey = (localStorageKeyPrefix, bookKey) => `${localStorageKeyPrefix}-${bookKey}`;
+const getLocalStorageKey = (bookKey, localStorageKeyPrefix) => `${bookKey}-${localStorageKeyPrefix}`;
 
 /**
  * Utility method to get the key used to notes data for a particular contentId, and related a book, in the localStorarge.
@@ -19,7 +20,15 @@ const getLocalStorageKey = (localStorageKeyPrefix, bookKey) => `${localStorageKe
  * @param {string} contentId - The id of content to which note is being added. NOTE: It MUST NOT have hyphen/dash, else some function may break.
  * @returns {string}
  */
-const getLocalStorageContentNotesKey = (bookKey, contentId) => `${getLocalStorageKey(LOCALSTORAGE_NOTES_KEY_PREFIX, bookKey)}-${contentId}`;
+const getLocalStorageContentNotesKey = (bookKey, contentId) => `${getLocalStorageKey(bookKey, LOCALSTORAGE_NOTES_KEY_PREFIX)}-${contentId}`;
+
+/**
+ * Utility method to identify if a localStorage `key` belongs to a book with given `bookKey`
+ * @param {string} bookKey - A key specific to the html book.
+ * @param {string} key - Local storage key
+ * @returns {boolean}
+ */
+const isLocalStorageKeyForBook = (bookKey, key) => key.startsWith(bookKey);
 
 /**
  * Utility method to get the id of a content in the book corresponding to a key in localStorage. If the key does not have a structure as expected for a content-notes key, then null is returned.
@@ -27,8 +36,8 @@ const getLocalStorageContentNotesKey = (bookKey, contentId) => `${getLocalStorag
  * @param {string} key - The key used in localStorage.
  * @returns {string|null}
  */
-const getContentIdFromLocalStorageContentNotesKey = (bookKey, key) => {
-	if (!key.startsWith(getLocalStorageKey(LOCALSTORAGE_NOTES_KEY_PREFIX, bookKey))) {
+const getContentIdFromLocalStorageKey = (bookKey, key) => {
+	if (!key.startsWith(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTES_KEY_PREFIX))) {
 		return null;
 	} else {
 		return key.split('-')[2];
@@ -81,12 +90,12 @@ export const getNotesForContentIdFromLocalStorageAsIdSortedList = (bookKey, cont
 const getAllNotesFromLocalStorage = (bookKey) => {
 	const localStorage = window.localStorage;
 	const allNotes = {};
-	for(const contentNotesKey in localStorage) {
-		const contentId = getContentIdFromLocalStorageContentNotesKey(bookKey, contentNotesKey);
+	for(const key in localStorage) {
+		const contentId = getContentIdFromLocalStorageKey(bookKey, key);
 		if (!contentId) {
 			continue;
 		}
-		allNotes[contentId] = JSON.parse(localStorage.getItem(contentNotesKey));
+		allNotes[contentId] = JSON.parse(localStorage.getItem(key));
 	}
 	return allNotes;
 };
@@ -101,7 +110,7 @@ const getAllNotesFromLocalStorage = (bookKey) => {
  */
 const updateLocalStorageOnNoteUpload = (bookKey, noteFileName, notesObject) => {
 	mergeNotesToExistingOnLocalStorage(bookKey, notesObject);
-	window.localStorage.setItem(getLocalStorageKey(LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX, bookKey), noteFileName);
+	window.localStorage.setItem(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX), noteFileName);
 };
 
 /**
@@ -112,8 +121,8 @@ const updateLocalStorageOnNoteUpload = (bookKey, noteFileName, notesObject) => {
  */
 const updateLocalStorageOnNoteDownload = (bookKey, noteFileName) => {
 	const localStorage = window.localStorage;
-	localStorage.setItem(getLocalStorageKey(LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX, bookKey), noteFileName);
-	localStorage.removeItem(getLocalStorageKey(LOCALSTORAGE_NOTE_HAS_CHANGES_KEY_PREFIX, bookKey));
+	localStorage.setItem(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX), noteFileName);
+	localStorage.removeItem(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTE_HAS_CHANGES_KEY_PREFIX));
 };
 
 /**
@@ -124,7 +133,7 @@ const updateLocalStorageOnNoteDownload = (bookKey, noteFileName) => {
  */
 const updateLocalStorageOnAddUpdateNote = (bookKey, notesObject) => {
 	mergeNotesToExistingOnLocalStorage(bookKey, notesObject);
-	window.localStorage.setItem(getLocalStorageKey(LOCALSTORAGE_NOTE_HAS_CHANGES_KEY_PREFIX, bookKey), 'true');
+	window.localStorage.setItem(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTE_HAS_CHANGES_KEY_PREFIX), 'true');
 };
 
 /**
@@ -151,7 +160,20 @@ const updateLocalStorageOnDeleteNote = (bookKey, notesObject) => {
 			localStorage.setItem(contentNotesKey, JSON.stringify(contentNotesObject));
 		}
 	}
-	localStorage.setItem(getLocalStorageKey(LOCALSTORAGE_NOTE_HAS_CHANGES_KEY_PREFIX, bookKey), 'true');
+	localStorage.setItem(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTE_HAS_CHANGES_KEY_PREFIX), 'true');
+};
+
+/**
+ * Utility method to remove all keys from localStorage that belong to a book.
+ * @param {string} bookKey - A key specific to the html book.
+ */
+const clearLocalStorage = (bookKey) => {
+	const localStorage = window.localStorage;
+	for(const key in localStorage) {
+		if (isLocalStorageKeyForBook(bookKey, key)) {
+			localStorage.removeItem(key);
+		}
+	}
 };
 
 const hasChangesMessage = "There are changed notes. Please go to homepage and save the changes before exitting. Otherwise, the changes will be lost!";
@@ -164,8 +186,8 @@ const hasChangesMessage = "There are changed notes. Please go to homepage and sa
  */
 const updateNoteStatusElementOnNoteUploadSuccess = (bookKey, noteStatusElementQuery) => {
 	const localStorage = window.localStorage;
-	const noteFileName = localStorage.getItem(getLocalStorageKey(LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX, bookKey));
-	const hasChanges = localStorage.getItem(getLocalStorageKey(LOCALSTORAGE_NOTE_HAS_CHANGES_KEY_PREFIX, bookKey));
+	const noteFileName = localStorage.getItem(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX));
+	const hasChanges = localStorage.getItem(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTE_HAS_CHANGES_KEY_PREFIX));
 	noteStatusElementQuery.removeClass("alert-secondary alert-danger alert-warning alert-success");
 	if (hasChanges) {
 		noteStatusElementQuery.text(`Successfully uploaded file ${noteFileName}. NOTE: ${hasChangesMessage}`);
@@ -185,8 +207,8 @@ const updateNoteStatusElementOnNoteUploadSuccess = (bookKey, noteStatusElementQu
  */
 const updateNoteStatusElementOnNoteUploadFail = (bookKey, noteStatusElementQuery, noteFileName) => {
 	const localStorage = window.localStorage;
-	const existingNoteFileName = localStorage.getItem(getLocalStorageKey(LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX, bookKey));
-	const hasChanges = localStorage.getItem(getLocalStorageKey(LOCALSTORAGE_NOTE_HAS_CHANGES_KEY_PREFIX, bookKey));
+	const existingNoteFileName = localStorage.getItem(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX));
+	const hasChanges = localStorage.getItem(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTE_HAS_CHANGES_KEY_PREFIX));
 	const localHasChangesMessage = ` NOTE: ${hasChangesMessage}`;
 	noteStatusElementQuery.text(`Failed to upload note file ${noteFileName}.${existingNoteFileName ? ' Also using previous uploaded notes.': ''}${hasChanges ? localHasChangesMessage: ''}`);
 	noteStatusElementQuery.removeClass("alert-secondary alert-danger alert-warning alert-success");
@@ -200,7 +222,7 @@ const updateNoteStatusElementOnNoteUploadFail = (bookKey, noteStatusElementQuery
  */
 const updateNoteStatusElementOnNoteDownload = (bookKey, noteStatusElementQuery) => {
 	const localStorage = window.localStorage;
-	const noteFileName = localStorage.getItem(getLocalStorageKey(LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX, bookKey));
+	const noteFileName = localStorage.getItem(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX));
 	noteStatusElementQuery.text(`Succussfully downloaded file ${noteFileName}.`);
 	noteStatusElementQuery.removeClass("alert-secondary alert-danger alert-warning alert-success");
 	noteStatusElementQuery.addClass("alert-success");
@@ -224,8 +246,8 @@ const updateNoteStatusElementOnNoteChange = (noteStatusElementQuery) => {
  */
 export const updateNoteStatusElementOnPageLoad = (bookKey, noteStatusElementQuery) => {
 	const localStorage = window.localStorage;
-	const noteFileName = localStorage.getItem(getLocalStorageKey(LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX, bookKey));
-	const hasChanges = localStorage.getItem(getLocalStorageKey(LOCALSTORAGE_NOTE_HAS_CHANGES_KEY_PREFIX, bookKey));
+	const noteFileName = localStorage.getItem(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX));
+	const hasChanges = localStorage.getItem(getLocalStorageKey(bookKey, LOCALSTORAGE_NOTE_HAS_CHANGES_KEY_PREFIX));
 	noteStatusElementQuery.removeClass("alert-secondary alert-danger alert-warning alert-success");
 	if (noteFileName) {
 		if (hasChanges) {
@@ -246,8 +268,21 @@ export const updateNoteStatusElementOnPageLoad = (bookKey, noteStatusElementQuer
 	}
 };
 
+/**
+ * Utility method to perform in-place sanitization of all note text in notes-object.
+ * @param {NotesObjectType} notesObject
+ */
+const sanitizeNotesObject = (notesObject) => {
+	for (const contentId in notesObject) {
+		for (const noteId in notesObject[contentId]) {
+			notesObject[contentId][noteId] = sanitizeText(notesObject[contentId][noteId]);
+		}
+	}
+};
+
 /** 
  * Method to update the notes in localStorage and the status (i.e., text, class) in the provided element when notes are uploaded from a file.
+ * The notes are sanitized before being stored locally.
  * @param {string} bookKey - A key specific to the html book.
  * @param {File} noteFile - File with notes that are being uploaded.
  * @param {JQuery} noteStatusElementQuery - The `JQuery` element to update.
@@ -255,6 +290,7 @@ export const updateNoteStatusElementOnPageLoad = (bookKey, noteStatusElementQuer
 export const onUploadNoteFile = (bookKey, noteFile, noteStatusElementQuery) => {
 	const onUploadNoteFileSuccess = (event) => {
 		const uploadNotesObject = JSON.parse(event.target.result);
+		sanitizeNotesObject(uploadNotesObject);
 		updateLocalStorageOnNoteUpload(bookKey, noteFile.name, uploadNotesObject);
 		updateNoteStatusElementOnNoteUploadSuccess(bookKey, noteStatusElementQuery);
 		window.location.reload();  // to have the new notes get shown on the document when it is loaded
@@ -279,13 +315,24 @@ export const onDownloadNoteFile = (bookKey, downloadFileName, noteStatusElementQ
 };
 
 /** 
+ * Method to clear all local notes in localStorage and update the status (i.e., text, class) in the provided element
+ * @param {string} bookKey - A key specific to the html book.
+ * @param {JQuery} noteStatusElementQuery - The `JQuery` element to update.
+ */
+export const onClearAllNotes = (bookKey, noteStatusElementQuery) => {
+	clearLocalStorage(bookKey);
+	window.location.reload();  // to have the new notes get shown on the document when it is loaded
+};
+
+/** 
  * Method to update the notes in localStorage and the status (i.e., text, class) in the provided element when notes are added/updated 
- * from the webpage.
+ * from the webpage. The notes are sanitized before being stored locally.
  * @param {string} bookKey - A key specific to the html book.
  * @param {NotesObjectType} notesObject - Object with new/updated note(s) for one/multiple contentId(s).
  * @param {JQuery} noteStatusElementQuery - The `JQuery` element to update.
  */
 export const onNoteAddUpdate = (bookKey, notesObject, noteStatusElementQuery) => {
+	sanitizeNotesObject(notesObject);
 	updateLocalStorageOnAddUpdateNote(bookKey, notesObject);
 	updateNoteStatusElementOnNoteChange(noteStatusElementQuery);
 };

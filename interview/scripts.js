@@ -1,6 +1,7 @@
 import { 
 	onUploadNoteFile, 
 	onDownloadNoteFile, 
+	onClearAllNotes,
 	onNoteAddUpdate, 
 	onNoteDelete, 
 	getNotesForContentIdFromLocalStorageAsIdSortedList,
@@ -9,8 +10,8 @@ import {
 
 const bookKey = 'prodBackendDev';
 
-const noteStatusElementClass = "note-status"; // one on every page
-const noteStatusElementQuery = $(`.${noteStatusElementClass}`);
+const noteStatusElementId = "note-status"; // one on every page
+const noteStatusElementQuery = $(`#${noteStatusElementId}`);
 const addNoteButtonClass = "note-add"; // multiple on 1 page, on every page
 const noteTextElementClass = "note-text";  // multiple on 1 page, on every page
 
@@ -49,8 +50,9 @@ const enableNotesInteractivity = () => {
 	});
 	$(document.body).on("blur", `.${noteTextElementClass}`, (event) => {
 		const newNoteTextValue = event.target.value;
-		const contentId = $(event.target).attr('data-content-id');
-		const noteId = $(event.target).attr('id');
+		const eventTargetQuery = $(event.target);
+		const contentId = eventTargetQuery.attr('data-content-id');
+		const noteId = eventTargetQuery.attr('id');
 		if (newNoteTextValue) {
 			onNoteAddUpdate(bookKey, {[contentId]: {[noteId]: newNoteTextValue}}, noteStatusElementQuery);
 		} else {
@@ -63,15 +65,17 @@ const enableNotesInteractivity = () => {
 /**
  * Utility method with logic to be executed when homepage is loaded.
  * In addition to the common logic executed when non-homepage is loaded, i.e., displaying notes and button to add notes, and adding 
- * notes interactivity, the handlers for note-upload and download buttons are also setup. This is done because notes upload/download 
- * button is expected to show up only on the homepage.
+ * notes interactivity, the handlers for note-upload, note-download and all-note-clear buttons are also setup. This is done because notes
+ * upload/download/clear buttons are expected to show up only on the homepage.
  */
 export const onHomepageLoad = () => {
 	const noteUploadInputId = "note-file-upload-input"; // one, only on homepage
 	$(`#${noteUploadInputId}`).change((event) => onUploadNoteFile(bookKey, event.target.files[0], noteStatusElementQuery));
-	const noteDownloadButtonId = "note-file-download"; // one, only on homepage
+	const noteDownloadButtonId = "note-file-download-button"; // one, only on homepage
 	const downloadFileName = `notes-${bookKey}-${new Date().getTime()}.json`;
 	$(`#${noteDownloadButtonId}`).click(() => onDownloadNoteFile(bookKey, downloadFileName, noteStatusElementQuery));
+	const allNotesClearButtonId = "remove-note-button"; // one, only on homepage
+	$(`#${allNotesClearButtonId}`).click(() => onClearAllNotes(bookKey, noteStatusElementQuery));
 	onNonHomepageLoad();
 };
 
