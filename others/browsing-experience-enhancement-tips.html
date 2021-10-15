@@ -1,5 +1,5 @@
 <!--
-    HTML article: Daily software tips, by Kunj Prasad on Github.
+    HTML article: Tips to enhance browsing experience, by Kunj Prasad on Github.
     Copyright (C) 2020  Kunj Prasad
 
     This program is free software: you can redistribute it and/or modify
@@ -15,16 +15,34 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
-<html lang="en">
+<html lang="en-us">
 	<head>
 		<meta charset="utf-8">
-		<title>Daily software tips</title>
-		<meta name="description" content="Daily software tips article">
+		<title>Tips to enhance browsing experience</title>
+		<meta name="description" content="This article provides tips on improving browsing experience. A major focus is to improve security and reduce tracking, along with some ways to control behavior of webpage only on your browser.">
 		<meta name="author" content="Kunj Prasad">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+		<!-- Meta with information that otherwise should have come in request headers -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv='Pragma' content='no-cache'>
 		<meta http-equiv='Cache-Control' content='no-cache'>
+		
+		<!-- Browser related meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		
+		<!-- OpenGraph related meta -->
+		<meta property="og:url" content="https://kunjprasad.github.io/others/browsing-experience-enhancement-tips.html" />
+		<meta property="og:site_name" content="Other topics on Kunj Prasad's webpages" />
+		<!-- Not yet added image: <meta property="og:image" content="https://kunjprasad.github.io/assets/social_media_logo.png"> -->
+		<meta property="og:title" content="Tips to enhance browsing experience" />
+		<meta property="og:description" content="This article provides tips on improving browsing experience. A major focus is to improve security and reduce tracking, along with some ways to control behavior of webpage only on your browser.">
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:type" content="article" />
+		<meta property="article:publisher" content="Kunj Prasad" />
+		<meta property="article:published_time" content="2021-10-17T00:02:58+00:00" />
+		<meta property="article:modified_time" content="2021-10-17T00:02:58+00:00" />
+		
 		<style type="text/css">
 			main a[target="_blank"] {
 				background-image: url("data:image/svg+xml,%3Csvg role='img' xmlns='http://www.w3.org/2000/svg' height='0.85rem' width='0.85rem' viewBox='0 0 512 512'%3E%3Cpath fill='currentColor' d='M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z' class=''%3E%3C/path%3E%3C/svg%3E");
@@ -42,8 +60,8 @@
 	
 	<body>
 		<header>
-			<h1>Minor tips to use during daily software development efforts</h1>
-			<p>This page lists some minor tips for daily use for which I couldn't find a better page elsewhere</p>
+			<h1>Tips to enhance browsing experience.</h1>
+			<p>This page lists some minor tips for daily use in enhancing the eprsonal browsing experience for which I couldn't find a better page elsewhere.</p>
 		</header>
 		<nav>
 			<h2>Table of contents</h2>
@@ -59,7 +77,8 @@
 		<main>
 			<h2 id="prevent-tracking">Prevent tracking</h2>
 			<p>Search for "top plugins to prevent tracking", and most of the answers will suggest using <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en" target="_blank" rel="noopener noreferrer">uBlock origin</a> or <a href="https://adblockplus.org/" target="_blank" rel="noopener noreferrer">adblock plus</a>, <a href="https://www.ghostery.com/" target="_blank" rel="noopener noreferrer">ghostery</a>, <a href="https://privacybadger.org/" target="_blank" rel="noopener noreferrer">privacy badger</a> and <a href="https://chrome.google.com/webstore/detail/disconnect/jeoacafpbcihiomhlakheieifhpjdfeo?hl=en" target="_blank" rel="noopener noreferrer">disconnect</a>. Additionally, take care to only use websites that start with <code>https://</code>, i.e. one that are secure. <a href="https://www.eff.org/https-everywhere" target="_blank" rel="noopener noreferrer">HTTPS Everywhere</a> is a good plugin to enforce this behavior (..although as of writing this, Jan-15, 2021, I've experience having https-everywhere activated as interfering with Google and Fidelity 2F login).</p>
-			<p>Limit permissions to apps. On browser, this means restricting websites from accessing your microphone, camera and from knowing your location. For some reason, many sites want to know location, which, they will still be able to by using your ip-address. Still, why explicitly give more fine-grained location data. For smartphone users, make sure to limit the app permission rather than leaving it as default, particularly, the camera, microphone and location permissions. Not a part of reducing tracking, but more to reduce distraction..  I would suggest limiting the website's or app's ability to show notification, unless, it's critical for your work. For example: getting calendar notifications so you don't forget meeting is a critical requirement, but on your work computer, and not on your personal one!</p>
+			<p>Limit permissions to apps! On browser, this means restricting websites from accessing your microphone, camera and from knowing your location. For some reason, many sites want to know location, which, they will still be able to by using your ip-address. Still, why explicitly give more fine-grained location data. For smartphone users, make sure to limit the app permission rather than leaving it as default, particularly, the camera, microphone and location permissions. Not a part of reducing tracking, but more to reduce distraction..  I would suggest limiting the website's or app's ability to show notification, unless, it's critical for your work. For example: getting calendar notifications so you don't forget meeting is a critical requirement, but on your work computer, and not on your personal one!</p>
+			<p>Disable third party cookies! While some cookies may be essential to have a good browsing experience, many others are not necessary. Disabling third party cookies in the webpage setting a good first step to reduce leaving unnecessary tracking footprint on the internet. <a href="https://www.howtogeek.com/241006/how-to-block-third-party-cookies-in-every-web-browser/" target="_blank" rel="noopener noreferrer">This article</a> provides examples on how to disable third party cookies. Just a heads up.. doing so "may, occasionally" cause some sites to not work, specially when you are trying to use one of maor websites like Google, Facebook, etc. for login on any other website. It will not be the case that all your browsing experience will break when you disable third party cookies. So, I'd suggest not enabling the third party cookie back on as soon as you hit any issues for the first time. Also, if needed, your browser can allow adding minor exceptions for some websites and allow storing cookies from those sites. Only if you keep consistently running into issues.. only then, and after you've done some research, and discussed with others if there is no workaround, then I would suggest enabling back the third party cookies.</p>
 			
 			<h2 id="port-scanning">Disable port scanning</h2>
 			<p></p>I first came across this term when same was <a href="https://blog.avast.com/why-is-ebay-port-scanning-my-computer-avast" target="_blank" rel="noopener noreferrer">identified as being done by EBay</a>. The same article also explains that the scans are looking to see if someone is running a remote control service on user's computer, either knowingly or not. If positive, this could be a sign that the user's PC has been compromised by an attacker, who is trying to copy the user login credentials; And so, port scanning is a fraud prevention measure. A few other references for port scanning can be found <a href="https://blog.avast.com/why-is-ebay-port-scanning-my-computer-avast" target="_blank" rel="noopener noreferrer">here</a> and <a href="https://nullsweep.com/why-is-this-website-port-scanning-me/" target="_blank" rel="noopener noreferrer">here</a>. To me, the suspicious part about it is that it is done automatically, without any user-consent and in background. So, unless it is looked for, a user will never know of it happening. If you want to block it from happening, then <a href="https://news.ycombinator.com/item?id=23246877" target="_blank" rel="noopener noreferrer">this article</a> can be useful. TL;DR: disable websocket using <a href="https://adblockplus.org/" target="_blank" rel="noopener noreferrer">adblock plus</a> or <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en" target="_blank" rel="noopener noreferrer">uBlock origin</a>.</p>
