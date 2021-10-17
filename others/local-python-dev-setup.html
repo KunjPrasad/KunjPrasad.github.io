@@ -43,24 +43,13 @@
 		<meta property="article:published_time" content="2021-10-17T00:02:58+00:00" />
 		<meta property="article:modified_time" content="2021-10-17T00:02:58+00:00" />
 		
-		<style type="text/css">
-			main a[target="_blank"] {
-				background-image: url("data:image/svg+xml,%3Csvg role='img' xmlns='http://www.w3.org/2000/svg' height='0.85rem' width='0.85rem' viewBox='0 0 512 512'%3E%3Cpath fill='currentColor' d='M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z' class=''%3E%3C/path%3E%3C/svg%3E");
-				background-repeat: no-repeat;
-				background-position-x: right;
-				background-position-y: center;
-				padding-right: 1rem;
-			}
-			h2 {
-				margin-top: 1.5rem;
-				margin-bottom: 0;
-			}
-		</style>
+		<link rel="stylesheet" href="/others/others-styles.css" type="text/css">
 	</head>
 	
 	<body>
 		<header>
 			<h1>Local Python development setup</h1>
+			<div class="author-container"><a href="/">Kunj Prasad</a></div>
 			<p>Python is a popular programming language. However, one of the entry barriers I felt was getting the local development environment setup to start with coding. Hence, this small writeup with details on setting it up on your machine. This is not a writeup on learning the language, but on getting it installed locally in a somewhat professional setting.</p>
 		</header>
 		
@@ -105,5 +94,7 @@
 			<h3 id="code-quality-tools">Adding code quality check tools</h3>
 			<p>generally having a high quality code is a good thing to have! It can improve code readability, making it easier for other developers to understand the intent of a code and to use it in future efforts. When working on a personal project, it may seem unnecessary to care about code quality tools, but, including them is a good way to get used to way coding is expected from a software developer. <a href="https://realpython.com/python-code-quality/" target="_blank" rel="noopener noreferrer">This article</a> has a good list of various code quality check tools. Personally, I really like <a href="https://github.com/ambv/black" target="_blank" rel="noopener noreferrer">Black</a>, <a href="https://flake8.pycqa.org/en/latest/" target="_blank" rel="noopener noreferrer">Flake8</a> and <a href="https://github.com/timothycrosley/isort" target="_blank" rel="noopener noreferrer">ISort</a>. For big python projects, it is also very helpful to provide type hints in the code so that other developers can understand the intent of the code, expected argument type and return types; To achieve this goal, <a href="http://mypy-lang.org/" target="_blank" rel="noopener noreferrer">MyPy</a> can be used which is an optional static type checker for Python. Last, it might be useful to have these tools automatically get invoked every time the code that you wrote is checked in to a code repository. When working with Git, pre-commit hooks can be setup that get invoked every time a code is checked in. The steps to do so are covered in details <a href="https://www.vantage-ai.com/blog/speed-up-your-python-development-workflow-with-pre-commit-and-makefile" target="_blank" rel="noopener noreferrer">here</a> and primarily rely on using the <a href="https://pre-commit.com/" target="_blank" rel="noopener noreferrer">pre-commit python library</a>.</p>
 		</main>
+		
+		<footer></footer>
 	 </body>
 </html>
