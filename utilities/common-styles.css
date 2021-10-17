@@ -108,6 +108,22 @@ a[target="_blank"] {
     border-color: var(--orange-light);
 }
 
+/* Breadcrum related css */
+ol.breadcrumb-container {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+ol.breadcrumb-container>li + li::before {
+    display: inline-block;
+    padding-right: .5rem;
+    padding-left: .5rem;
+    content: "/";
+}
+
 /* Note related css */
 .note-text {
 	width: 100%;
