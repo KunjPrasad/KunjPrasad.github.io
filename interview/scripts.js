@@ -8,7 +8,7 @@ import {
 	updateNoteStatusElementOnPageLoad,
 } from '/utilities/note-utils.js';
 
-const bookKey = 'prodBackendDev';
+const bookKey = 'interview';
 
 const noteStatusElementId = "note-status"; // one on every page
 const noteStatusElementQuery = $(`#${noteStatusElementId}`);

@@ -245,13 +245,12 @@
 	</url>
 	-->
 
-	<!--
+	<!-- Book on Interview -->
 	<url>
-	  <loc>https://kunjprasad.github.io/interview/interviewer/</loc>
+	  <loc>https://kunjprasad.github.io/interview/</loc>
 	  <lastmod>2021-10-17T00:02:58+00:00</lastmod>
 	  <priority>0.80</priority>
 	</url>
-	-->
 
 	<!-- Others -->
 	<url>

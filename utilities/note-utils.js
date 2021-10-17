@@ -1,5 +1,5 @@
-import { downloadBlobAsFile, getFileText  } from '/utilities/file-utils.js';
-import { sanitizeText } from '/utilities/string-utils.js';
+import { downloadBlobAsFile, getFileText  } from './file-utils.js';
+import { sanitizeText } from './string-utils.js';
 
 // IMPORTANT: NOTE that the key prefixes MUST NOT have hyphen/dash, else some function may break.
 const LOCALSTORAGE_NOTE_FILENAME_KEY_PREFIX = "noteFilename";
