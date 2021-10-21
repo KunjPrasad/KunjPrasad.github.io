@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+<!-- If you have different pages for different language, add alternate link with hreflang. See https://developers.google.com/search/docs/advanced/crawling/localized-versions#example_2 putting <xhtml:link rel="alternate" hreflang=".." href="..." /> inside each <url>. Also see related comment in <head> of main index.html page -->
 
 	<!-- Common -->
 	<url>
