@@ -108,6 +108,14 @@ a[target="_blank"] {
     border-color: var(--orange-light);
 }
 
+/* Sticky header to show note status. 
+ * Since note-status div is within <header>, so style needs to be added to header element. If added to note-status div, it doesn't work. */
+header.note-status-sticky-header {
+	position: -webkit-sticky;
+	position: sticky;
+	top: -90px;
+}
+  
 /* Breadcrum related css */
 ol.breadcrumb-container {
     list-style: none;
