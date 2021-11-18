@@ -1,1 +1,126 @@
--- code review : should be explaining, not dictating
+<!--
+    Software Engineer Interview - Chapter 4.5: Code review interview, by Kunj Prasad on Github.
+    Copyright (C) 2020  Kunj Prasad
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<title>Software Engineer Interview - Chapter 4.5: Code review interview</title>
+		<meta name="description" content="A sub-chapter about code review interview under the fourth chapter of the Software Engineer Interview book on main interview. This sub-chapter covers details on code review interview where a candidate is given a problem statement and a code written by some developer to meet the requirement. The candidate is required to review the code and leave comments for the issues that must be resolved.">
+		<meta name="author" content="Kunj Prasad">
+	
+		<!-- Meta with information that otherwise should have come in request headers -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		
+		<!-- Browser related meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		
+		<!-- OpenGraph related meta -->
+		<meta property="og:url" content="https://kunjprasad.github.io/interview/main-interview/code-review-interview.html">
+		<meta property="og:site_name" content="Software Engineer Interview book on Kunj Prasad's website">
+		<!-- Not yet added image: <meta property="og:image" content="https://kunjprasad.github.io/assets/social_media_logo.png"> -->
+		<meta property="og:title" content="Software Engineer Interview - Chapter 4.5: Code review interview">
+		<meta property="og:description" content="A sub-chapter about code review interview under the fourth chapter of the Software Engineer Interview book on main interview. This sub-chapter covers details on code review interview where a candidate is given a problem statement and a code written by some developer to meet the requirement. The candidate is required to review the code and leave comments for the issues that must be resolved.">
+		<meta property="og:locale" content="en_US">
+		<meta property="og:type" content="article">
+		<meta property="article:publisher" content="Kunj Prasad">
+		<meta property="article:published_time" content="2021-11-22T00:02:58+00:00">
+		<meta property="article:modified_time" content="2021-11-22T00:02:58+00:00">
+		
+		<link rel="stylesheet" href="/utilities/common-styles.css" type="text/css">
+	</head>
+	
+	<body>
+	
+		<header class="note-status-sticky-header">
+			<h1>Chapter 4.5: Code review interview</h1>
+			<ol class="breadcrumb-container">
+				<li><a href="/interview">Home</a></li>
+				<li><a href="/interview/main-interview/">Chapter 4: Main interview</a></li>
+				<li>Chapter 4.5: Code review interview</li>
+			</ol>
+			<div id="note-status" class="alert"><!-- The content here is filled dynamically by the script and gives information on notes, and file uploads, or unsaved changes --></div>
+		</header>
+		
+		<nav>
+			<h2>Table of contents</h2>
+			<ul>
+				<li><a href="#what-is-cr-interview">What is code review interview?</a></li>
+				<li><a href="#what-to-expect">What to expect at code review interview?</a></li>
+				<li><a href="#preparations">Preparations / Things to consider</a><ul>
+					<li><a href="#verify-no-errors">Verify no errors using manual inspection and tests</a></li>
+					<li><a href="#verify-requirements-met">Verify that requirements of the problem statement are met</a></li>
+					<li><a href="#coding-best-practices">Check for coding best practices</a></li>
+					<li><a href="#engage-not-dictate">Engage, not dictate</a></li>
+					<li><a href="#reason-not-opinion">Provide reason, not enforced opinion</a></li>
+					<li><a href="#identify-blocker-nit-comments">Identify blocker and nitpick comments</a></li>
+					<li><a href="#give-kudos">Give kudos</a></li>
+				</ul></li>
+				<li><a href="#things-to-observe">Things to observe during the interview</a></li>
+			</ul>
+		</nav>
+		
+		<main>
+			<h2 id="what-is-cr-interview">What is code review interview?</h2>
+				<p id="1637064935">In the lifecycle of a code, it is much more often read than it is written / modified. A product feature developed using a badly written code is harder to maintain, test, enhanced and is often avoided by other developers. Automated linters can offer some level of protection to ensure that poorly written code does not make it to the codebase, but it is in no way complete. One of the best way to prevent poorly written code from making into production codebase is by having it reviewed by peers. The code review interview tries to gauge the experience of a candidate in writing production level code by having them review a code to identify instances of badly written code-statements and suggest improvements. Despite the importance of this step, it is unfortunately not as common as the whiteboard or programming exercise interviews.</p>
+				
+			<h2 id="what-to-expect">What to expect at code review interview?</h2>
+				<p id="1637066058">In a code review interview, the interviewer will set up a codebase for the candidate to review. This is done using a testing platform which enables easily visualizing codes, code changes and also provides code review tools. For example, GitHub, GitLab or HackerRank can be used to perform these tests. If you haven't worked on the tools, then don't hide it from the interviewer and have the interviewer explain how to use these tools. This is not considered a negative; Frankly, if any company counts it as a negative, then it means that they don't have a culture of mentorship and is not worth working for! The interviewer will explain the business problem to you that is solved by the code. Do pay attention to the requirements because there may be multiple, and you want to ensure that you have reviewed the code against all the requirements. The interviewer will also ask you for your language of choice; You wouldn't be asked to review the code in a language that you don't know. Once the interview starts, the interviewer can take the role of product manager and answer any questions you may have about the business problem being solved by the code under review.</p>
+				<p id="1637066059">Note that code review is not a standard skill, like knowledge of data structures and algoithms, and the code review practices differ among different companies, and even among different teams of a company. For this reason, the interviewer may also ask you some general question about the code review practices used by you and your current team.</p>
+				
+			<h2 id="preparations">Preparations / Things to consider</h2>
+				<p>This section covers some of the preparations / things-to-consider for the code review interview.</p>
+				
+				<h3 id="verify-no-errors">Verify no errors using manual inspection and tests</h3>
+					<p id="1637115183">The most important thing in a code review is to ensure that there are no errors in written code. Off-by-one error, missing conditional branch, not using default values, overwriting previous state rather than adding to it and not handling edge cases due to improper inputs are some of the most common errors in a code. It is suggested to manually go over the code and understand the implementation logic to ensure that these errors are not happening in the code. Additionally, one should always ask for functional tests to verify that the code is behaving as expected from the end user perspective, and without any errors.</p>
+					
+				<h3 id="verify-requirements-met">Verify that requirements of the problem statement are met</h3>
+					<p id="1637116408">It is suggested that during a code review, you must verify that code has been developed to meet all the requirements as identified in the problem statement. If any requirement is not met, then that should be highlighted. On the other hand, if the code contains features / side-effects which are not asked for in the problem statement, then as the code reviewer, you should verify if those additional codes are really necessary or if they could be removed. This is to ensure that the code development matches the expectations of the problem statement, nothing less, nothing extra! Additionally, there should be test cases to confirm that the code handles the different requirements in the problem statement.</p>
+					<p id="1637116409">Few other aspects associated with any business feature are: (1) Adding a new feature should not break other existing features; (2) If the new feature creates / updates a business workflow, then there should be suitable integration tests to ensure that the new workflows are behaving as expected; (3) The new feature should match the performance expectations associated with it. This is normally done by load-testing a feature in a test environment. During the interview, you should also ask for how these tests are done, or suggest that they be done.</p>
+					<p id="1637116410">Normally, by the time a code review is done, an architecture discussion on the feature has already happened, and corresponding tickets for development have been made. The focus of code review should only be to ensure that the developed code solves only for the problem statement identified in the ticket. Ideally, a code review is not the best place to have feature / architecture discussions. However, when doing a code review in an interview, it may be that the interviewer expects you to also engage in feature / architecture discussions. I would suggest to clarify with the interviewer on the expectations for code review, and whether they expect you to only go over the code, or whether they also expect you to engage in feature / architecture discussions. If latter is allowed, then you may also want to suggest ways to generalize the input, output and processing logic so that the code can be extended in future to handle different scenarios.</p>
+					
+				<h3 id="coding-best-practices">Check for coding best practices</h3>
+					<p id="1637115334">It is suggested to check if the provided code is using standards from coding best practices. If not, then you should suggest changes as needed. Some common suggestions for coding best practices are: the field, method, class and variable names should be in proper case as is the practice for the language, and the names should also be descriptive and not terse, the file / package / module name should be proper, a reference to private members should not be leaked, particularly if the member is an object, the code should be developed such that the methods are thread-safe, a method with a name indicating that it is used to fetch some data should not be used to trigger side-effects mutations, there should be documentation with every class and method definition, logs should be collected as needed, etc.</p>
+					
+				<h3 id="engage-not-dictate">Engage, not dictate</h3>
+					<p id="1637154065">All suggestions made above are technical in nature. This suggestion, despite being non-technical, is as important as the ones above, if not more. The suggeston is that when leaving a code review comment, one should avoid sounding as if they are dictating the developer to follow their (i.e., the code reviewer's) suggestion. A code review doesn't only enable a developer to get feedback from others, but also allows other team members to get a quick glimpse into changes being made in the codebase by others, and the corresponding business features getting included. It might very well be the case that the developer wrote a code as expected for the business feature, but the reviewer isn't aware of the new requirements. So, as a reviewer, if you find anything "that you feel" is incorrect, then don't start by immediately start with the verbal crucifixion of the developer by leaving a scathing code review. Instead, mention the aspect that is making you uncomfortable and ask the developer for the reason to do so. This shows to the interviewer that you engage in a code review to identify and clarify an issue, rather than to degenerate it into a finger-pointing and blame game.</p>
+					<p id="1637154066">A different way to engage with the developer is if you find that there are multiple issues identified in the code. If this were not an interview, but an actual code review, then simply adding multiple code review comments can make the other developer bogged down and disengaged by the sheer volume of comments. A good idea is to contact the developer directly and have a small one-on-one session to clarify the issues, which might either be that the developer misunderstood the requirements, or maybe you did! In an interview, since you cannot directly contact the developer, so a good idea is to let the interviewers know that you would have done so if given the chance.</p>
+					
+				<h3 id="reason-not-opinion">Provide reason, not enforced opinion</h3>
+					<p id="1637155476">Another thing to be mindful of in the language used for code review comment is that one should prefer to give reasons rather than opinion. Reason based statement are not tied to emotion, and are instead based on some scientific proof or standard community practice. It is easier to rally people behind a reason and get consensus on how to solve the corresponding issue. On the other hand, opinions are almost always emotion based, often devolve into enforcing power dynamics, and can cause rift between the team members if allowed to happen for long. That being said, sometimes it may not be avoidable to express a code review statement as an opinion. When doing so, I would suggest to explicitly mention that your comment contains your subjective opinion, you cannot find a reason to support your opinion, and give the developer an option to disagree with your opinion without needing to give any reason! In short, EITHER explicitly provide a reason statement AND a reference to proof or practice supporting the reason, OR explicitly mention that you are providing an opinion AND the other person is free to ignore it. Also, realize that if you cannot provide a reference to proof or practice supporting the reason, then it is more likely than not that the corresponding code review comment contains your subjective opinion, and not an objective reason; Please don't try to pass your opinion as a reason!</p>
+					
+				<h3 id="identify-blocker-nit-comments">Identify blocker and nitpick comments</h3>
+					<p id="1637155575">Realize that not all code review comments may be equally important. Some comments could be blockers, while many others could be very nit-picky. Let's say that one of your code review comment identifies a major bug, or some type of major problem that would occur if the code under review is deployed to production. You want this comment to be addressed by the developer and don't agree to deploying the code under review to production unless the fix is applied. For such comments, it is suggested to highlight them as being a "blocker" comment. This helps the developer assign a high priority to incorporating the fix as suggested in the review comment. On the other hand, let's say that another code review comment suggests a minor fix that's good to have, but you would be ok if the code under review is deployed to production even without the corresponding fix. For such comments, it is suggested to highlight them as being a "nit-pick" comment. This helps the developer assign a low priority to the suggested fix and make/ignore changes as they feel.</p>
+					
+				<h3 id="give-kudos">Give kudos</h3>
+					<p id="1637155656">The suggestion here is to use code-review not only as an opportunity to criticize a code and only find bugs, but also as an opportunity to give kudos to the developer and show appreciation for their effort. Particularly, if you end up learning something new from the code, or if the developer has written a code of far superior quality than expected for their experience level, then one should also extends kudos to the developer in the code review.</p>
+					
+			<h2 id="things-to-observe">Things to observe during the interview</h2>
+				<p>For code review interview, I am unable to identify any interviewer behavior(s) that can provide definitive signals for an unhealthy company work culture.</p>
+		</main>
+		
+		<footer></footer>
+		
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+		<script type="module">
+			import {onNonHomepageLoad} from "../scripts.js";
+			$(document ).ready(onNonHomepageLoad);
+		</script>
+	</body>
+<html>
