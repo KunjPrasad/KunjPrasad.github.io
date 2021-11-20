@@ -108,12 +108,19 @@ a[target="_blank"] {
     border-color: var(--orange-light);
 }
 
-/* Sticky header to show note status. 
- * Since note-status div is within <header>, so style needs to be added to header element. If added to note-status div, it doesn't work. */
-header.note-status-sticky-header {
+/* CSS related to box to show notes status */
+/* Sticky box to show note status */
+.note-status-sticky-header {
 	position: -webkit-sticky;
 	position: sticky;
-	top: -90px;
+	top: 2px;
+	margin: 0 1rem; /* To keep it aligned with margin of header, nav, main, footer */
+}
+
+/* Since the note box is shown on top, that hides the h2 headers inside main when a nav link is clicked. So, main>h2 headers are given a padding-top. The margin-top is made 0 because otherwise, the total "gap" (padding + margin) on top of main > h2 becomes very large. This also creates a nice gap before each h2, which gives a visual clarification the a new section has started. However, this optimization only works if no notes have been uploaded. When a change is made, or notes downloaded, then the width of box can change on small screens and still hide the h2 element. */
+body > main > h2 {
+	margin-top: 0;
+	padding-top: 50px;
 }
   
 /* Breadcrum related css */

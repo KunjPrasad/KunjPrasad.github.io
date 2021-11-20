@@ -11,6 +11,7 @@
 	</url>
 
 	<!-- Productionizing Backend Development -->
+	<!--
 	<url>
 		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/</loc>
 		<lastmod>2021-10-17T00:02:58+00:00</lastmod>
@@ -36,8 +37,10 @@
 		<lastmod>2021-10-17T00:02:58+00:00</lastmod>
 		<priority>0.64</priority>
 	</url>
+	-->
 
 	<!-- Productionizing Backend Development / Glossary -->
+	<!--
 	<url>
 		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/req-resp.html</loc>
 		<lastmod>2021-10-17T00:02:58+00:00</lastmod>
@@ -73,8 +76,10 @@
 		<lastmod>2021-10-17T00:02:58+00:00</lastmod>
 		<priority>0.64</priority>
 	</url>
+	-->
 
 	<!-- Productionizing Backend Development / One-way -->
+	<!--
 	<url>
 		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/introduction.html</loc>
 		<lastmod>2021-10-17T00:02:58+00:00</lastmod>
@@ -90,6 +95,7 @@
 	  <lastmod>2021-10-17T00:02:58+00:00</lastmod>
 	  <priority>0.64</priority>
 	</url>
+	-->
 	<!--
 	<url>
 	  <loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/one-way/dto.html</loc>
