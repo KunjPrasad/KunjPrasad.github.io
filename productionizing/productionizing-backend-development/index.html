@@ -1,5 +1,5 @@
 <!--
-    HTML book: Productionizing Backend Development, by Kunj Prasad on Github.
+    Homepage for HTML book: Productionizing Backend Development, by Kunj Prasad on Github.
     Copyright (C) 2020  Kunj Prasad
 
     This program is free software: you can redistribute it and/or modify
@@ -15,97 +15,138 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
-<html lang="en">
+<html lang="en-us">
 	<head>
 		<meta charset="utf-8">
-		<title>Productionizing Backend Development</title>
-		<meta name="description" content="Productionizing Backend Development HTML E-book">
+		<title>Productionizing Backend Development book homepage</title>
+		<meta name="description" content="Homepage for the book on Productionizing Backend Development. It contains an introduction, disclaimer, acknowledgment, and links to different chapters in the book.">
 		<meta name="author" content="Kunj Prasad">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta http-equiv='Pragma' content='no-cache'>
-		<meta http-equiv='Cache-Control' content='no-cache'>
-		<link rel="stylesheet" href="/utilities/styles-common.css" type="text/css">
-		<link rel="stylesheet" href="styles.css" type="text/css">
-		<style type="text/css"></style>
+	
+		<!-- Meta with information that otherwise should have come in request headers -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		
+		<!-- Browser related meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		
+		<!-- OpenGraph related meta -->
+		<meta property="og:url" content="https://kunjprasad.github.io/productionizing/productionizing-backend-development/">
+		<meta property="og:site_name" content="Productionizing Backend Development book on Kunj Prasad's website">
+		<!-- Not yet added image: <meta property="og:image" content="https://kunjprasad.github.io/assets/social_media_logo.png"> -->
+		<meta property="og:title" content="Productionizing Backend Development book homepage">
+		<meta property="og:description" content="Homepage for the book on Productionizing Backend Development. It contains an introduction, disclaimer, acknowledgment, and links to different chapters in the book.">
+		<meta property="og:locale" content="en_US">
+		<meta property="og:type" content="article">
+		<meta property="article:publisher" content="Kunj Prasad">
+		<meta property="article:published_time" content="2022-01-24T00:00:00+00:00">
+		<meta property="article:modified_time" content="2022-01-24T00:00:00+00:00">
+		
+		<link rel="stylesheet" href="/utilities/common-styles.css" type="text/css">
 	</head>
 	
 	<body>
+	
 		<header>
 			<h1>Productionizing Backend Development</h1>
+			<div class="author-container"><a href="/">Kunj Prasad</a></div>
 		</header>
-		<nav class="book-toc">
-			<a id="1606665479" href="introduction.html">Introduction</a>
-			<a id="1607048361" href="one-line-summary.html">One line summary</a>
-			<a id="1612649521" href="example-application.html">Example application</a>
-			<a id="1606703843" href="personal-notes.html">Personal notes</a>
-			<a id="1606665918" href="/utilities/disclaimer-generic.html">Disclaimer</a>
-			<a id="1611203334" href="/utilities/acknowledgement-generic.html">Acknowledgement</a>
-			<section>
-				<h2>Glossary</h2>
-				<a id="1608303678" href="glossary/req-resp.html">Request and response related terms</a>
-				<a id="1608343369" href="glossary/security.html">Security related terms</a>
-				<a id="1608344347" href="glossary/testing.html">Testing related terms</a>
-				<a id="1608344358" href="glossary/housekeeping.html">Application housekeeping related terms</a>
-				<a id="1608344368" href="glossary/infrastructure.html">Infrastructure related terms</a>
-				<a id="1611200362" href="glossary/data-storage.html">Data storage related terms</a>
-				<a id="1608344385" href="glossary/architecture.html">Architecture related terms</a>
-			</section>
-			<section>
-				<h2>1-way interaction</h2>
-				<a id="1609385770" href="one-way/introduction.html">Introduction</a>
-				<a id="1609472905" href="one-way/entity.html">Entity</a>
-				<a id="1609472915" href="one-way/controller.html">Controller</a>
-				<a id="1609472910" href="one-way/dto.html">Data transfer object (DTO)</a>
-				<a id="1609472920" href="one-way/service.html">Service</a>
-				<a id="1609472930" href="one-way/repository.html">Repository</a>
-				<a id="1609472935" href="one-way/filter.html">Filter</a>
-				<a id="1609472940" href="one-way/renderer.html">Renderer</a>
-				<a id="1609472945" href="one-way/exception-handler.html">Exception handler</a>
-				<a id="1609472950" href="one-way/user-auth-auth.html">User auth/auth</a>
-				<a id="1609472955" href="one-way/feature-flag.html">Feature flag</a>
-				<a id="1609472960" href="one-way/req-attributes.html">Custom request attributes</a> <!-- TODO: Move under additional terms -->
-				<a id="1609385771" href="one-way/additional-terms.html">Additional terms</a>
-			</section>
-			<section>
-				<h2>2-way interactions</h2>
-				<a id="1616383424" href="two-way/entity-entity.html">Entity + Entity</a>
-				<a id="1616384383" href="two-way/entity-controller.html">Entity + Controller</a>
-				<a id="1616383834" href="two-way/entity-dto.html">Entity + DTO</a>
-				<a id="1616384531" href="two-way/entity-service.html">Entity + Service</a>
-				<a id="1616385091" href="two-way/entity-repository.html">Entity + Repository</a>
-				<a id="1616385324" href="two-way/entity-user.html">Entity + User</a>
-				<a id="1616385461" href="two-way/entity-others.html">Entity + Others</a>
-				<a id="1619574603" href="two-way/controller-dto.html">Controller + DTO</a>
-				<a id="1619574610" href="two-way/controller-user.html">Controller + User</a>
-				<a id="1615299814" href="two-way/repository-repository.html">Repository + Repository</a>
-			</section>
-			<section>
-				<h2>3-way interactions</h2>
-				<a id="1616385648" href="three-way/entity-entity-controller.html">Entity + Entity + Controller</a>
-				<a id="1616385846" href="three-way/entity-controller-user.html">Entity + Controller + User</a>
-			</section>
-			<section>
-				<h2>Advanced</h2>
-				<a id="1612275340" href="advanced/code-arrangement.html">Code arrangement</a>
-				<a id="1612275350" href="advanced/api-documentation.html">API documentation</a>
-				<a id="1612275360" href="advanced/data-governance.html">Data governance</a>
-				<a id="1612275370" href="advanced/logging.html">Logging</a>
-			</section>
+		
+		<div id="note-status" class="note-status-sticky-header alert"><!-- The content here is filled dynamically by the script and gives information on notes, and file uploads, or unsaved changes --></div>
+		
+		<nav>
+			<h2>Table of contents (with pending todo)</h2>
+			<ul>
+				<li><a href="#introduction">Introduction</a><ul>
+					<li><a href="#what-is-covered">What is covered</a></li>
+					<li><a href="#one-line-summary">One line summary</a></li>
+					<li><a href="#limitations">Limitations</a></li>
+					<li><a href="#other-references">Other references</a></li>
+				</ul></li>
+				<li><a href="#personal-notes">Using personal notes</a></li>
+				<li><a href="#acknowledgment">Acknowledgment</a></li>
+				<li><a href="#disclaimer">Disclaimer</a></li>
+				<li><a href="#chapters">Chapters</a></li>
+			</ul>
+		</nav>
+		
+		<main>
+			<h2 id="introduction">Introduction</h2>
+				<p id="1640268260">The motivation for this book comes from observation within my own career trajectory that university level coding practices significantly differ from that expected from software engineers at company. "Productionizing" a codebase is to incorporate best practices covering various architecture and implementation concerns within the codebase, such that it makes the code easier to read and understand, easier to maintain, easier to enhance to accommodate future business requirements, and easier to seek contribution from other team members. However, I haven't found books that cover this topic, or maybe I am just unaware of them. Many code-tutoring websites also don't cover such practices and mainly focus on the development of code-writing skills. I feel that <a href="https://stackoverflow.com/" target="_blank" rel="noopener noreferrer">StackOverflow</a> does provides many discussions that help with "productionizing" the code,  but those aren't collected at single location for easy reference.</p>
+				
+				<h3 id="what-is-covered">What is covered</h3>
+					<p id="1640268261">With "Productionizing Backend Development", I want to emphasize on language-agnostic coding practices that makes the code easier to read and understand, easier to maintain, easier to enhance to accommodate future business requirements, and easier to seek contribution from other team members. This idea also plays well with the Agile methodology of software development. An emphasis is put on writing code that makes it easy to transfer code ownership, enabling other team members to understand, contribute, maintain and ultimately, take ownership of a codebase initially written by someone else. In addition to above, it is also emphasized to foster coding practices that bring in other goodies like modularity, reusability, testability and documentation in the codebase. Just to mention again, the suggestion in this book are kept language agnostic.</p>
+					
+				<h3 id="one-line-summary">One line summary</h3>
+					<p id="1640271585">To capture the essence of this book in one-line, <strong>When in doubt, SOLID it out!</strong> Meaning: when developing a web-application, if you ever feel confused on how to proceed, look to <a href="https://en.wikipedia.org/wiki/SOLID" target="_blank" rel="noopener noreferrer">"SOLID" principles</a> for guidance on how to proceed. Most of the patterns and practices for writing a great software application falls down to understanding and applying these principles. The topic is further discussed in <a href="/productionizing/productionizing-backend-development/glossary/architecture.html#1609301770">the corresponding section</a> within the architecture glossary.</p>
+	
+				<h3 id="limitations">Limitations</h3>
+					<p id="1640268262">This book does not intend to become or support a platform where reasoned discussions are stifled. I acknowledge that the content in the book are based on a subjective opinions from myself. I've tried my best to provide reason(s) that justify the corresponding opinion. Whenever possible, I have added external references to support my viewpoint; However, I want to point out that the references used are links from any website that I can find, and so it is not a strong reference. Whenever possible, alternatives opinions are identified, but not exhaustively, and it is reasoned why a suggested opinion is better than alternative opinions. All being said, the truth still holds that the content in the book are based on subjective opinions from myself and it may not always hold. For example, it may be necessary to develop some code very quickly so that it can be put in production, and the patterns around customer interaction with the product can be identified, which is then used to identify the paths for future development of the product. To achieve speed in code development, it may be preferable to temporarily hold-back on implementing the practices suggested in this book, and instead incur technical debt, which can be fixed at a later time. Finally, I want to acknowledge that the concept of a "good architecture" itself changes with time, available infrastructure and community support. Hopefully, this book can provide words of advice and remain useful for a long term before it becomes obsolete. However, it must never be seen as a dictum, setting a standard that is aspired to without having any contextual understanding for doing so. For example, this book doesn't intend to rationalize breaking away from your team's coding practices. It is instead intended to identify topics that can be used to start a discussion within the team with a goal to generate a consensus around evolving the coding practices. Blindly adhering to text of this book is discouraged because having "A foolish consistency is the hobgoblin of little minds, adored by little statesmen and philosophers and divines" (Reference: <a href="https://en.wikipedia.org/wiki/Self-Reliance" target="_blank" rel="noopener noreferrer">Self-Reliance</a>), and this book does not intend to become or support a platform where reasoned discussions are stifled.</p>
+					<p id="1640268263">Just to mention it explicitly, the book doesn't cover how to write basic codes. It is assumed that the reader has experience in server-side development in some coding language. There are many good tutorials available to learn Python and Django, or Java and Spring. For Python, one may use <a href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener noreferrer">Python docs</a>, <a href="https://www.w3schools.com/python/" target="_blank" rel="noopener noreferrer">W3Schools</a>, <a href="https://www.learnpython.org/" target="_blank" rel="noopener noreferrer">learnpython.org</a>. For Django, one may use <a href="https://docs.djangoproject.com/en/3.1/intro/tutorial01/" target="_blank" rel="noopener noreferrer">DjangoProject</a>, <a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website" target="_blank" rel="noopener noreferrer">Mozilla</a>. For Java, <a href="https://docs.oracle.com/javase/tutorial/java/index.html" target="_blank" rel="noopener noreferrer">Oracle</a>, <a href="https://www.w3schools.com/java/" target="_blank" rel="noopener noreferrer">W3Schools</a></li> can be used. For Spring, <a href="https://spring.io/guides" target="_blank" rel="noopener noreferrer">spring.io</a>, <a href="https://www.baeldung.com/learn-spring-course" target="_blank" rel="noopener noreferrer">baeldung.com</a> can be used.</p>
+					<p id="1640268264">As mentioned <a href="#1640268261">above</a>, the suggestion in this book are kept language agnostic. So, it doesn't go into language/framework specific code implementation to architecture points discussed in this book. Even for the sugestions covered in the book, they assume a use of REST API for communication with backend. Server-side rendering (like JSP, Django templates) are not covered. REST APIs have become extremely prevelant and cover almost every scenario that one can face. If working with Java/Spring, <a href="https://spring.io/projects/spring-boot" target="_blank" rel="noopener noreferrer">Spring Boot</a> can be used for development of REST services (Note that <a href="https://start.spring.io/" target="_blank" rel="noopener noreferrer">Spring-Initializr</a> is a really helpful tool for starting with Spring Boot). If working with Python/Django, <a href="https://www.django-rest-framework.org/" target="_blank" rel="noopener noreferrer">Django-Rest-Framework</a> can be used for development of REST services.</p>
+					
+				<h3 id="other-references">Other references</h3>
+					<ul id="1640268265">
+						<li>If you want to brush up on data structures, then <a href="https://en.wikipedia.org/wiki/List_of_data_structures" target="_blank" rel="noopener noreferrer">this Wikipedia article</a> has a good list of data structures.</li>
+						<li>If you language of choice is Java, at least complete "Effective Java" by "Joshua Bloch" before starting this book (<a href="https://www.amazon.com/Effective-Java-Joshua-Bloch-ebook/dp/B078H61SCH" target="_blank" rel="noopener noreferrer">Amazon</a>) because that will be so much more better use of your time.</li>
+						<li>If you would prefer to get a broad understanding of software engineering before delving into the specifics of backend development as covered in this book, then I suggest going over the <a href="https://en.wikibooks.org/wiki/Introduction_to_Software_Engineering" target="_blank" rel="noopener noreferrer">Software Engineering wiki book</a>.</li>
+					</ul>
 			
+			<h2 id="personal-notes">Using personal notes</h2>
+				<p id="1640266440">Whenever reading any e-book, I've always felt that the ability to add and share my own thoughts is missing; A feature provided by hardcopies of a book wherein notes can be added in page margins. So, in this book, a framework has been added enabling readers to add their own personal notes. The readers are highly encouraged to add their notes, save it for futue use, and also share their notes with others (be careful when accepting notes from others, see <a href="#1640266441">below</a> and <a href="#disclaimer">disclaimer</a>). A note corresponding to a paragraph can be created by clicking on "Add note" button and adding the note text in the empty box that shows up after the button is pressed. By exitting the box, the new/modified note text is automatically saved. If the text in a note box is clered, then the note will get deleted. Multiple notes can be added for an particular paragraph and they'll get sorted by time when the note was created.</p>
+				<ul id="1640266441"><strong>WORDS OF CAUTION:</strong>
+					<li>If applying someone else's notes, realize that you may be vulnerable to XSS attacks. Use caution and your judgement.</li>
+					<li>Your personal notes are not saved on any other server, and are only present on your computer. It is suggested to periodically save a copy of the notes, else you may lose the changes. The loss may happen sooner than latter if you are working on incognito mode. So, please consider saving your work before clearing out browser or closing all incognito tabs.</li>
+				</ul>
+	
+				<h3>Upload notes</h3>
+					<p>Click the button below to select a note file from which to read and upload the notes. The newly uploaded notes will merge with the existing notes.</p>
+					<button type="button" class="button-utility" onclick="document.getElementById('note-file-upload-input').click();">Upload note file</button>
+					<input id="note-file-upload-input" name="note-file-input" type="file" aria-label="Upload note file" style="display: none;" />
+	
+				<h3>Download notes</h3>
+					<p>Click the button below to download notes as a json file. The downloaded note file name starts with prefix <i>"prodBackendDev"</i> to identify that the notes belong to this book. It will also have a numeric timestamp to help identify the time when it was downloaded. Hopefully, this helps in identifying the correct file to be uploaded at a later time.</p>
+					<button id="note-file-download-button" type="button" class="button-utility">Download note file</button>
+					
+				<h3>Clear all notes</h3>
+					<p>Click the button below to clear all notes. This action cannot be undone and you will need to upload a notes file again to access notes. If you have unsaved changes, it is suggested to save a copy before clearing all notes. You may want to use this option if, say, you have completed the book, or don't want to proceed with it ..and you want to clear all locally stored data corresponding to this book.</p>
+					<div class="alert alert-danger" style="margin:1rem 0">NOTE that this action cannot be undone!</div>
+					<button id="remove-note-button" type="button" class="button-utility">Remove all notes</button>
 			
+			<h2 id="acknowledgment">Acknowledgment</h2>
+				<p>The work contained herein are derived using both internal and external conversations over the course of my career, while working through multiple challenges. I don't want to undermine my own efforts and contribution, and more than that, I don't want to undermine the contributions of many wonderful people with whom I've had the chance to interact either directly or indirectly (via free content on the web). I am extremely thankful for all the contributions from which I've learnt a lot. If I am able to convey important information, it is only because I <a href="https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants" target="_blank" rel="noopener noreferrer">stand on the shoulders of giants</a>; if not, then that's my own folly!</p>
+			
+			<h2 id="disclaimer">Disclaimer</h2>
+				<h3>Disclaimers for Kunj Prasad's webpage</h3>
+					<p>Kunj Prasad ("Author") is providing the website ("Site") as a service. The information, advice, links and/or any other materials ("Content") made available through the Site are for informational purposes only and are not a substitute for professional legal advice or consultation. Use of and access to the Site or any Content on the Site, or any of the e-mail, website, social media or other like links contained within the Site, do not create any contractual relationship between any parties. Content made available through the Site does not represent endorsements or recommendations by the Author. Any opinions expressed are the opinions of the Author and does not necessarily reflect the views and opinions of any associated companies. Content may not be complete, correct, or up to date, and some Content may have been obtained or provided without proper citation or review. Although the Content may include links providing direct access to other Internet resources, the Author is not responsible for the accuracy, information content and security risk associated with these sites. All users of the Site relinquish any or all claims against the party providing the Content and any other users, that may arise from reliance on any information obtained from the Site. The Author is not responsible for, and expressly disclaims all liability for, damages of any kind arising out of use, reference to, or reliance on any information contained within this website.</p>
+					<p>The site allows users to upload notes files. All users of the Site relinquish any or all claims against the party providing the Content for any damage that may arise from using the notes feature.</p>
+	
+				<h3>Consent</h3>
+					<p>By using this website, you hereby consent to this disclaimer and agree to its terms.</p>
+
+				<h3>Update</h3>
+					<p>Should there be an update, amend or any changes to this document, those changes will be prominently posted here.</p>
+			
+			<h2 id="chapters">Chapters</h2>
+				<ul id="1640267110">
+					<li><a href="/productionizing/productionizing-backend-development/glossary/">Glossary</a></li>
+					<!--
+					<li><a href="example-application.html">Example application</a></li>
+					<li><a href="/one-way/">Chapter-1: 1-way interaction</a></li>
+					<li><a href="/two-way/">Chapter-2: 2-way interactions</a></li>
+					<li><a href="/three-way/">Chapter-3: 3-way interactions</a></li>
+					<li><a href="/advanced/">Advanced interactions</a></li>
+					-->
+				</ul>
+				
+				
+				
 			<!-- TODO
-			
-			**IMPORTANT:: Remember to update sitemap periodically, and comment out sections under development. Best.. update f adding/removing links, change sitemap
-			
-			**IMPORTANT:: To new files, add 
-	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read it in ebook <a href="/productionizing/productionizing-backend-development/#1609472915">here</a></strong></i></aside>
 			
 			
 			TODO: new note added on 2021-03-15, 2021-06-22, and after that..: yet to be included here
 			
-			
-			TODO in "other": Add about tampermonkey; python http.server
 			
 			TODO: Did you cover that - as much possible.. all async background work work should be done via controller.. and then one off commands should invoke the endpoint, specially if the async task is something that is needed to run periodically. If it needs to run one-time in the lifetime, then it can be done without having controller
 			
@@ -143,15 +184,43 @@
 			
 			
 			-->
-		</nav>
-		<main tabindex="0"></main>
+		</main>
+		
 		<footer></footer>
+		
 		<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 		<script type="module">
-			import { onUploadNoteFileChange, onDownloadNoteFile, onDocumentLoad } from './scripts.js';
-			$(document ).ready(onDocumentLoad);
-			$("main").on("change", "#note-file-upload-input", (event) => onUploadNoteFileChange(event.target.files[0]));
-			$("main").on("click", "#note-file-download-button", onDownloadNoteFile);
+			import {onHomepageLoad} from "./scripts.js";
+			$(document ).ready(onHomepageLoad);
 		</script>
 	</body>
 <html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

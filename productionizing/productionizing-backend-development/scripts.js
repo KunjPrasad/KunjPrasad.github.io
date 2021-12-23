@@ -1,121 +1,90 @@
-import { isNotesModified } from '/utilities/backend-notes.js';
-import { downloadPersonalNotes, uploadPersonalNotes } from '/utilities/service-notes.js';
-import { attachNoteHandlers, getNavAndMainElemIdFromLocationHash, prepareNavAnchorToLoadInMain, bindMainHashLinkToNavClick } from '/utilities/service-onload.js';
+import { 
+	onUploadNoteFile, 
+	onDownloadNoteFile, 
+	onClearAllNotes,
+	onNoteAddUpdate, 
+	onNoteDelete, 
+	getNotesForContentIdFromLocalStorageAsIdSortedList,
+	updateNoteStatusElementOnPageLoad,
+} from '/utilities/note-utils.js';
 
-// constants used relating to upload of note file and upload status
-const noteUploadStatusId = "prod-back-dev-note-upload-status";
-let uploadedNoteFileData = {status: null, fileName: null, uploadDateTime: null};
+const bookKey = 'prodBackendDev';
 
+const noteStatusElementId = "note-status"; // one on every page
+const noteStatusElementQuery = $(`#${noteStatusElementId}`);
+const addNoteButtonClass = "note-add"; // multiple on 1 page, on every page
+const noteTextElementClass = "note-text";  // multiple on 1 page, on every page
+
+// Utility method to make the html for note-text box
+const getNoteHtml = (contentId, noteId, noteText) => `<textarea id="${noteId}" class="${noteTextElementClass}" rows="2" data-content-id="${contentId}">${noteText}</textarea>`
+ 
 /**
- *  Utility method to update the element displaying upload status for successful upload
+ * Helper method to show the notes for all sections on the page and a button to enable adding more notes for the section.
+ * This is done only for sections with numeric "id" values because, by design, it is expected that the authored content has numeric ids.
  */
-const updateUploadStatusSuccess = () => {
-	const noteUploadStatusNodeQuery = $(`#${noteUploadStatusId}`);
-	noteUploadStatusNodeQuery.text(`Succussfully uploaded file ${uploadedNoteFileData.fileName} at ${uploadedNoteFileData.uploadDateTime}.`);
-	noteUploadStatusNodeQuery.removeClass("alert-secondary alert-danger");
-	noteUploadStatusNodeQuery.addClass("alert-success");
-};
-
-/**
- *  Utility method to update the element displaying upload status for errored upload
- */
-const updateUploadStatusError = () => {
-	const noteUploadStatusNodeQuery = $(`#${noteUploadStatusId}`);
-	noteUploadStatusNodeQuery.text(`Failed an attempt to upload file ${uploadedNoteFileData.fileName} at ${uploadedNoteFileData.uploadDateTime}!`);
-	noteUploadStatusNodeQuery.removeClass("alert-secondary alert-success");
-	noteUploadStatusNodeQuery.addClass("alert-danger");
-};
-
-/**
- *  Utility method to reset the element displaying upload status.
- */
-const updateUploadStatusReset = () => {
-	const noteUploadStatusNodeQuery = $(`#${noteUploadStatusId}`);
-	noteUploadStatusNodeQuery.text('No note file has been uploaded');
-	noteUploadStatusNodeQuery.removeClass("alert-secondary alert-success alert-danger");
-	noteUploadStatusNodeQuery.addClass("alert-secondary");
-};
-
-/**
- * Utility method defining the handler for processing note-file uploaded by user
- */
-export const onUploadNoteFileChange = (uploadFile) => {
-	uploadPersonalNotes(
-		uploadFile, 
-		(uploadFile) => {
-			uploadedNoteFileData = {status: 'SUCCESS', fileName: uploadFile.name, uploadDateTime: new Date()};
-			updateUploadStatusSuccess();
-		}, 
-		(uploadFile) => {
-			uploadedNoteFileData = {status: 'ERROR', fileName: uploadFile.name, uploadDateTime: new Date()};
-			updateUploadStatusError();
-		}, 
-	);
-}
-
-const downFileNamePrefix = 'prodBackendDev';
-
-/**
- * Utility method defining the handler for processing note-file download request
- */
-export const onDownloadNoteFile = () => downloadPersonalNotes(downFileNamePrefix);
-
-/**
- * Utility method to update text in paragrah which shows the note-file upload status
- */
-const updateNoteUploadStatus = () => {
-	const noteUploadStatusNodeQuery = $(`#${noteUploadStatusId}`);
-	if (!noteUploadStatusNodeQuery.length) {
-		return; // fail-safe if there is no noteUploadStatus-id on page. Ideally, this will never be called
-	}
-	if (!uploadedNoteFileData.status) {
-		updateUploadStatusReset();
-	} else {
-		if (uploadedNoteFileData.status === 'SUCCESS') {
-			updateUploadStatusSuccess();
-		} else {
-			updateUploadStatusError();
+const showNotesAndButtonAndStatus = () => {
+	$("body [id]").after(function() { // NOTE: DO NOT use an arrow notation. The function body relies on `this` being different matches elements
+		const contentId = $(this).attr('id');
+		if(isNaN(contentId)) {
+			return; // See https://stackoverflow.com/questions/175739/built-in-way-in-javascript-to-check-if-a-string-is-a-valid-number -- combined with fact that the entries after which the "Add note" button must appear have numeric ids - by design.
 		}
-	}
-};
-
-const noteModifiedStatusId = "prod-back-dev-note-modified-status";
-
-/**
- * Utility method to update text in paragrah which shows the note-modified status
- */
-const updateNoteModifiedStatus = () => {
-	const noteModifiedStatusNodeQuery = $(`#${noteModifiedStatusId}`);
-	if (!noteModifiedStatusNodeQuery.length) {
-		return; // fail-safe if there is no noteModifiedStatus-id on page. Ideally, this will never be called
-	}
-	if (isNotesModified()) {
-		noteModifiedStatusNodeQuery.text(`There are modified notes! Please save a copy of notes before exitting.`);
-		noteModifiedStatusNodeQuery.removeClass("alert-secondary");
-		noteModifiedStatusNodeQuery.addClass("alert-warning");
-	} else {
-		noteModifiedStatusNodeQuery.text(`There are no modified notes.`);
-		noteModifiedStatusNodeQuery.removeClass("alert-warning");
-		noteModifiedStatusNodeQuery.addClass("alert-secondary");
-	}
-};
-
-const introductionNavAnchorId = "1606665479";
-const personalNotesNavAnchorId = "1606703843";
-
-/**
- * Utility method with logic to be executed when page is loaded
- */
-export const onDocumentLoad = () => {
-	attachNoteHandlers();
-	//attach binding for hash-type anchor tag (i.e., <a href="#...">) inside the <main>, where the desired goal is to open items from other pages of ebook. Hence, it ends up behaving as if a corresponding nav-item was clicked
-	bindMainHashLinkToNavClick();
-	// adding post-load operation:
-	// -- if custom-note link is clicked, then after the page load, also update upload status
-	prepareNavAnchorToLoadInMain({
-		[personalNotesNavAnchorId]: () => { updateNoteUploadStatus(); updateNoteModifiedStatus(); }
+		const noteAppends = getNotesForContentIdFromLocalStorageAsIdSortedList(bookKey, contentId).map((note) => getNoteHtml(contentId, note.id, note.text));
+		noteAppends.push(`<button class="${addNoteButtonClass}" data-content-id="${contentId}">Add note</button>`)
+		return noteAppends.join('');
 	});
-	// load section, or introduction
-	let {navElementId} = getNavAndMainElemIdFromLocationHash();
-	$(`#${navElementId || introductionNavAnchorId}`).click(); 
+	updateNoteStatusElementOnPageLoad(bookKey, noteStatusElementQuery);
+};
+
+/**
+ * Helper method to enable notes interactivity. 
+ * When the button to add notes is clicked, then a new box is added where note text can be added. The "id" for the note box is  made using
+ * the time when the note is created. When any note element is blurred, then the note is updated. If the note does not have any text, then 
+ * it is removed.
+ */ 
+const enableNotesInteractivity = () => {
+	$(document.body).on("click", `.${addNoteButtonClass}`, (event) => {
+		const noteId = `n${new Date().getTime()}`; // The book itself uses timestamps as id for each paragraphs, which is then used as contentId in the button. To distinguish this from noteId, which also uses numeric timestamp, a `n` prefix is added to noteId.
+		const contentId = event.target.dataset.contentId;
+		$(event.target).before(getNoteHtml(contentId, noteId, ''));
+		$(`#${noteId}`).focus();
+	});
+	$(document.body).on("blur", `.${noteTextElementClass}`, (event) => {
+		const newNoteTextValue = event.target.value;
+		const eventTargetQuery = $(event.target);
+		const contentId = eventTargetQuery.attr('data-content-id');
+		const noteId = eventTargetQuery.attr('id');
+		if (newNoteTextValue) {
+			onNoteAddUpdate(bookKey, {[contentId]: {[noteId]: newNoteTextValue}}, noteStatusElementQuery);
+		} else {
+			onNoteDelete(bookKey, {[contentId]: {[noteId]: ''}}, noteStatusElementQuery);
+			$(event.target).remove();
+		}
+	});
+};
+
+/**
+ * Utility method with logic to be executed when homepage is loaded.
+ * In addition to the common logic executed when non-homepage is loaded, i.e., displaying notes and button to add notes, and adding 
+ * notes interactivity, the handlers for note-upload, note-download and all-note-clear buttons are also setup. This is done because notes
+ * upload/download/clear buttons are expected to show up only on the homepage.
+ */
+export const onHomepageLoad = () => {
+	const noteUploadInputId = "note-file-upload-input"; // one, only on homepage
+	$(`#${noteUploadInputId}`).change((event) => onUploadNoteFile(bookKey, event.target.files[0], noteStatusElementQuery));
+	const noteDownloadButtonId = "note-file-download-button"; // one, only on homepage
+	const downloadFileName = `notes-${bookKey}-${new Date().getTime()}.json`;
+	$(`#${noteDownloadButtonId}`).click(() => onDownloadNoteFile(bookKey, downloadFileName, noteStatusElementQuery));
+	const allNotesClearButtonId = "remove-note-button"; // one, only on homepage
+	$(`#${allNotesClearButtonId}`).click(() => onClearAllNotes(bookKey, noteStatusElementQuery));
+	onNonHomepageLoad();
+};
+
+/**
+ * Utiity method with logic to be executed when non-homepage page is loaded.
+ * If there are any notes, then those are loaded. A button to add more notes is displayed. The interactivity with notes is also loaded 
+ * which enables modifying notes and adding more notes.
+ */
+export const onNonHomepageLoad = () => {
+	showNotesAndButtonAndStatus();
+	enableNotesInteractivity();
 };

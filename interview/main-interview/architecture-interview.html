@@ -63,3 +63,64 @@ architecture interview:
 
 
 Technology: REST vs GraphQL; SQL vs NoSQL; DB or Message queue; Logging; Monitoring; resilience
+
+
+
+
+architecture goal: everything is reversible.. but at cost. Make sure to hash out big cost items. Particularly, if you may be overlooking something
+
+think of trade-offs, not correct/wrong
+
+
+
+self:
+
+-- NoSQL: is data columns changing - but using single store; do we want low latency and allow for application centric approach; not good for mvp
+
+-- REST vs GraphQL.. streaming file vs polling vs server-send-response vs websocket
+
+-- distributed db (cap); acid; NoSQL doesn't mean CAP
+
+-- routing should be context based -- generally that means user based if workflow can having multiple paths.. leads to caching
+
+-- understand diffreence between library and framework: jquery is library; react is framework. Libraries are generic, good for poc. Framework are opinionated. best for big operations and based on support available.
+
+-- sync vs async processing
+
+-- event driven vs request-response model
+
+-- api documentation
+
+-- db schema
+
+-- system monitoring vs application logging vs metrics
+
+-- scaling (in a way so that it does not lose benefit from one stage to next processing stage), recover
+
+-- io vs compute intensive; is a short term or long term io? let aws optimize
+
+-- on transaction fail? repeat failures and retry exhausted 
+
+-- places to get metrics (different from monitoring)
+
+-- a/b test
+
+-- microservice
+
+-- cron job
+
+
+
+-- related functions (like to view stocks, there is buy stock function)
+
+-- authentication
+
+-- JWT or cookie
+
+-- CORS
+
+-- localstorage (for UI)
+
+-- pagination for REST
+
+-- ask product qs.
