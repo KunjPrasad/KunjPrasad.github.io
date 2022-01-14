@@ -39,7 +39,7 @@
 	Link to RBAC. 
 	Separate authentication vs authorization. Presence of authentication should not mean authorization
 	Stick to RBAC. 
-	check authroization on every call, even when reading authentication from JWT. 
+	check authroization on every call, even when reading authentication from JWT. -- essentially jwt is for authentication, not authorization
 	Don't read autheoization / role from JWT since that may be stale. always read it again
 	-- Run-As function: https://www.baeldung.com/spring-security-run-as-auth   https://blog.marcosbarbero.com/user-impersonation-with-spring-security/
 	-- Don't use presence of an auth header for authorization
@@ -54,12 +54,21 @@
 			-- Don't have/rely on security where adding a rate limit is part of security logic
 			-- Don't have/rely on worflow where presence/lack of authentication acts as authorization. If you want to differentiate between, say, 2factor authenticated user vs 1factor authenticated.. then give those 2 different role/permission - even for same principal.
 	
-	--|---- Even if you have hierarchy in role, its best to treat each role independent and define permission such that the role behaves hierarchical. So, in English, "the role is not hierarchical, but the permission associated to the role is hierarchical"
+	--|---- RBAC: Even if you have hierarchy in role, its best to treat each role independent and define permission such that the role behaves hierarchical. So, in English, "the role is not hierarchical, but the permission associated to the role is hierarchical"
 	
 	-- Have a user for system to run async tasks. Use id=1613710989 (referred in 1-way/entity)
 			
 	-- See 1613946647 in entity. Same reason, don't send role back to user -- because it is a business internal logic.
 	
+	-- For any page shown to anonymous user, allow samesite=lax cookie; for those "only" behind an authentication, ideally use samesite=strict cookie.. else be careful in using samesite=lax.
+	
+	
+	
+	Important:
+	-- User exists not just on server, but also on browser. User on browser + user on server - makes a user session.. with session comes cookies and cookie security
+	--|---- every third party cookie is a CSRF! (maybe just add in req-resp.html on how third party cookies are made) https://stackoverflow.com/questions/13897472/how-do-third-party-tracking-cookies-work
+	
+	-- link to advanced concepts: user tracking in browser as a 3rd party call or routing via server. This is user state DB, different from user info in server side DB.. more related to a workflow concept but from UI perspective. (That's it.. don't go further because that is out of scope for this book)
 	
 	
 	
