@@ -1,5 +1,5 @@
 <!--
-    HTML book section: Web application housekeeping related terms glossary to Productionizing Backend Development, by Kunj Prasad on Github.
+    Productionizing Backend Development - Web application housekeeping glossary, by Kunj Prasad on Github.
     Copyright (C) 2020  Kunj Prasad
 
     This program is free software: you can redistribute it and/or modify
@@ -15,52 +15,112 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
-<article>
-	<h2 id="introduction">Web application housekeeping related terms</h2>
-	<p id="1618628169">This page lists the various terms that relate to web application housekeeping tasks. These are one-off or regular tasks run as cron jobs that don't directly contribute to processing of the current request and forming a response. However, they may prepare the application for future business processing or clear stale data from past processing, and so, are essential to the application.</p>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<title>Productionizing Backend Development - Web application housekeeping glossary</title>
+		<meta name="description" content="Glossary for the book on Productionizing Backend Development containing concepts and terms related to housekeeping items for web applications.">
+		<meta name="author" content="Kunj Prasad">
 	
-	<nav class="article-toc">
-		<h3>Table of contents</h3>
-		<ul>
-			<li><a href="#1608688160" data-nav-id="1608344358">Cron job</a></li>
-			<li><a href="#1608688169" data-nav-id="1608344358">Daemon thread</a></li>
-			<li><a href="#1608738865" data-nav-id="1608344358">Startup tasks</a></li>
-			<li><a href="#1608686638" data-nav-id="1608344358">Application Monitoring</a><ul>
-				<li><a href="#1608738330" data-nav-id="1608344358">Audit log or Audit trail</a></li>
-				<li><a href="#1608686649" data-nav-id="1608344358">Logging</a></li>
-				<li><a href="#1608687416" data-nav-id="1608344358">Distributed tracing</a></li>
-			</ul></li>
-			<li><a href="#1608688467" data-nav-id="1608344358">Data privacy update</a></li>
-			<li><a href="#openapi">OpenAPI and Swagger</a></li>
-		</ul>
-	</nav>
+		<!-- Meta with information that otherwise should have come in request headers -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		
+		<!-- Browser related meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		
+		<!-- OpenGraph related meta -->
+		<meta property="og:url" content="https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/housekeeping.html">
+		<meta property="og:site_name" content="Productionizing Backend Development book on Kunj Prasad's website">
+		<!-- Not yet added image: <meta property="og:image" content="https://kunjprasad.github.io/assets/social_media_logo.png"> -->
+		<meta property="og:title" content="Productionizing Backend Development - Web application housekeeping glossary">
+		<meta property="og:description" content="Glossary for the book on Productionizing Backend Development containing concepts and terms related to housekeeping items for web applications.">
+		<meta property="og:locale" content="en_US">
+		<meta property="og:type" content="article">
+		<meta property="article:publisher" content="Kunj Prasad">
+		<meta property="article:published_time" content="2022-01-24T00:00:00+00:00">
+		<meta property="article:modified_time" content="2022-01-24T00:00:00+00:00">
+		
+		<link rel="stylesheet" href="/utilities/common-styles.css" type="text/css">
+	</head>
 	
-	<h3>Cron job</h3>
-	<p id="1608688160">See article about cron job at <a href="https://en.wikipedia.org/wiki/Cron" target="_blank" rel="noopener noreferrer">Wikipedia</a>. Cron jobs are periodic tasks that are executed based on a schedule. These can be used to run arbitrary housekeeping tasks on demand or periodically.</p>
+	<body>
 	
-	<h3>Daemon thread</h3>
-	<p id="1608688169">Demon threads, by definitions, are threads that quietly run in background and are automatically closed when the application exits (..not, when a request completes). For this reason, they are can be used to query for tasks in some queue and excute it once the instructions are available. At the other side of the queue, now the application simply needs to keep pushing new tasks into it that need to be asynchornously executed. These are generally used to execute cron jobs that start very frequently and so there's no reason to close a thread and then make a new one soon after.</p>
+		<header>
+			<h1>Web application housekeeping glossary</h1>
+			<ol class="breadcrumb-container">
+				<li><a href="/productionizing/productionizing-backend-development/">Home</a></li>
+				<li><a href="/productionizing/productionizing-backend-development/glossary/">Glossary</a></li>
+				<li>Web application housekeeping glossary</li>
+			</ol>
+		</header>
+		
+		<div id="note-status" class="note-status-sticky-header alert"><!-- The content here is filled dynamically by the script and gives information on notes, and file uploads, or unsaved changes --></div>
+		
+		<nav>
+			<h2>Table of contents</h2>
+			<ul>
+				<li><a href="#introduction">Introduction</a></li>
+				<li><a href="#cron-job">Cron job</a></li>
+				<li><a href="#daemon">Daemon thread</a></li>
+				<li><a href="#startup-task">Startup tasks</a><ul>
+					<li><a href="#healthcheck-monitoring">Healthcheck monitoring</a></li>
+				</ul></li>
+				<li><a href="#application-monitoring">Application monitoring</a><ul>
+					<li><a href="#audit-log">Audit log or Audit trail</a></li>
+					<li><a href="#logging">Logging</a></li>
+					<li><a href="#distributed-trace">Distributed tracing</a></li>
+				</ul></li>
+				<li><a href="#data-privacy">Data privacy update</a></li>
+				<li><a href="#openapi">OpenAPI and Swagger</a></li>
+			</ul>
+		</nav>
+		
+		<main>
+			<h2 id="introduction">Introduction</h2>
+				<p id="1618628169">This page lists the various terms that relate to web application housekeeping tasks. These are one-off or regular tasks run as cron jobs that don't directly contribute to processing of the current request and forming a response. However, they may prepare the application for future business processing or clear stale data from past processing, and so, are essential to the application.</p>
+				
+			<h2 id="cron-job">Cron job</h2>
+				<p id="1608688160">See article about cron job at <a href="https://en.wikipedia.org/wiki/Cron" target="_blank" rel="noopener noreferrer">Wikipedia</a>. Cron jobs are periodic tasks that are executed based on a schedule. These can be used to run arbitrary housekeeping tasks on demand or periodically.</p>
+			
+			<h2 id="daemon">Daemon thread</h2>
+				<p id="1608688169">Demon threads, by definitions, are <a href="https://en.wikipedia.org/wiki/Thread_(computing)" target="_blank" rel="noopener noreferrer">threads</a> that are generally started when the application starts for the first quietly, they continuously run in background and are automatically closed when the application exits, or the thread has no code to run. Repeating for emphasis, note that the daemon thread closes when application exits and not when a request, that created the thread, completes. Since they are long-running threads, so, they can be used to continuously poll for new tasks in some queue and execute any available tasks. At the other side of the queue, the application only needs to push new tasks and they will be asynchornously executed by the daemon thread.</p>
+			
+			<h2 id="startup-task">Startup tasks</h2>
+				<p id="1608738865">These refer to tasks that must be executed when an application starts up. Most common tasks are caching data that are known to not change over time but are read multiple times. If such tasks are set, then do ensure that the overall infrastructure is also set up in a manner that the application does not start receiving incoming request until after the startup tasks are complete.</p>
+				
+				<h3 id="healthcheck-monitoring">Healthcheck monitoring</h3>
+					<p id="1642694047">A web application may use multiple external services or resources when it is running. The most common is the use of a database. It may also use third party APIs, file storage system, message queues, Kafka queue, etc. It is a good practice to continuously monitor the health status of all these resources to ensure that they are up and running, and are not having a degraded performance. This monitoring task can be set up when the web application starts for the first time. A monitor can also be set up to periodically check the health of the server itself that is hosting the web application. Alerts can be set up to notify related personnel if the healthcheck performance of any of the resources fall below an expected level.</p>
+			
+			<h2 id="application-monitoring">Application monitoring</h2>
+				<p id="1608686638">Application monitoring refers to the various utilities that allow someone to understand if the web application is processing the request in an expected manner, or to reconstruct the commands that were executed the web application before it errored. Since software code is opened for public use <a href="/productionizing/productionizing-backend-development/glossary/testing.html#introduction">only after it has been extensively tested</a>, so it becomes necessary to identify the root cause of any unexpected issues observed in the web application, so that it can soon be remediated. Generally, different type of machine "logs" are used for such monitoring. Note that these are diferent from <a href="#healthcheck-monitoring">healthcheck monitors</a> discussed above.</p>
+			
+				<h3 id="audit-log">Audit log or Audit trail</h3>
+					<p id="1608738330">See article about audit trail on <a href="https://en.wikipedia.org/wiki/Audit_trail" target="_blank" rel="noopener noreferrer">Wikipedia</a>. These are collection of changes done to database table entries to prove an evidence of modifications done on a record by corresponding user at some time. Although the Wikipedia article identifies it as a security related task, it is more in line with "compliance" and "dispute resolution"; Security is something that must happen much before the code flow comes to point where an audit entry is made. For a business that is outside of the startup phase, it should also define the time period up to which the audit entries are kept otherwise these entries will keep on increasing in an unbounded manner.</p>
+			
+				<h3 id="logging">Logging</h3>
+					<p id="1608686649">Generating application logs are one of the best ways to understand the state of request processing. Logs can be made with different logs levels ranging from TRACE to FATAL. See these articles at <a href="https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels" target="_blank" rel="noopener noreferrer">StackOverflow</a>, <a href="https://www.ibm.com/support/knowledgecenter/en/SSEP7J_10.2.2/com.ibm.swg.ba.cognos.ug_rtm_wb.10.2.2.doc/c_n30e74.html" target="_blank" rel="noopener noreferrer">IBM</a> and at <a href="https://www.ibm.com/support/knowledgecenter/en/SSEP7J_10.2.2/com.ibm.swg.ba.cognos.ug_rtm_wb.10.2.2.doc/c_n30e74.html" target="_blank" rel="noopener noreferrer">Medium</a> to understand different log levels and when to use them. Generally, a log entry is made when an error occurs, at which time, the corresponding error stacktrace must also be captured and logged. It is also a common and an important practice to only enable INFO and higher level logging in Production environments to prevenet unnecessary slowdowns and to preent creating multiple logs. It is important from security perspective because DEBUG or TRACE logs can let off too much information about inner working of the application, in case an unauthoerized user gets hold of the logs.</p>
+			
+				<h3 id="distributed-trace">Distributed tracing</h3>
+					<p id="1608687416">See articles about distributed tracing at <a href="https://opentracing.io/docs/overview/what-is-tracing/" target="_blank" rel="noopener noreferrer">Opentracing</a>, <a href="https://www.splunk.com/en_us/data-insider/what-is-distributed-tracing.html" target="_blank" rel="noopener noreferrer">Splunk</a> and <a href="https://lightstep.com/distributed-tracing/" target="_blank" rel="noopener noreferrer">Lightstep</a>. More often than not, modern web applications involve a single request getting processed by multiple components, including different microservices, theird party api and UI calls. Distributed tracing refers to methods of observing a request as it propagates through distributed systems. This reveals how a set of services coordinate to handle individual user requests and is extremely useful to identify cause of request failure or even a slowdown as it moves through distributed systems. To this end, <a href="https://opentelemetry.io/about/" target="_blank" rel="noopener noreferrer">OpenTelemetry</a> can be incorporated in the code. OpenTelemetry consists of software and tools that assist in generating and capturing telemetry data from cloud-native software. It provides the libraries, agents, and other components needed to capture <a href="https://opentelemetry.io/docs/concepts/data-sources/" target="_blank" rel="noopener noreferrer">"telemetry" from your business application</a> to enable its management and debugging. Specifically, OpenTelemetry captures metrics, distributed traces, resource metadata, and logs and then sends this data to configured backends for processing. It is a relatively new project formed through a merger of the <a href="https://www.opentracing.io/" target="_blank" rel="noopener noreferrer">OpenTracing</a> and <a href="https://www.opencensus.io/" target="_blank" rel="noopener noreferrer">OpenCensus</a> projects.</p>
+			
+			<h2 id="data-privacy">Data privacy update</h2>
+				<p id="1608688467">Moderns data laws like the <a href="https://gdpr.eu/what-is-gdpr/" target="_blank" rel="noopener noreferrer">General Data Protection Regulation (GDPR)</a> and the <a href="https://oag.ca.gov/privacy/ccpa" target="_blank" rel="noopener noreferrer">California Consumer Privacy Act (CCPA)</a> allows, among other things, for a user to get all data that an organization has collected and for that data to be cleared. These procesing are important but they can take a long time to complete. This a good example of a processing that can be done in the background.</p>
+			
+			<h2 id="openapi">OpenAPI and Swagger</h2>
+				<p id="1608689286">REST, being an architecture and not a specification, does not require for there be fixed interfaces and URLs, but instead promotes API discovery via <a href="https://en.wikipedia.org/wiki/HATEOAS" target="_blank" rel="noopener noreferrer">HATEOAS</a>. However, this paradigm interferes with a lot of use cases where a client may want to have an advanced knowledge of available REST endpoints which is agreed to be provided as part of a service by the business but without an access to the source code. <a href="https://swagger.io/resources/open-api/" target="_blank" rel="noopener noreferrer">OpenAPI specifications</a> standardizes the format in which this information can be shared. <a href="https://swagger.io/" target="_blank" rel="noopener noreferrer">Swagger</a> is a set of open-source tools built around the OpenAPI specification that can help with the designing, building, documenting and consuming of REST APIs. Thus, for modern web applications exposing service via REST endpoints, it should be seen as almost a requirement to also provide Swagger documents and to keep them up to date.</p>
+		</main>
+		
+		<footer></footer>
+		
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+		<script type="module">
+			import {onNonHomepageLoad} from "../scripts.js";
+			$(document ).ready(onNonHomepageLoad);
+		</script>
+		
+	</body>
 	
-	<h3>Startup tasks</h3>
-	<p id="1608738865">These refer to tasks that must be done when an application starts up. Most common tasks are caching data that are known to not change over time but are read multiple times. If such tasks are set, then do ensure that the overall infrastructure is also set up in a manner that the application does not start receivig incoming request until after the startup tasks are complete. If doing so is difficult to configure, then explore if it is possible to cut down on startup tasks and if those could instead be done at a later time.</p>
-	
-	<h3>Application Monitoring</h3>
-	<p id="1608686638">Application monitoring involves different utilities to understand the state of request processing and related error. This should be differentiated from monitoring the infrastructure hosting the application.</p>
-	
-	<h4>Audit log or Audit trail</h4>
-	<p id="1608738330">See article about audit trail on <a href="https://en.wikipedia.org/wiki/Audit_trail" target="_blank" rel="noopener noreferrer">Wikipedia</a>. These are collection of changes done to database table entries to prove an evidence of modifications done on a record by corresponding user at some time. Although the Wikipedia article identifies it as a security related task, it is more in line with "compliance" and "dispute resolution"; Security is something that must happen much before the code flow comes to point where an audit entry is made. For a business that is outside of the startup phase, it should also define the time period up to which the audit entries are kept otherwise these entries will keep on increasing in an unbounded manner.</p>
-	
-	<h4>Logging</h4>
-	<p id="1608686649">Generating application logs are one of the best ways to understand the state of request processing. Logs can be made with different logs levels ranging from TRACE to FATAL. See these articles at <a href="https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels" target="_blank" rel="noopener noreferrer">StackOverflow</a>, <a href="https://www.ibm.com/support/knowledgecenter/en/SSEP7J_10.2.2/com.ibm.swg.ba.cognos.ug_rtm_wb.10.2.2.doc/c_n30e74.html" target="_blank" rel="noopener noreferrer">IBM</a> and at <a href="https://www.ibm.com/support/knowledgecenter/en/SSEP7J_10.2.2/com.ibm.swg.ba.cognos.ug_rtm_wb.10.2.2.doc/c_n30e74.html" target="_blank" rel="noopener noreferrer">Medium</a> to understand different log levels and when to use them. Generally, a log entry is made when an error occurs, at which time, the corresponding error stacktrace must also be captured and logged. It is also a common and an important practice to only enable INFO and higher level logging in Production environments to prevenet unnecessary slowdowns and to preent creating multiple logs. It is important from security perspective because DEBUG or TRACE logs can let off too much information about inner working of the application, in case an unauthoerized user gets hold of the logs.</p>
-	
-	<h4>Distributed tracing</h4>
-	<p id="1608687416">See articles about distributed tracing at <a href="https://opentracing.io/docs/overview/what-is-tracing/" target="_blank" rel="noopener noreferrer">Opentracing</a>, <a href="https://www.splunk.com/en_us/data-insider/what-is-distributed-tracing.html" target="_blank" rel="noopener noreferrer">Splunk</a> and <a href="https://lightstep.com/distributed-tracing/" target="_blank" rel="noopener noreferrer">Lightstep</a>. More often than not, modern web applications involve a single request getting processed by multiple components, including different microservices, theird party api and UI calls. Distributed tracing refers to methods of observing a request as it propagates through distributed systems. This reveals how a set of services coordinate to handle individual user requests and is extremely useful to identify cause of request failure or even a slowdown as it moves through distributed systems. To this end, <a href="https://opentelemetry.io/about/" target="_blank" rel="noopener noreferrer">OpenTelemetry</a> can be incorporated in the code. OpenTelemetry consists of software and tools that assist in generating and capturing telemetry data from cloud-native software. It provides the libraries, agents, and other components needed to capture <a href="https://opentelemetry.io/docs/concepts/data-sources/" target="_blank" rel="noopener noreferrer">"telemetry" from your business application</a> to enable its management and debugging. Specifically, OpenTelemetry captures metrics, distributed traces, resource metadata, and logs and then sends this data to configured backends for processing. It is a relatively new project formed through a merger of the <a href="https://www.opentracing.io/" target="_blank" rel="noopener noreferrer">OpenTracing</a> and <a href="https://www.opencensus.io/" target="_blank" rel="noopener noreferrer">OpenCensus</a> projects.</p>
-	
-	<h3>Data privacy update</h3>
-	<p id="1608688467">Moderns data laws like the <a href="https://gdpr.eu/what-is-gdpr/" target="_blank" rel="noopener noreferrer">General Data Protection Regulation (GDPR)</a> and the <a href="https://oag.ca.gov/privacy/ccpa" target="_blank" rel="noopener noreferrer">California Consumer Privacy Act (CCPA)</a> allows, among other things, for a user to get all data that an organization has collected and for that data to be cleared. These procesing are important but they can take a long time to complete. This a good example of a processing that can be done in the background.</p>
-	
-	<h3 id="openapi">OpenAPI and Swagger</h3>
-	<p id="1608689286">REST, being an architecture and not a specification, does not require for there be fixed interfaces and URLs, but instead promotes API discovery via <a href="https://en.wikipedia.org/wiki/HATEOAS" target="_blank" rel="noopener noreferrer">HATEOAS</a>. However, this does interfere with a lot of use cases where a client may want to have an advanced knowledge of available REST endpoints which is agreed to be provided as part of a service by the business but without an access to the source code. <a href="https://swagger.io/resources/open-api/" target="_blank" rel="noopener noreferrer">OpenAPI specifications</a> standardizes the format in which this information can be shared. <a href="https://swagger.io/" target="_blank" rel="noopener noreferrer">Swagger</a> is a set of open-source tools built around the OpenAPI specification that can help with the designing, building, documenting and consuming of REST APIs. Thus, for modern web applications exposing service via REST endpoints, it should be seen as almost a requirement to also provide Swagger documents and to keep them up to date.</p>
-	
-	<aside class="shown-individually-but-hidden-in-ebook"><i><strong>Read this article, and more, in ebook <a href="/productionizing/productionizing-backend-development/#1608344358">here</a>.</strong></i></aside>
-</article>
+</html>
