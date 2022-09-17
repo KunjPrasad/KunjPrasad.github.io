@@ -38,7 +38,9 @@
 	-- A code that does internal known xss / csrf / cors attack to verify that everything is properly configured
 	-- A periodic health check.. or is that already covered under load balancer
 	
+	Would be good to also has a cookie governor, alongwith if cookie is httpOnly, secure, samesite setting, whether its for functional, etc. - to help with GDPR. Incl. any 3rd party cookies used by application.. which can also be common throgh other applications/subdomains on website
 	
+	Maybe also a list of request/response heads and values. This can help ensure consistency in name, plus if any important headers are being ignored and setup wrongly (like for CORS)
 	
 	-->
 	

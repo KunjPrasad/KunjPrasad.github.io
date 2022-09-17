@@ -54,22 +54,14 @@
 		<changefreq>yearly</changefreq>
 		<priority>0.8</priority>
 	</url>
-	<!--
 	<url>
 		<loc>https://kunjprasad.github.io/productionizing/productionizing-backend-development/glossary/data-storage.html</loc>
-		<lastmod>2022-02-15T00:00:00+00:00</lastmod>
+		<lastmod>2022-02-28T00:00:00+00:00</lastmod>
 		<changefreq>yearly</changefreq>
 		<priority>0.8</priority>
 	</url>
 
-	<!--
-	<url>
-	  <loc>https://kunjprasad.github.io/productionizing/productionizing-productionizing/</loc>
-	  <lastmod>2021-10-17T00:02:58+00:00</lastmod>
-	  <changefreq>yearly</changefreq>
-	  <priority>1.00</priority>
-	</url>
-	-->
+	<!-- TODO : https://kunjprasad.github.io/productionizing/productionizing-productionizing/ ; priority=1.00 -->
 
 	<!-- Book on Interview -->
 	<url>
