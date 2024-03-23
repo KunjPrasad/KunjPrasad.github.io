@@ -1,0 +1,120 @@
+LENDER QUESTIONS
+
+-- Try to get pre-approval from at least 3 banks: 1 national level, 1 online and 1 credit union. 
+-- NOTE: Even if credit union rates are not much low, they can have low closing cost. This will reflect in APR
+-- Try to go through online reviews to understand how good the customer service is
+
+
+* Are you also the mortgage servicer, or anyone else?
+-- See https://www.consumerfinance.gov/ask-cfpb/whats-the-difference-between-a-mortgage-lender-and-a-servicer-en-198/
+-- Servicers are responsible for the receipt of mortgage payments, customer service, escrow administration, investor accounting, collections, and foreclosures. These activities are called "servicing" of a mortgage loan. If and when a lender transfers servicing responsibility of your mortgage loan to a servicer, you should receive a letter in the mail within 30 to 60 days of the transfer.  
+
+
+* What is the loan rate?
+-- Ask for APR, not just the rate.
+--|---- Compare to Freddie Mac's rate: https://www.freddiemac.com/pmms
+-- Ask rates for 3%, 20%, 25% down, for 15, 20 and 30 year payment option
+--|---- See section below on Loan Level Price Adjustment (LLPA). It can cause higher rate for 20% down.
+-- Is it at 0% discount points, or does it require any discount points?
+--|---- Discount points can be good if rate will go up, but bad when rates can come down. Search more information before deciding
+-- Is closing cost included in loan?
+-- If you are give a monthly amount and not a rate: Check is taxes and insurance are included in the monthly payment amount.
+
+
+* Loan Level Price Adjustment (LLPA) and does it affect me?
+-- See 
+--|---- Define/explain
+--|----|---- https://www.investopedia.com/loan-level-price-adjustment-llpa-definition-7498880
+--|----|---- https://money.usnews.com/loans/mortgages/articles/what-is-loan-level-price-adjustment
+--|---- News articles
+--|----|---- https://abc7.com/joe-biden-mortgage-fees-policy-homeowners-first-time-buyer/13190960/
+--|----|---- https://www.cnet.com/personal-finance/mortgages/mortgage-fees-are-changing-on-may-1-what-it-means-for-homebuyers/
+--|---- Actual value: https://singlefamily.fanniemae.com/media/9391/display -- this goes on top of Freddie Mac's rate
+
+
+* Ask for the amortization schedule for the loan
+
+
+* What fees will I be responsible for at closing?
+-- Ask for Closing fees, with detailed breakdown. This must be known before choosing lender.
+--|---- NOTE: some lenders use a percentage of loan value when identifying closing fees; Others have a flat fees
+-- Ask what are revolving cost, vs a one-time cost at start
+-- Ask if lender will waive any fees
+
+
+* How long are your turnaround times on pre-approval, appraisal, and closing?
+-- During the homebuying process, time is of the essence. If the appraisal has a long turnaround time, this can delay the purchase of the home and your closing date. It’s important not to rush, but it’s also important that a lender doesn’t slow you down.
+
+
+* Do you offer eClosings? Do I have to visit in-person to sign documents?
+-- An eClosing allows you to sign some or all of the closing documents electronically, reducing the amount of paperwork that must be signed in person. In some cases, the closing and/or notarization requirement can be fulfilled digitally, so you don’t need to attend an in-person closing.
+-- In addition to reducing paper, an eClosing makes it easier to review your documents prior to closing, which allows you to ask questions, resolve errors, and avoid delays. Completing either some or all closing documents electronically can save you time.
+
+
+* Are you buying a new house, then the builder may have preferred lenders that give lower rate
+
+
+* How long is the rate fixed for?
+-- Typical values are 30, 60, 90, 120 days or more
+-- NOTE: The longer the lock period, the higher the rate, so you’ll typically select a period that relates to your closing date.
+
+
+
+
+LENDER AND SELLER-RATIFICATION:
+
+* (I am assuming...) After the seller and seller's agent ratify your purchase proposal, that is when you need to zone in on a single lender out of many from whom you took pre-approvals
+
+
+* Don't just go by APR, ask for loan estimate with breakdown of various costs, including closing costs
+-- Analyze loan estimate using the loan estimate explainer: https://www.consumerfinance.gov/owning-a-home/loan-estimate/
+-- Compare origination charges
+-- Compare third party services: There are third-party services required by your lender in order to get a loan. These services are also sometimes referred to as "closing services" or "settlement services."
+--|---- Services you cannot shop for: The services and service providers in this section are required and chosen by the lender. Because you can’t shop separately for lower prices from other providers, compare the overall cost of the items in this section to the Loan Estimates from other lenders.
+--|---- Services you can shop for: The services in this section are required by the lender, but you can save money by shopping for these services separately. Along with the Loan Estimate, the lender should provide you with a list of approved providers for each of these services. You can choose one of the providers on the list. You can also look for other providers, but check with your lender about any provider not on the list.
+-- Handle differences in homeowner's insurance cost and property tax cost
+-- Are you seeing loan discount points, origination points, or lender credits - when it wasn't expected. These need to be discused.
+--|---- If seeing lender credits, then a similar loan may be available with a lower interest rate and without lender credits, if you prefer.
+
+
+* Do I pay extra to lender/servicer for maintaining the escrow account? How much? What if I make the payment?
+-- What if I plan to choose my insurance and pay for it?
+
+
+
+
+LENDER AND CLOSING:
+
+* Title Insurance: 
+-- Before scheduling a closing date, title insurance will be ordered through a title company. This is done in order to protect you and the lender from financial losses that may be tied to the property prior to you taking ownership should the title prove to be imperfect (such as prior liens, unreleased liens, disputed wills, back taxes, and defects in the title). In other words, title insurance protects against any events or title recording errors that occurred before you own the home.
+
+
+* Closing Disclosure (3 days before closing)
+-- At least three days prior to closing, your lender will provide you with the Closing Disclosure, which includes your loan terms, down payment amount, projected payments, closing costs, fees (or costs to get the loan), and any other costs. Verify loan terms!
+--|---- Ask questions during the process to alleviate any confusion or last minute concerns during closing.
+--|---- __IMPORTANT__ : You should always feel comfortable asking questions and requesting copies of documents to read carefully. If the lender pressures you to sign or is hesitant to allow time to have the documents reviewed, they are likely hiding details of the loan. 
+-- Be sure to confirm the best way to send these funds to the title company as some companies prefer that it is wired ahead of time. 
+
+
+* The Day of Closing
+-- At closing, you will provide the funds to close indicated on the Closing Disclosure via wire transfer to ensure the funds are available. Once received, the lender will authorize the funds for the loan amount.
+
+
+
+
+THINGS TO KNOW
+
+* Points 
+-- Points come in two forms: origination points and discount points. 
+-- Origination points are applied toward costs that lenders incur for processing, underwriting, and approving your loan. These points can be a percentage of the loan amount or a flat fee.
+--|---- Keep in mind, if you include your closing costs in your loan, you will be paying interest on those costs over the life of the loan. 
+-- Mortgage discount points are purchased to lower the mortgage interest rate.
+
+
+* Loan Amortization: Amortizing a loan means paying it off in regular installments over a period of time.
+
+
+* Mortgage is also called "Deed of Trust"
+
+
+* A "property deed" is a document showing the transfer of property ownership from seller to you

@@ -1,0 +1,30 @@
+Property records: https://dashboard.propertyrecs.com/ -- gives fair estimate of house, past records
+
+
+FEMA hazard map: https://hazards.fema.gov/nri/map -- incl. wind, hale, snowstorm, lightning damages
+FEMA Flood risk map: https://msc.fema.gov/portal/search
+FEMA flood map legend: https://www.fema.gov/flood-maps/know-your-risk/homeowners
+
+
+US noise map: https://maps.dot.gov/BTS/NationalTransportationNoiseMap/
+
+
+Topological map, to see heights: https://topobuilder.nationalmap.gov/
+
+
+US sunshine map: https://www.washingtonpost.com/news/wonk/wp/2015/07/13/map-where-americas-sunniest-and-least-sunny-places-are/
+
+
+Home buyer education - The MD wesite lists various options: https://mmp.maryland.gov/Pages/Homebuyer-Education.aspx
+Fannie Mae home ownership education: https://www.fanniemae.com/education
+
+
+TODO specific to city where buying house
+-- school district map for where you are buying home
+-- crime map of city
+-- political alignment (red vs blue) of the city and surroundings
+
+
+Redfin
+-- cost of houses sold recently. This helps get idea whether the home price being asked is fair. The cost can be double checked in property records also
+
