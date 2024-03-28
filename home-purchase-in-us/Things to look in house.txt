@@ -1,19 +1,52 @@
-In the house
--- Does it have solar? - This can increase home price. Don't agree to paying full solar cost because owners would have gotten federal incentive
+In the house:
+-- Is it townhouse or single family?
+--|---- Maybe towhouses will have less privacy because wall is shared, and generally the bedrooms are made along the shared wall. This issue may not be felt when living in condo/apartment because they generally do 4 on a level, and each unit's bedroom(s) are farthest from others' bedrooms
 -- How old is it? 
 --|---- Even 10 years old mean that roof may need repair and it'll come to you
 --|---- Anything before 1980 can have lead
 --|---- Anything before 1990 can have asbestos
 --|---- Anything before 2000 is very likely to not be energy efficient
+-- Utilities
+--|---- Is it Municipal / public water, or an association/water district
+-- Is there a bed and 3/4+ bath on same level as kitchen?
 -- What appliances are included?
--- Is it townhouse or single family?
---|---- Maybe towhouses will have less privacy because wall is shared, and generally the bedrooms are made along the shared wall. This issue may not be felt when living in condo/apartment because they generally do 4 on a level, and each unit's bedroom(s) are farthest from others' bedrooms
+--|---- Special appliance: Whole house vent
+--|---- Special appliance: Radon detection and mitigation system, if needed
+--|---- Special appliance: whole house humidifier, if needed
+-- Kitchen
+--|---- Does it vent to outside?
+-- Bathroom
+--|---- Does it vent to outside?
+--|---- Is there a door between bathroom and bedroom? (Some don't)
+--|---- Is the walk-in closet through a separate door attached to bedroom, or is it attached to bathroom. Latter can cause moisture an smell to go in clothes, specially if commode is not in an area closed off by a door
+-- Laundry
+--|---- Is it spacious - like a small area in itself, or just like a door / closet with units behind it?
+--|---- Is it stacked laundy? Top unit may be hard to reach
+--|---- Are washer and dryer big enough to hold a comforter?
+-- Basement
+--|---- Is there a basement?
+--|---- Is basement finished / unfinished / partially finished?
+--|---- Is there a sump-pump, if needed
+-- Roof
+--|---- If going to area with hails: Are roof shingles impact resistant? If yes, what is the class?
+-- Driveway
+--|---- Is the driveway inclined? That may be an issue in places with lot of snow
+-- Solar
+--|---- Does it have solar? - This can increase home price. Don't agree to paying full solar cost because owners would have gotten federal incentive
+--|---- Is there a battery to store power? If yes, how old is it - since battery's capacity would have reduced
 
 
 Is it new build?
+-- Is new build from builder who constructed other houses that are also for sale? Then the builder of new build is competing against themselves? This can help in negotiating price of new build
 -- What are seller's incentives?
 --|---- Is low interest rate an incentive? But if the market-wide mortgage rate lowers in future, then the usefulness of this incentive is gone. So, is it likely that rates will reduce? Can the buyer instead reduce price or pay cover closing cost?
--- Is new build from builder who constructed other houses that are also for sale? Then the builder of new build is competing against themselves? This can help in negotiating price of new build
+-- Is the basement complete? Most new builds don't give complete basement
+
+
+Is it existing build?
+-- when was the roof replaced
+-- Check property records for how much it was purchased for and what the value is now
+-- Something to keep in consideration: does the existing home price match the seller's incentives for new builds
 
 
 HOA
@@ -24,14 +57,14 @@ HOA
 
 
 From google maps
+-- Are there trails / grain spaces around the house
+-- Is the house close to major roads (then it can be noisy)
 -- school locations (can be seen in Redfin and Zillow)
 -- Fire station locations
--- Hospital and urgent care locations
+-- Hospital and urgent care locations, and if they are good
 -- grocery locations (Walmart, Sam's club, Costco, Whole foods, any local stores)
+-- other nearby commercial area (like, theatre, mall)
 -- Is the house in outskirts with no close by facilities?
--- Is the house close to major roads (then it can be noisy)
--- Are there trails / grain spaces around the house
--- Street view: does the house have good views?
 
 
 From Redfin

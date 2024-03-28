@@ -1,4 +1,17 @@
-Property records: https://dashboard.propertyrecs.com/ -- gives fair estimate of house, past records
+-- Make an excel file with list of homes you like. Include pros/cons, questions, what changes would make it ideal for you
+-- In above excel file, add the list price and property record price (see list of websites below). Also, identify if the property record prices are dropping/rising over month span
+-- Check out "Sold" houses in Zillow and Refin, the ones sold in past 6 months, and keep record of price. This also helps with estimate
+
+**IMPORTANT**: Over time, discuss pros/cons for various house. And through the discussion, try to form a priority order list of what you are looking for in the new house, and why
+
+
+
+
+LIST OF USEFUL WEBISTES:
+
+Websites to get house price estimate
+* Property records: https://dashboard.propertyrecs.com/ -- also gives past records
+* TruePeopleSearch: https://www.truepeoplesearch.com/resultaddress
 
 
 FEMA hazard map: https://hazards.fema.gov/nri/map -- incl. wind, hale, snowstorm, lightning damages
@@ -23,8 +36,4 @@ TODO specific to city where buying house
 -- school district map for where you are buying home
 -- crime map of city
 -- political alignment (red vs blue) of the city and surroundings
-
-
-Redfin
--- cost of houses sold recently. This helps get idea whether the home price being asked is fair. The cost can be double checked in property records also
 

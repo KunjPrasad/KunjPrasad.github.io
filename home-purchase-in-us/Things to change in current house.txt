@@ -3,11 +3,11 @@
 
 
 * For all other cases:
+-- Change remote location address with employer to change tax witholding
 -- Update address: uscis, usps, banks
 -- Change title to new state if needed. Update car insurance. Get car registered in new city. Return license plates to old state, if needed
 -- Update drivers license address
 -- Close utility, internet in old city. Start utility, internet in new city
--- Change remote location address with employer to change tax witholding
 -- Get in touch with movers
 
 
